@@ -5,5 +5,6 @@
 int main()
 {
     /* code */
+    printf("ola");
     return 0;
 }

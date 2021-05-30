@@ -19,7 +19,6 @@ typedef enum
 } Boolean;
 
 //Operacoes
-
 //inserir
 //remover
 //linha
