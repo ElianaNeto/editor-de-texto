@@ -9,8 +9,30 @@
 #define NO_SPACE 4
 #define IMPOSSIBLE_REMOTION 5
 
-#define MAXPASS 5
-#define MAXLISTA 12
+#define LINHA_TAM 60
+
+typedef struct
+{
+    int chave;
+    int valor;
+} TInfo;
+
+typedef struct Atomo
+{
+    TInfo info;
+    struct Atomo *dprox;
+    struct Atomo *eprox;
+
+} TAtomo;
+
+typedef struct
+{
+    TAtomo *primeiro;
+    TAtomo *ultimo;
+    TAtomo *linhaCorrent;
+    int quantLinhas;
+
+} Tlista;
 
 typedef enum
 {
