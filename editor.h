@@ -40,6 +40,10 @@ typedef enum
     TRUE = 1
 } Boolean;
 
+int ehComando(char yy[])
+{
+}
+
 //Operacoes
 //inserir
 //remover
