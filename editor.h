@@ -40,9 +40,10 @@ typedef enum
     TRUE = 1
 } Boolean;
 
-int ehComando(char yy[])
-{
-}
+int verificarComando(char st[]);
+int compararRec(char st1[], char st2[], int i);
+void getComand(char st[], char st1[]);
+int checkCommand(int startCommandIndex, char comando[]);
 
 //Operacoes
 //inserir

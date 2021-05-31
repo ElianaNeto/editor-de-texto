@@ -8,15 +8,56 @@ int main()
     Tlista *editor = (Tlista *)(malloc(sizeof(Tlista)));
     int startMode = 1;
     int insertMode = 0;
-    char comando[LINHA_TAM];
 
     while (startMode == 1)
     {
-        // char comando[LINHA_TAM];
-        scanf("%[^~]", comando); //%[^\n] -- /t delimitador
-        int ehComando = ehComando(comando);
+        char comando[LINHA_TAM];
+        scanf("%[^\n]", comando); //%[^\n] -- /t delimitador
+        int ehComando = verificarComando(comando);
+        if (ehComando == -1 && insertMode == 1)
+        {
+            adicionarLinha(textEditor, commandLineInput);
+        }
+        else if (ehComando != -1)
+        {
+            int startCommandIndex = ehComando;
+            int commandCode = checkCommand(startCommandIndex, comando);
 
-        /* code */
+            switch (commandCode)
+            {
+            case 1: // Inserir
+                flagInsertMode = 1;
+                break;
+            case 2: // remover m, n (More tests)
+
+                break;
+            case 3: // linha m (to test)
+
+                break;
+            case 4: // localizar %x
+                break;
+            case 5: // alterar %x %y %
+
+                break;
+            case 6: // ultimo (to test)
+
+                break;
+            case 7: // imprimir m, n
+                break;
+            case 8: // fim
+                startMode = 0;
+                insertMode = 0;
+                break;
+            default:
+                // TO-DO
+                insertMode = 0;
+                break;
+            }
+        }
+        else
+        {
+            printf("\nERRO: Comandos devem começar com $\n");
+        }
     }
 
     char comando1[LINHA_TAM];
@@ -45,6 +86,7 @@ int main()
     printf("\n---------\n");
     printf("%s\n", comando1);
     printf("%d j\n", j);
+    // printf("eh comando%d\n", ehComando);
     //fflush(stdin);
     return 0;
 }
