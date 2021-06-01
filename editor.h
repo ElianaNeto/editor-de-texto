@@ -1,6 +1,5 @@
 #ifndef EDITOR_H_INCLUDED
 #define EDITOR_H_INCLUDED
-
 #define NOT_FOUND -1
 #define OK 0
 #define LIST_FULL 1

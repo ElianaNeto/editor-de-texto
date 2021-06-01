@@ -28,15 +28,14 @@ int compararRec(char st1[], char st2[], int i)
     return compararRec(st1, st2, i + 1);
 }
 
-void getComand(char st[])
+void getComand(char st[], char st1[])
 {
-
 }
 
 int checkCommand(int startCommandIndex, char comando[])
 {
     char cmd[LINHA_TAM];
-    getComand(cmd,comando);
+    getComand(cmd, comando);
     if (compararRec(cmd, "INC", 0) == 0)
         return 1;
 }
