@@ -16,7 +16,7 @@ int main()
         int ehComando = verificarComando(comando);
         if (ehComando == -1 && insertMode == 1)
         {
-            adicionarLinha(textEditor, commandLineInput);
+            adicionarLinha(editor, comando);
         }
         else if (ehComando != -1)
         {
@@ -26,7 +26,7 @@ int main()
             switch (commandCode)
             {
             case 1: // Inserir
-                flagInsertMode = 1;
+                insertMode = 1;
                 break;
             case 2: // remover m, n (More tests)
 
