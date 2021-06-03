@@ -54,6 +54,7 @@ int main()
                 break;
             }
         }
+
         else
         {
             printf("\nERRO: Comandos devem começar com $\n");
