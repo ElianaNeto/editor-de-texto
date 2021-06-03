@@ -8,15 +8,15 @@ int main()
     Tlista *editor = (Tlista *)(malloc(sizeof(Tlista)));
     int startMode = 1;
     int insertMode = 0;
+    char comando[LINHA_TAM];
 
     while (startMode == 1)
     {
-        char comando[LINHA_TAM];
         scanf("%[^\n]", comando); //%[^\n] -- /t delimitador
         int ehComando = verificarComando(comando);
         if (ehComando == -1 && insertMode == 1)
         {
-            adicionarLinha(editor, comando);
+            //adicionarLinha(editor, comando);
         }
         else if (ehComando != -1)
         {

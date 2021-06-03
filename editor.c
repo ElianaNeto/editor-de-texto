@@ -38,4 +38,5 @@ int checkCommand(int startCommandIndex, char comando[])
     getComand(cmd, comando);
     if (compararRec(cmd, "INC", 0) == 0)
         return 1;
+    return -1;
 }
