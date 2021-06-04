@@ -41,7 +41,7 @@ typedef enum
 
 int verificarComando(char st[]);
 int compararRec(char st1[], char st2[], int i);
-void getComand(char st[], char st1[]);
+void getComand(char st[], char st1[], int startCommandIndex);
 int checkCommand(int startCommandIndex, char comando[]);
 
 //Operacoes

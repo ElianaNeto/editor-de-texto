@@ -8,15 +8,17 @@ int main()
     Tlista *editor = (Tlista *)(malloc(sizeof(Tlista)));
     int startMode = 1;
     int insertMode = 0;
-    char comando[LINHA_TAM];
 
     while (startMode == 1)
     {
-        scanf("%[^\n]", comando); //%[^\n] -- /t delimitador
+        char comando[LINHA_TAM];
+        fgets(comando, sizeof(comando), stdin);
+        //scanf("%[^\n]", comando);
         int ehComando = verificarComando(comando);
         if (ehComando == -1 && insertMode == 1)
         {
             //adicionarLinha(editor, comando);
+            printf("Momento para adicionar\n");
         }
         else if (ehComando != -1)
         {
@@ -25,26 +27,37 @@ int main()
 
             switch (commandCode)
             {
+
             case 1: // Inserir
                 insertMode = 1;
+                printf("INSERINDO\n");
                 break;
             case 2: // remover m, n (More tests)
+                printf("REMOVENDO\n");
 
                 break;
             case 3: // linha m (to test)
+                printf("LINHA\n");
 
                 break;
             case 4: // localizar %x
+                printf("LOCALIZAR\n");
+
                 break;
             case 5: // alterar %x %y %
+                printf("ALTERAR\n");
 
                 break;
             case 6: // ultimo (to test)
+                printf("ULTIMO\n");
 
                 break;
             case 7: // imprimir m, n
+                printf("IMPRIMIR\n");
+
                 break;
             case 8: // fim
+                printf("FIM\n");
                 startMode = 0;
                 insertMode = 0;
                 break;
@@ -61,7 +74,7 @@ int main()
         }
     }
 
-    char comando1[LINHA_TAM];
+    /*char comando1[LINHA_TAM];
 
     printf("\n---------\n");
 
@@ -88,6 +101,6 @@ int main()
     printf("%s\n", comando1);
     printf("%d j\n", j);
     // printf("eh comando%d\n", ehComando);
-    //fflush(stdin);
+    //fflush(stdin);*/
     return 0;
 }
