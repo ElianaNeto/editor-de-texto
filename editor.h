@@ -12,8 +12,9 @@
 
 typedef struct
 {
-    int chave;
-    int valor;
+    int idLinha;
+    char frase[LINHA_TAM];
+
 } TInfo;
 
 typedef struct Atomo
@@ -39,10 +40,15 @@ typedef enum
     TRUE = 1
 } Boolean;
 
+void inicEditor(Tlista *editor);
+Boolean vaziaLista(Tlista editor);
 int verificarComando(char st[]);
 int compararRec(char st1[], char st2[], int i);
 void getComand(char st[], char st1[], int startCommandIndex);
 int checkCommand(int startCommandIndex, char comando[]);
+int adicionarLinha(Tlista *editor, char comando[]);
+void copiar(char st1[], char st2[]);
+void imprimirLista(Tlista *lista);
 
 //Operacoes
 //inserir

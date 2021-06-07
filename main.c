@@ -8,6 +8,7 @@ int main()
     Tlista *editor = (Tlista *)(malloc(sizeof(Tlista)));
     int startMode = 1;
     int insertMode = 0;
+    inicEditor(editor);
 
     while (startMode == 1)
     {
@@ -17,8 +18,8 @@ int main()
         int ehComando = verificarComando(comando);
         if (ehComando == -1 && insertMode == 1)
         {
-            //adicionarLinha(editor, comando);
-            printf("Momento para adicionar\n");
+            adicionarLinha(editor, comando);
+            //printf("Momento para adicionar\n");
         }
         else if (ehComando != -1)
         {
@@ -30,7 +31,7 @@ int main()
 
             case 1: // Inserir
                 insertMode = 1;
-                printf("INSERINDO\n");
+                //printf("INSERINDO\n");
                 break;
 
             case 2: // remover m, n
@@ -60,11 +61,12 @@ int main()
 
             case 7: // imprimir m, n
                 insertMode = 0;
-                printf("IMPRIMIR\n");
+               // printf("IMPRIMIR\n");
+                imprimirLista(editor);
                 break;
 
             case 8: // fim
-                printf("FIM\n");
+                //printf("FIM\n");
                 startMode = 0;
                 insertMode = 0;
                 break;

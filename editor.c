@@ -2,6 +2,20 @@
 #include <stdlib.h>
 #include "editor.h"
 
+void inicEditor(Tlista *editor)
+{
+    editor->primeiro = NULL;
+    editor->ultimo = NULL;
+    editor->linhaCorrent = NULL;
+    editor->quantLinhas = 0;
+}
+
+Boolean vaziaLista(Tlista editor)
+{
+
+    return (editor.primeiro == NULL);
+}
+
 int verificarComando(char st[])
 {
     int i = 0;
@@ -32,7 +46,7 @@ void getComand(char st[], char st1[], int startCommandIndex)
 {
     int i = startCommandIndex + 1;
     int j = 0;
-    while (st1[i] != ' ' && st1[i] != '\n' )
+    while (st1[i] != ' ' && st1[i] != '\n')
     {
         st[j] = st1[i];
         j++;
@@ -70,4 +84,51 @@ int checkCommand(int startCommandIndex, char comando[])
         return 8;
 
     return -1;
+}
+void copiar(char st1[], char st2[])
+{
+    int i = 0;
+    while ((st2[i] = st1[i]) != '\0')
+        i++;
+}
+
+Boolean listaUnitaria(Tlista *editor)
+{
+    return editor->primeiro == editor->ultimo;
+}
+
+int adicionarLinha(Tlista *editor, char comando[])
+{
+    TAtomo *pnovo = (TAtomo *)malloc(sizeof(TAtomo));
+    if (pnovo == NULL)
+        return NO_SPACE;
+    copiar(comando, pnovo->info.frase);
+    pnovo->dprox = NULL;
+    pnovo->info.idLinha = 1;
+    if (vaziaLista(*editor))
+        editor->primeiro = pnovo;
+    else if (listaUnitaria(editor))
+    {
+        editor->primeiro->dprox = pnovo;
+        pnovo->eprox = editor->primeiro;
+    }
+    else
+    {
+        editor->ultimo->dprox = pnovo;
+        pnovo->eprox = editor->ultimo;
+    }
+
+    editor->ultimo = pnovo;
+    editor->quantLinhas++;
+    return OK;
+}
+
+void imprimirLista(Tlista *lista)
+{
+    if (!vaziaLista(*lista))
+    {
+        for (TAtomo *paux = lista->primeiro; paux != NULL; paux = paux->dprox)
+            printf("%s", paux->info.frase);
+        //printf("\n");
+    }
 }
