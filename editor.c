@@ -32,7 +32,7 @@ void getComand(char st[], char st1[], int startCommandIndex)
 {
     int i = startCommandIndex + 1;
     int j = 0;
-    while (st1[i] != ' ')
+    while (st1[i] != ' ' && st1[i] != '\n' )
     {
         st[j] = st1[i];
         j++;

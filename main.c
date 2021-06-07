@@ -32,38 +32,46 @@ int main()
                 insertMode = 1;
                 printf("INSERINDO\n");
                 break;
-            case 2: // remover m, n (More tests)
+
+            case 2: // remover m, n
+                insertMode = 0;
                 printf("REMOVENDO\n");
-
                 break;
-            case 3: // linha m (to test)
+
+            case 3: // linha m
+                insertMode = 0;
                 printf("LINHA\n");
-
                 break;
+
             case 4: // localizar %x
+                insertMode = 0;
                 printf("LOCALIZAR\n");
-
                 break;
+
             case 5: // alterar %x %y %
+                insertMode = 0;
                 printf("ALTERAR\n");
-
                 break;
+
             case 6: // ultimo (to test)
+                insertMode = 0;
                 printf("ULTIMO\n");
-
                 break;
+
             case 7: // imprimir m, n
+                insertMode = 0;
                 printf("IMPRIMIR\n");
-
                 break;
+
             case 8: // fim
                 printf("FIM\n");
                 startMode = 0;
                 insertMode = 0;
                 break;
+
             default:
-                // TO-DO
                 insertMode = 0;
+                printf("ERRO: Comando inválido!\n");
                 break;
             }
         }
