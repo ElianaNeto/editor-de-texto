@@ -2,6 +2,14 @@
 #include <stdlib.h>
 #include "editor.h"
 
+int comprimentoSt(char st[])
+{
+    int i, n = 0;
+    for (i = 0; st[i] != '\0'; i++)
+        n++;
+    return n;
+}
+
 void inicEditor(Tlista *editor)
 {
     editor->primeiro = NULL;
@@ -12,7 +20,6 @@ void inicEditor(Tlista *editor)
 
 Boolean vaziaLista(Tlista editor)
 {
-
     return (editor.primeiro == NULL);
 }
 
@@ -97,6 +104,97 @@ Boolean listaUnitaria(Tlista *editor)
     return editor->primeiro == editor->ultimo;
 }
 
+int converteStringToInte(char str[])
+{
+    int res = 0;
+    int sign = 1;
+    int i;
+    int j = 0;
+
+    if (str[0] == '-')
+    {
+        sign = -1;
+        j++;
+    }
+
+    for (i = j; str[i] != '\0'; ++i)
+    {
+        res = res * 10 + str[i] - '0';
+    }
+    return sign * res;
+}
+
+int procurarLinhaCorrent(Tlista editor, int id)
+{
+    TAtomo *paux = editor.primeiro;
+    while (paux != NULL && paux->info.idLinha != id)
+        paux = paux->dprox;
+    if (paux == NULL)
+        return -1;
+    return paux->info.idLinha;
+}
+
+void comandoLinha(Tlista editor, char comando[], int id)
+{
+    // int a = verificarComando(comando);
+    char st1[30];
+    char st2[30];
+    int i = 0;
+    int j = 0;
+    int comprimento = comprimentoSt(comando);
+
+    for (i = 0; i < comprimento; i++)
+    {
+        if (comando[i] != ' ')
+        {
+            st1[i] = comando[i];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st1[i] = '\0';
+
+    for (j = i + 1; j < comprimento; j++)
+    {
+        if (comando[j] != '\0' && comando[j] != ' ')
+        {
+            st2[j - i - 1] = comando[j];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st2[j - i - 1] = '\0';
+}
+
+void linha(Tlista *editor, char comando[])
+{
+    int tamanho = strlen(editor->linhaCorrent->info.frase);
+    int id;
+    comandoLinha(*editor, comando, id);
+    int idAux = procurarLinhaCorrent(*editor, id);
+
+    if (!vaziaLista(*editor))
+    {
+        if (editor->linhaCorrent != NULL)
+        {
+            if (editor->linhaCorrent->info.frase[0] == '→')
+                printf("t");
+        }
+    }
+    else
+    {
+        printf("ERRO: Lista vazia!\n");
+    }
+}
+
+int adicionarDepoisdaCorrente(Tlista *editor, char comando[])
+{
+}
+
 int adicionarLinha(Tlista *editor, char comando[])
 {
     TAtomo *pnovo = (TAtomo *)malloc(sizeof(TAtomo));
@@ -120,6 +218,7 @@ int adicionarLinha(Tlista *editor, char comando[])
 
     editor->ultimo = pnovo;
     editor->quantLinhas++;
+    editor->linhaCorrent = pnovo;
     return OK;
 }
 

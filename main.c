@@ -41,7 +41,8 @@ int main()
 
             case 3: // linha m
                 insertMode = 0;
-                printf("LINHA\n");
+                printf(" → LINHA\n");
+                linha(editor,comando);
                 break;
 
             case 4: // localizar %x
@@ -61,7 +62,7 @@ int main()
 
             case 7: // imprimir m, n
                 insertMode = 0;
-               // printf("IMPRIMIR\n");
+                // printf("IMPRIMIR\n");
                 imprimirLista(editor);
                 break;
 
