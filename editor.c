@@ -232,4 +232,6 @@ void imprimirLista(Tlista *lista)
             printf("%s", paux->info.frase);
         //printf("\n");
     }
+    else
+        printf("ERRO: Editor vazio!\n");
 }
