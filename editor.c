@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "editor.h"
 
 int comprimentoSt(char st[])
@@ -67,30 +68,30 @@ int checkCommand(int startCommandIndex, char comando[])
     char cmd[LINHA_TAM];
     getComand(cmd, comando, startCommandIndex);
     if (compararRec(cmd, "inserir\0", 0) == 0)
-        return 1;
+        return CMD_INSERIR;
 
     if (compararRec(cmd, "remover\0", 0) == 0)
-        return 2;
+        return CMD_REMOVER;
 
     if (compararRec(cmd, "linha\0", 0) == 0)
-        return 3;
+        return CMD_LINHA;
 
     if (compararRec(cmd, "localizar\0", 0) == 0)
-        return 4;
+        return CMD_LOCALIZAR;
 
     if (compararRec(cmd, "alterar\0", 0) == 0)
-        return 5;
+        return CMD_ALTERAR;
 
     if (compararRec(cmd, "ultimo\0", 0) == 0)
-        return 6;
+        return CMD_ULTIMO;
 
     if (compararRec(cmd, "imprimir\0", 0) == 0)
-        return 7;
+        return CMD_IMPRIMIR;
 
     if (compararRec(cmd, "fim\0", 0) == 0)
-        return 8;
+        return CMD_FIM;
 
-    return -1;
+    return NOT_CMD;
 }
 void copiar(char st1[], char st2[])
 {
@@ -119,7 +120,7 @@ int converteStringToInte(char str[])
 
     for (i = j; str[i] != '\0'; ++i)
         res = res * 10 + str[i] - '0';
-    
+
     return sign * res;
 }
 
@@ -171,6 +172,7 @@ void comandoLinha(Tlista editor, char comando[], int id)
 
 void linha(Tlista *editor, char comando[])
 {
+    //→
     int tamanho = strlen(editor->linhaCorrent->info.frase);
     int id;
     comandoLinha(*editor, comando, id);
@@ -180,7 +182,7 @@ void linha(Tlista *editor, char comando[])
     {
         if (editor->linhaCorrent != NULL)
         {
-            if (editor->linhaCorrent->info.frase[0] == '→')
+            if (editor->linhaCorrent->info.frase[0] == 'o')
                 printf("t");
         }
     }
@@ -192,6 +194,7 @@ void linha(Tlista *editor, char comando[])
 
 int adicionarDepoisdaCorrente(Tlista *editor, char comando[])
 {
+    return OK;
 }
 
 int adicionarLinha(Tlista *editor, char comando[])

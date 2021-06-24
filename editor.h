@@ -13,7 +13,7 @@
 #define CMD_REMOVER 2
 #define CMD_LINHA 3
 #define CMD_LOCALIZAR 4
-#define CMD_RALTERAR 5
+#define CMD_ALTERAR 5
 #define CMD_ULTIMO 6
 #define CMD_IMPRIMIR 7
 #define CMD_FIM 8
@@ -52,7 +52,6 @@ typedef enum
 } Boolean;
 
 int comprimentoSt(char st[]);
-
 void inicEditor(Tlista *editor);
 Boolean vaziaLista(Tlista editor);
 int verificarComando(char st[]);
@@ -67,15 +66,5 @@ void imprimirLista(Tlista *lista);
 void comandoLinha(Tlista editor, char comando[], int id);
 int procurarLinhaCorrent(Tlista editor, int id);
 int adicionarDepoisdaCorrente(Tlista *editor, char comando[]);
-
-//Operacoes
-//inserir
-//remover
-//linha
-//Localizar
-//alterar
-//ultimo
-//imprimir
-//fim
 
 #endif

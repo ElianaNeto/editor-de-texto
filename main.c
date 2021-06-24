@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "editor.h"
 
 //→ ->
@@ -16,12 +17,12 @@ int main()
         fgets(comando, sizeof(comando), stdin);
         //scanf("%[^\n]", comando);
         int ehComando = verificarComando(comando);
-        if (ehComando == -1 && insertMode == 1)
+        if (ehComando == NOT_CMD && insertMode == 1)
         {
             adicionarLinha(editor, comando);
             //printf("Momento para adicionar\n");
         }
-        else if (ehComando != -1)
+        else if (ehComando != NOT_CMD)
         {
             int startCommandIndex = ehComando;
             int commandCode = checkCommand(startCommandIndex, comando);
@@ -29,44 +30,44 @@ int main()
             switch (commandCode)
             {
 
-            case 1: // Inserir
+            case CMD_INSERIR: // Inserir
                 insertMode = 1;
                 //printf("INSERINDO\n");
                 break;
 
-            case 2: // remover m, n
+            case CMD_REMOVER: // remover m, n
                 insertMode = 0;
                 printf("REMOVENDO\n");
                 break;
 
-            case 3: // linha m
+            case CMD_LINHA: // linha m
                 insertMode = 0;
                 printf(" → LINHA\n");
-                linha(editor,comando);
+                //linha(editor, comando);
                 break;
 
-            case 4: // localizar %x
+            case CMD_LOCALIZAR: // localizar %x
                 insertMode = 0;
                 printf("LOCALIZAR\n");
                 break;
 
-            case 5: // alterar %x %y %
+            case CMD_ALTERAR: // alterar %x %y %
                 insertMode = 0;
                 printf("ALTERAR\n");
                 break;
 
-            case 6: // ultimo (to test)
+            case CMD_ULTIMO: // ultimo (to test)
                 insertMode = 0;
                 printf("ULTIMO\n");
                 break;
 
-            case 7: // imprimir m, n
+            case CMD_IMPRIMIR: // imprimir m, n
                 insertMode = 0;
                 // printf("IMPRIMIR\n");
                 imprimirLista(editor);
                 break;
 
-            case 8: // fim
+            case CMD_FIM: // fim
                 //printf("FIM\n");
                 startMode = 0;
                 insertMode = 0;
