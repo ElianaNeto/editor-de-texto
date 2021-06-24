@@ -8,6 +8,17 @@
 #define NO_SPACE 4
 #define IMPOSSIBLE_REMOTION 5
 
+//Codigo dos comandos
+#define CMD_INSERIR 1
+#define CMD_REMOVER 2
+#define CMD_LINHA 3
+#define CMD_LOCALIZAR 4
+#define CMD_RALTERAR 5
+#define CMD_ULTIMO 6
+#define CMD_IMPRIMIR 7
+#define CMD_FIM 8
+#define NOT_CMD -1
+
 #define LINHA_TAM 60
 
 typedef struct

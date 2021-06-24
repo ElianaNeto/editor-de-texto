@@ -118,9 +118,8 @@ int converteStringToInte(char str[])
     }
 
     for (i = j; str[i] != '\0'; ++i)
-    {
         res = res * 10 + str[i] - '0';
-    }
+    
     return sign * res;
 }
 
