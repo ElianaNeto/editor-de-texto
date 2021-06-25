@@ -42,8 +42,9 @@ int main()
 
             case CMD_LINHA: // linha m
                 insertMode = 0;
-                printf(" → LINHA\n");
-                //linha(editor, comando);
+                //printf(" → LINHA\n");
+                //comandoLinha(*editor, comando, 2);
+                linha(editor, comando);
                 break;
 
             case CMD_LOCALIZAR: // localizar %x
@@ -59,6 +60,7 @@ int main()
             case CMD_ULTIMO: // ultimo (to test)
                 insertMode = 0;
                 printf("ULTIMO\n");
+                cmd_ultimo(editor);
                 break;
 
             case CMD_IMPRIMIR: // imprimir m, n

@@ -11,6 +11,26 @@ int comprimentoSt(char st[])
     return n;
 }
 
+int converteStringToInte(char str[])
+{
+    int res = 0;
+    int sign = 1;
+    int i;
+    int j = 0;
+
+    if (str[0] == '-')
+    {
+        sign = -1;
+        j++;
+    }
+
+    for (i = j; str[i] != '\0'; ++i)
+    {
+        res = res * 10 + str[i] - '0';
+    }
+    return sign * res;
+}
+
 void inicEditor(Tlista *editor)
 {
     editor->primeiro = NULL;
@@ -105,36 +125,15 @@ Boolean listaUnitaria(Tlista *editor)
     return editor->primeiro == editor->ultimo;
 }
 
-int converteStringToInte(char str[])
-{
-    int res = 0;
-    int sign = 1;
-    int i;
-    int j = 0;
-
-    if (str[0] == '-')
-    {
-        sign = -1;
-        j++;
-    }
-
-    for (i = j; str[i] != '\0'; ++i)
-        res = res * 10 + str[i] - '0';
-
-    return sign * res;
-}
-
-int procurarLinhaCorrent(Tlista editor, int id)
+TAtomo *procurarLinhaCorrent(Tlista editor, int id)
 {
     TAtomo *paux = editor.primeiro;
     while (paux != NULL && paux->info.idLinha != id)
         paux = paux->dprox;
-    if (paux == NULL)
-        return -1;
-    return paux->info.idLinha;
+    return paux;
 }
 
-void comandoLinha(Tlista editor, char comando[], int id)
+void comandoLinha(Tlista editor, char comando[], int *id)
 {
     // int a = verificarComando(comando);
     char st1[30];
@@ -168,27 +167,29 @@ void comandoLinha(Tlista editor, char comando[], int id)
         }
     }
     st2[j - i - 1] = '\0';
+    st2[comprimentoSt(st2) - 1] = '\0';
+    *id = converteStringToInte(st2);
+    //printf("comprimento %d \n", comprimentoSt(st2));
+    //printf("{%s}\n", st2);
+    //printf("%d \n", *id);
 }
 
 void linha(Tlista *editor, char comando[])
 {
     //→
-    int tamanho = strlen(editor->linhaCorrent->info.frase);
-    int id;
-    comandoLinha(*editor, comando, id);
-    int idAux = procurarLinhaCorrent(*editor, id);
 
-    if (!vaziaLista(*editor))
+    int id = 0;
+    comandoLinha(*editor, comando, &id);
+    TAtomo *idAux = (TAtomo *)malloc(sizeof(TAtomo));
+    idAux = procurarLinhaCorrent(*editor, id);
+
+    if (idAux != NULL)
     {
-        if (editor->linhaCorrent != NULL)
-        {
-            if (editor->linhaCorrent->info.frase[0] == 'o')
-                printf("t");
-        }
+        editor->linhaCorrent = idAux;
     }
     else
     {
-        printf("ERRO: Lista vazia!\n");
+        printf("ERRO: Linha %d não existe!\n", id);
     }
 }
 
@@ -204,7 +205,11 @@ int adicionarLinha(Tlista *editor, char comando[])
         return NO_SPACE;
     copiar(comando, pnovo->info.frase);
     pnovo->dprox = NULL;
-    pnovo->info.idLinha = 1;
+    if (editor->ultimo == NULL)
+        pnovo->info.idLinha = 1;
+    else
+        pnovo->info.idLinha = editor->ultimo->info.idLinha + 1;
+
     if (vaziaLista(*editor))
         editor->primeiro = pnovo;
     else if (listaUnitaria(editor))
@@ -220,17 +225,31 @@ int adicionarLinha(Tlista *editor, char comando[])
 
     editor->ultimo = pnovo;
     editor->quantLinhas++;
-    editor->linhaCorrent = pnovo;
     return OK;
+}
+
+void cmd_ultimo(Tlista *lista)
+{
+    if (!vaziaLista(*lista))
+        printf("%d\n", lista->ultimo->info.idLinha);
+    else
+        printf("ERRO: Editor vazio!\n");
 }
 
 void imprimirLista(Tlista *lista)
 {
     if (!vaziaLista(*lista))
     {
+        printf("-----------------------------------\n");
         for (TAtomo *paux = lista->primeiro; paux != NULL; paux = paux->dprox)
-            printf("%s", paux->info.frase);
-        //printf("\n");
+        {
+            if (paux == lista->linhaCorrent)
+                printf("%d → %s", paux->info.idLinha, paux->info.frase);
+            else
+                printf("%d %s", paux->info.idLinha, paux->info.frase);
+        }
+
+        printf("-----------------------------------\n");
     }
     else
         printf("ERRO: Editor vazio!\n");
