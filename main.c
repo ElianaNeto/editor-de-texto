@@ -19,8 +19,16 @@ int main()
         int ehComando = verificarComando(comando);
         if (ehComando == NOT_CMD && insertMode == 1)
         {
-            adicionarLinha(editor, comando);
-            //printf("Momento para adicionar\n");
+            if (editor->linhaCorrent == NULL)
+            {
+               // printf("Nao tem uma linha corrente \n");
+                adicionarLinha(editor, comando);
+            }
+            else
+            {
+                adicionarDepoisdaCorrente(editor, comando);
+               // printf("Tem uma linha corrente \n");
+            }
         }
         else if (ehComando != NOT_CMD)
         {

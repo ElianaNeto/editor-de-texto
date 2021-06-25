@@ -62,11 +62,15 @@ int verificarComando(char st[]);
 int compararRec(char st1[], char st2[], int i);
 void getComand(char st[], char st1[], int startCommandIndex);
 int checkCommand(int startCommandIndex, char comando[]);
-int adicionarLinha(Tlista *editor, char comando[]);
 void linha(Tlista *editor, char comando[]);
 
 void copiar(char st1[], char st2[]);
+void iniciarId(Tlista *editor);
+
+void actualizarLinhas(Tlista *editor);
+
 //operacoes do editor
+int adicionarLinha(Tlista *editor, char comando[]);
 void imprimirLista(Tlista *lista);
 void comandoLinha(Tlista editor, char comando[], int *id);
 void cmd_ultimo(Tlista *lista);

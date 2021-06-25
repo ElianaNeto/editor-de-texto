@@ -160,7 +160,7 @@ void comandoLinha(Tlista editor, char comando[], int *id)
         i++;
     }
     i = i - 1;
-    printf("i:%d", i);
+    //printf("i:%d", i);
 
     for (j = i + 1; j < comprimento; j++)
     {
@@ -200,8 +200,44 @@ void linha(Tlista *editor, char comando[])
     }
 }
 
+void iniciarId(Tlista *editor)
+{
+    for (TAtomo *paux = editor->primeiro; paux != NULL; paux = paux->dprox)
+        paux->info.idLinha = 0;
+}
+
+void actualizarLinhas(Tlista *editor)
+{
+    iniciarId(editor);
+    editor->primeiro->info.idLinha = 1;
+    for (TAtomo *paux = editor->primeiro->dprox; paux != NULL; paux = paux->dprox)
+        paux->info.idLinha = paux->eprox->info.idLinha + 1;
+}
+
 int adicionarDepoisdaCorrente(Tlista *editor, char comando[])
 {
+    TAtomo *pnovo = (TAtomo *)malloc(sizeof(TAtomo));
+    if (pnovo == NULL)
+        return NO_SPACE;
+    copiar(comando, pnovo->info.frase);
+
+    if (editor->linhaCorrent == editor->ultimo)
+    {
+        editor->ultimo->dprox = pnovo;
+        pnovo->eprox = editor->ultimo;
+        editor->ultimo = pnovo;
+    }
+    else
+    {
+        pnovo->dprox = editor->linhaCorrent->dprox;
+        pnovo->eprox = editor->linhaCorrent;
+        editor->linhaCorrent->dprox = pnovo;
+        editor->linhaCorrent->dprox->eprox = pnovo;
+    }
+
+    editor->linhaCorrent = pnovo;
+    editor->quantLinhas++;
+    actualizarLinhas(editor);
     return OK;
 }
 
@@ -226,6 +262,7 @@ int adicionarLinha(Tlista *editor, char comando[])
     }
     else
     {
+        //analisar
         editor->ultimo->dprox = pnovo;
         pnovo->eprox = editor->ultimo;
     }
