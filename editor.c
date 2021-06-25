@@ -155,6 +155,13 @@ void comandoLinha(Tlista editor, char comando[], int *id)
     }
     st1[i] = '\0';
 
+    while (comando[i] == ' ')
+    {
+        i++;
+    }
+    i = i - 1;
+    printf("i:%d", i);
+
     for (j = i + 1; j < comprimento; j++)
     {
         if (comando[j] != '\0' && comando[j] != ' ')
