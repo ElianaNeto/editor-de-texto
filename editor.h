@@ -77,6 +77,7 @@ void cmd_ultimo(Tlista *lista);
 
 //
 int adicionarDepoisdaCorrente(Tlista *editor, char comando[]);
+void imprimirNovo(Tlista *editor, char comando[]);
 
 void funcao_teste(Tlista *editor);
 

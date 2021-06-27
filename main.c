@@ -68,6 +68,7 @@ int main()
             case CMD_IMPRIMIR: // imprimir m, n
                 insertMode = 0;
                 imprimirLista(editor);
+                //imprimirNovo(editor, comando);
                 break;
 
             case CMD_FIM: // fim
@@ -89,33 +90,6 @@ int main()
         }
     }
 
-    /*char comando1[LINHA_TAM];
-
-    printf("\n---------\n");
-
-    printf("%s", comando);
-    int i = 0;
-    int j = 0;
-    int a = 0;
-    while (comando[i] != '$')
-    {
-        comando1[i] = comando[i];
-        i++;
-    }
-
-    while (comando[a] != '\0')
-    {
-        if (comando[a] == '\n')
-            j++;
-        a++;
-    }
-    if (comando[a] == '\0')
-        j++;
-
-    printf("\n---------\n");
-    printf("%s\n", comando1);
-    printf("%d j\n", j);
-    // printf("eh comando%d\n", ehComando);
     //fflush(stdin);*/
     return 0;
 }

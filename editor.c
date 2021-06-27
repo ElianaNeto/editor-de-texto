@@ -190,14 +190,19 @@ void linha(Tlista *editor, char comando[])
     TAtomo *idAux = (TAtomo *)malloc(sizeof(TAtomo));
     idAux = procurarLinhaCorrent(*editor, id);
 
-    if (idAux != NULL)
+    if (!vaziaLista(*editor))
     {
-        editor->linhaCorrent = idAux;
+        if (idAux != NULL)
+        {
+            editor->linhaCorrent = idAux;
+        }
+        else
+        {
+            printf("ERRO: Linha %d não existe!\n", id);
+        }
     }
     else
-    {
-        printf("ERRO: Linha %d não existe!\n", id);
-    }
+        printf("ERRO:Lista vazio\n");
 }
 
 void iniciarId(Tlista *editor)
@@ -320,4 +325,101 @@ void funcao_teste(Tlista *editor)
         }
     }
     printf("o dpt da linha corrent: %s\n", p->info.frase);
+}
+
+void imprimirNovo(Tlista *editor, char comando[])
+{
+    char st1[30];
+    char st2[30];
+    char st3[30];
+    char st4[30];
+
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    int l = 0;
+
+    int comprimento = comprimentoSt(comando);
+    fflush(stdin);
+    for (i = 0; i < comprimento; i++)
+    {
+        if (comando[i] != ' ')
+        {
+            st1[i] = comando[i];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st1[i] = '\0';
+
+    while (comando[i] == ' ')
+    {
+        i++;
+    }
+    i = i - 1;
+    //printf("i:%d", i);
+
+    for (j = i + 1; j < comprimento; j++)
+    {
+        if (comando[j] != '\0' && comando[j] != ' ')
+        {
+            st2[j - i - 1] = comando[j];
+        }
+        else
+        {
+            break;
+        }
+    }
+    //st2[j - i - 1] = '\0';
+    st2[comprimentoSt(st2) - 1] = '\0';
+
+    while (comando[j] == ' ')
+    {
+        j++;
+    }
+    j = j - 1;
+
+    for (k = j + 1; k < comprimento; k++)
+    {
+        if (comando[k] != '\0' && comando[k] != ' ')
+        {
+            st3[k - j - 1] = comando[k];
+        }
+        else
+        {
+            break;
+        }
+    }
+    //st3[k - j - 1] = '\0';
+    st3[comprimentoSt(st3) - 1] = '\0';
+
+    while (comando[k] == ' ')
+    {
+        k++;
+    }
+    k = k - 1;
+
+    for (l = k + 1; l < comprimento; l++)
+    {
+        if (comando[l] != '\0' && comando[l] != ' ')
+        {
+            st4[l - k - 1] = comando[l];
+        }
+        else
+        {
+            break;
+        }
+    }
+    // st4[l - k - 1] = '\0';
+    fflush(stdin);
+    st4[comprimentoSt(st4) - 1] = '\0';
+
+    //printf("comprimento %d \n", comprimentoSt(st2));
+    printf("{%s}\n", st1);
+    printf("{%s}\n", st2);
+    printf("{%s}\n", st3);
+    printf("{%s}\n", st4);
+    //printf("%d \n", *id);
 }
