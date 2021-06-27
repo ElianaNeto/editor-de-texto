@@ -21,13 +21,15 @@ int main()
         {
             if (editor->linhaCorrent == NULL)
             {
-               // printf("Nao tem uma linha corrente \n");
+                // printf("Nao tem uma linha corrente \n");
                 adicionarLinha(editor, comando);
             }
             else
             {
-                adicionarDepoisdaCorrente(editor, comando);
-               // printf("Tem uma linha corrente \n");
+                novo(editor, comando);
+
+                //adicionarDepoisdaCorrente(editor, comando);
+                // printf("Tem uma linha corrente \n");
             }
         }
         else if (ehComando != NOT_CMD)
@@ -73,8 +75,9 @@ int main()
 
             case CMD_IMPRIMIR: // imprimir m, n
                 insertMode = 0;
-                // printf("IMPRIMIR\n");
+
                 imprimirLista(editor);
+                funcao_teste(editor);
                 break;
 
             case CMD_FIM: // fim

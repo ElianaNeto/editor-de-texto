@@ -241,6 +241,43 @@ int adicionarDepoisdaCorrente(Tlista *editor, char comando[])
     return OK;
 }
 
+int novo(Tlista *editor, char comando[])
+{
+    int id = 0;
+    comandoLinha(*editor, comando, &id);
+
+    TAtomo *pnovo = (TAtomo *)malloc(sizeof(TAtomo));
+    if (pnovo == NULL)
+        return NO_SPACE;
+    copiar(comando, pnovo->info.frase);
+
+    TAtomo *pcorrent = editor->primeiro;
+    while (pcorrent != NULL && pcorrent != editor->linhaCorrent)
+    {
+        pcorrent = pcorrent->dprox;
+    }
+
+    if (pcorrent == editor->ultimo)
+    {
+        editor->ultimo->dprox = pnovo;
+        pnovo->eprox = editor->ultimo;
+        editor->ultimo = pnovo;
+    }
+
+    else
+    {
+        pnovo->dprox = pcorrent->dprox;
+        pnovo->eprox = pcorrent;
+        pcorrent->dprox = pnovo;
+        //pcorrent->dprox->eprox = pnovo; --parte malandra
+    }
+
+    editor->linhaCorrent = pnovo;
+    editor->quantLinhas++;
+    actualizarLinhas(editor);
+    return OK;
+}
+
 int adicionarLinha(Tlista *editor, char comando[])
 {
     TAtomo *pnovo = (TAtomo *)malloc(sizeof(TAtomo));
@@ -297,4 +334,18 @@ void imprimirLista(Tlista *lista)
     }
     else
         printf("ERRO: Editor vazio!\n");
+}
+
+void funcao_teste(Tlista *editor)
+{
+    TAtomo *p = NULL;
+    for (TAtomo *paux = editor->primeiro; paux != NULL; paux = paux->dprox)
+    {
+        if (paux == editor->linhaCorrent)
+        {
+            p = paux->dprox;
+            break;
+        }
+    }
+    printf("o dpt da linha corrent: %s\n", p->info.frase);
 }
