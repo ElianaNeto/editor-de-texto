@@ -208,6 +208,7 @@ void iniciarId(Tlista *editor)
 
 void actualizarLinhas(Tlista *editor)
 {
+
     iniciarId(editor);
     editor->primeiro->info.idLinha = 1;
     for (TAtomo *paux = editor->primeiro->dprox; paux != NULL; paux = paux->dprox)
@@ -221,40 +222,11 @@ int adicionarDepoisdaCorrente(Tlista *editor, char comando[])
         return NO_SPACE;
     copiar(comando, pnovo->info.frase);
 
-    if (editor->linhaCorrent == editor->ultimo)
+    TAtomo *pcorrent = NULL, *pd = editor->primeiro;
+    while (pd != NULL && pcorrent != editor->linhaCorrent)
     {
-        editor->ultimo->dprox = pnovo;
-        pnovo->eprox = editor->ultimo;
-        editor->ultimo = pnovo;
-    }
-    else
-    {
-        pnovo->dprox = editor->linhaCorrent->dprox;
-        pnovo->eprox = editor->linhaCorrent;
-        editor->linhaCorrent->dprox = pnovo;
-        editor->linhaCorrent->dprox->eprox = pnovo;
-    }
-
-    editor->linhaCorrent = pnovo;
-    editor->quantLinhas++;
-    actualizarLinhas(editor);
-    return OK;
-}
-
-int novo(Tlista *editor, char comando[])
-{
-    int id = 0;
-    comandoLinha(*editor, comando, &id);
-
-    TAtomo *pnovo = (TAtomo *)malloc(sizeof(TAtomo));
-    if (pnovo == NULL)
-        return NO_SPACE;
-    copiar(comando, pnovo->info.frase);
-
-    TAtomo *pcorrent = editor->primeiro;
-    while (pcorrent != NULL && pcorrent != editor->linhaCorrent)
-    {
-        pcorrent = pcorrent->dprox;
+        pcorrent = pd;
+        pd = pd->dprox;
     }
 
     if (pcorrent == editor->ultimo)
@@ -269,7 +241,7 @@ int novo(Tlista *editor, char comando[])
         pnovo->dprox = pcorrent->dprox;
         pnovo->eprox = pcorrent;
         pcorrent->dprox = pnovo;
-        //pcorrent->dprox->eprox = pnovo; --parte malandra
+        pd->eprox = pnovo;
     }
 
     editor->linhaCorrent = pnovo;
