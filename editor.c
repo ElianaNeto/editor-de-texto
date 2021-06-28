@@ -428,7 +428,6 @@ void separar4(char st1[], char st2[], char st3[], char st4[], char comando[])
 
 void imprimirNovo(Tlista *editor, char comando[])
 {
-
     char st1[30];
     char st2[30];
     char st3[30];
