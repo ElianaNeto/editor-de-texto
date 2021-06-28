@@ -327,12 +327,21 @@ void funcao_teste(Tlista *editor)
     printf("o dpt da linha corrent: %s\n", p->info.frase);
 }
 
-void imprimirNovo(Tlista *editor, char comando[])
+int encontrarVirgula(char comando[])
 {
-    char st1[30];
-    char st2[30];
-    char st3[30];
-    char st4[30];
+    for (int i = 0; comando[i] != '\0'; i++)
+    {
+        if (comando[i] == ',')
+        {
+            return i;
+            break;
+        }
+    }
+    return -1;
+}
+
+void separar4(char st1[], char st2[], char st3[], char st4[], char comando[])
+{
 
     int i = 0;
     int j = 0;
@@ -363,7 +372,7 @@ void imprimirNovo(Tlista *editor, char comando[])
 
     for (j = i + 1; j < comprimento; j++)
     {
-        if (comando[j] != '\0' && comando[j] != ' ')
+        if (comando[j] != '\0' && comando[j] != ' ' && comando[j] != ',')
         {
             st2[j - i - 1] = comando[j];
         }
@@ -372,18 +381,18 @@ void imprimirNovo(Tlista *editor, char comando[])
             break;
         }
     }
-    //st2[j - i - 1] = '\0';
-    st2[comprimentoSt(st2) - 1] = '\0';
+    st2[j - i - 1] = '\0';
+    //st2[comprimentoSt(st2) - 1] = '\0';
 
     while (comando[j] == ' ')
     {
         j++;
     }
     j = j - 1;
-
+    //multiplas virgulas ATT
     for (k = j + 1; k < comprimento; k++)
     {
-        if (comando[k] != '\0' && comando[k] != ' ')
+        if (comando[k] == ',')
         {
             st3[k - j - 1] = comando[k];
         }
@@ -392,8 +401,8 @@ void imprimirNovo(Tlista *editor, char comando[])
             break;
         }
     }
-    //st3[k - j - 1] = '\0';
-    st3[comprimentoSt(st3) - 1] = '\0';
+    st3[k - j - 1] = '\0';
+    //st3[comprimentoSt(st3) - 1] = '\0';
 
     while (comando[k] == ' ')
     {
@@ -412,14 +421,67 @@ void imprimirNovo(Tlista *editor, char comando[])
             break;
         }
     }
-    // st4[l - k - 1] = '\0';
-    fflush(stdin);
+    st4[l - k - 1] = '\0';
+    //fflush(stdin);
     st4[comprimentoSt(st4) - 1] = '\0';
+}
 
+void imprimirNovo(Tlista *editor, char comando[])
+{
+
+    char st1[30];
+    char st2[30];
+    char st3[30];
+    char st4[30];
+
+    separar4(st1, st2, st3, st4, comando);
+    int startVirgula = encontrarVirgula(comando);
+
+    int inicPrint = converteStringToInte(st2);
+    int fimPrint = converteStringToInte(st4);
+
+    if (!vaziaLista(*editor))
+    {
+        printf("-----------------------------------\n");
+
+        if (startVirgula != -1)
+        {
+            if (inicPrint >= 1)
+            {
+                if (inicPrint <= fimPrint && fimPrint <= editor->quantLinhas)
+                {
+                    for (int i = inicPrint; i <= fimPrint; i++)
+                    {
+                        for (TAtomo *paux = editor->primeiro; paux != NULL; paux = paux->dprox)
+                        {
+                            if (paux->info.idLinha == i)
+                            {
+                                if (paux == editor->linhaCorrent)
+                                    printf("%d → %s", paux->info.idLinha, paux->info.frase);
+                                else
+                                    printf("%d %s", paux->info.idLinha, paux->info.frase);
+                            }
+                        }
+                    }
+                }
+                else
+                    printf("ERRO: Inicio e fim de impressao invalidos!\n");
+            }
+            else
+                printf("ERRO: Inicio de impressao invalida!\n");
+        }
+        else
+            printf("ERRO: Falta ',' \n");
+        printf("-----------------------------------\n");
+    }
+    else
+        printf("ERRO: Editor vazio!\n");
+
+    //printf("%d , %d", inicPrint, fimPrint);
     //printf("comprimento %d \n", comprimentoSt(st2));
-    printf("{%s}\n", st1);
-    printf("{%s}\n", st2);
-    printf("{%s}\n", st3);
-    printf("{%s}\n", st4);
+    //printf("{%s}\n", st1);
+    //printf("{%s}\n", st2);
+    //printf("{%s}\n", st3);
+    //printf("{%s}\n", st4);
     //printf("%d \n", *id);
 }

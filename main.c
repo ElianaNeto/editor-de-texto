@@ -67,8 +67,8 @@ int main()
 
             case CMD_IMPRIMIR: // imprimir m, n
                 insertMode = 0;
-                imprimirLista(editor);
-                //imprimirNovo(editor, comando);
+                //imprimirLista(editor);
+                imprimirNovo(editor, comando);
                 break;
 
             case CMD_FIM: // fim
