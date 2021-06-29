@@ -299,37 +299,30 @@ void cmd_ultimo(Tlista *lista)
 
 int remover(Tlista *lista, int id)
 {
-    
-    if (!vaziaLista(*lista))
+    if (vaziaLista(*lista))
+        return LIST_EMPTY;
+
+    TAtomo *pdel = procurarLinha(*lista, id);
+    if (pdel == NULL)
+        return NOT_FOUND;
+    if (pdel == lista->primeiro)
     {
-        TAtomo *pant = NULL, *pdel = lista->primeiro;
-        while (pdel != NULL && pdel->info.idLinha != id)
-        {
-            pant = pdel;
-            pdel = pdel->dprox;
-        }
-
-        if (pdel == NULL)
-            return NOT_FOUND;
-
-        if (pdel == lista->ultimo)
-            lista->ultimo = pant;
-
-        if (pdel == lista->primeiro)
-            lista->primeiro = lista->primeiro->dprox;
-
-        else
-        {
-            pant->dprox = pdel->dprox;
-            pdel->dprox->eprox = pant;
-        }
-        lista->quantLinhas--;
-        free(pdel);
+        lista->primeiro = pdel->dprox;
+        lista->primeiro->eprox = NULL;
+    }
+    else if (pdel == lista->ultimo)
+    {
+        lista->ultimo = pdel->eprox;
+        lista->ultimo->dprox = NULL;
+    }
+    else
+    {
+        pdel->eprox->dprox = pdel->dprox;
+        pdel->dprox->eprox = pdel->eprox;
     }
 
-    else if (listaUnitaria(lista))
-        inicEditor(lista);
-    
+    free(pdel);
+    lista->quantLinhas--;
 
     return OK;
 }
@@ -546,12 +539,19 @@ void cmd_remover(Tlista *editor, char comando[])
             {
                 if (inicPrint <= fimPrint && fimPrint <= editor->quantLinhas)
                 {
-                    for (int i = inicPrint; i <= fimPrint; i++)
+                    if (inicPrint == 1 && fimPrint == editor->quantLinhas)
+                        inicEditor(editor);
+
+                    else
                     {
-                        printf("esse i:%d\n", i);
-                        remover(editor, i);
+                        for (int i = inicPrint; i <= fimPrint; i++)
+                        {
+                            printf("esse i:%d\n", i);
+                            remover(editor, i);
+                        }
+
+                        actualizarLinhas(editor);
                     }
-                    actualizarLinhas(editor);
                 }
                 else
                     printf("ERRO:!\n");
