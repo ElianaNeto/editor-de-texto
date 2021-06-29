@@ -40,6 +40,8 @@ int main()
             case CMD_REMOVER: // remover m, n
                 insertMode = 0;
                 printf("REMOVENDO\n");
+                //remover(editor,2);
+                cmd_remover(editor, comando);
                 break;
 
             case CMD_LINHA: // linha m

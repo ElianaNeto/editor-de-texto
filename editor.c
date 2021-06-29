@@ -125,7 +125,7 @@ Boolean listaUnitaria(Tlista *editor)
     return editor->primeiro == editor->ultimo;
 }
 
-TAtomo *procurarLinhaCorrent(Tlista editor, int id)
+TAtomo *procurarLinha(Tlista editor, int id)
 {
     TAtomo *paux = editor.primeiro;
     while (paux != NULL && paux->info.idLinha != id)
@@ -188,7 +188,7 @@ void linha(Tlista *editor, char comando[])
     int id = 0;
     comandoLinha(*editor, comando, &id);
     TAtomo *idAux = (TAtomo *)malloc(sizeof(TAtomo));
-    idAux = procurarLinhaCorrent(*editor, id);
+    idAux = procurarLinha(*editor, id);
 
     if (!vaziaLista(*editor))
     {
@@ -268,7 +268,10 @@ int adicionarLinha(Tlista *editor, char comando[])
         pnovo->info.idLinha = editor->ultimo->info.idLinha + 1;
 
     if (vaziaLista(*editor))
+    {
         editor->primeiro = pnovo;
+        editor->ultimo = pnovo;
+    }
     else if (listaUnitaria(editor))
     {
         editor->primeiro->dprox = pnovo;
@@ -292,6 +295,43 @@ void cmd_ultimo(Tlista *lista)
         printf("%d\n", lista->ultimo->info.idLinha);
     else
         printf("ERRO: Editor vazio!\n");
+}
+
+int remover(Tlista *lista, int id)
+{
+    
+    if (!vaziaLista(*lista))
+    {
+        TAtomo *pant = NULL, *pdel = lista->primeiro;
+        while (pdel != NULL && pdel->info.idLinha != id)
+        {
+            pant = pdel;
+            pdel = pdel->dprox;
+        }
+
+        if (pdel == NULL)
+            return NOT_FOUND;
+
+        if (pdel == lista->ultimo)
+            lista->ultimo = pant;
+
+        if (pdel == lista->primeiro)
+            lista->primeiro = lista->primeiro->dprox;
+
+        else
+        {
+            pant->dprox = pdel->dprox;
+            pdel->dprox->eprox = pant;
+        }
+        lista->quantLinhas--;
+        free(pdel);
+    }
+
+    else if (listaUnitaria(lista))
+        inicEditor(lista);
+    
+
+    return OK;
 }
 
 void imprimirLista(Tlista *lista)
@@ -483,4 +523,45 @@ void imprimirNovo(Tlista *editor, char comando[])
     //printf("{%s}\n", st3);
     //printf("{%s}\n", st4);
     //printf("%d \n", *id);
+}
+
+void cmd_remover(Tlista *editor, char comando[])
+{
+    char st1[30];
+    char st2[30];
+    char st3[30];
+    char st4[30];
+
+    separar4(st1, st2, st3, st4, comando);
+    int startVirgula = encontrarVirgula(comando);
+    int inicPrint = converteStringToInte(st2);
+    int fimPrint = converteStringToInte(st4);
+    printf("{%d , %d} \n", inicPrint, fimPrint);
+
+    if (!vaziaLista(*editor))
+    {
+        if (startVirgula != -1)
+        {
+            if (inicPrint >= 1)
+            {
+                if (inicPrint <= fimPrint && fimPrint <= editor->quantLinhas)
+                {
+                    for (int i = inicPrint; i <= fimPrint; i++)
+                    {
+                        printf("esse i:%d\n", i);
+                        remover(editor, i);
+                    }
+                    actualizarLinhas(editor);
+                }
+                else
+                    printf("ERRO:!\n");
+            }
+            else
+                printf("ERRO:!\n");
+        }
+        else
+            printf("ERRO: Falta ',' \n");
+    }
+    else
+        printf("ERRO: Editor vazio!\n");
 }

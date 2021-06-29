@@ -54,7 +54,7 @@ typedef enum
 int comprimentoSt(char st[]);
 int converteStringToInte(char str[]);
 
-TAtomo *procurarLinhaCorrent(Tlista editor, int id);
+TAtomo *procurarLinha(Tlista editor, int id);
 
 void inicEditor(Tlista *editor);
 Boolean vaziaLista(Tlista editor);
@@ -74,6 +74,9 @@ int adicionarLinha(Tlista *editor, char comando[]);
 void imprimirLista(Tlista *lista);
 void comandoLinha(Tlista editor, char comando[], int *id);
 void cmd_ultimo(Tlista *lista);
+
+int remover(Tlista *lista, int id);
+void cmd_remover(Tlista *editor, char comando[]);
 
 //
 int adicionarDepoisdaCorrente(Tlista *editor, char comando[]);
