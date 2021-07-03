@@ -186,7 +186,7 @@ void comandoLinha(Tlista editor, char comando[], int *id)
     //printf("%d \n", *id);
 }
 
-void linha(Tlista *editor, char comando[])
+void cmd_linha(Tlista *editor, char comando[])
 {
     //→
 
@@ -378,6 +378,19 @@ int encontrarVirgula(char comando[])
     return -1;
 }
 
+int encontrarPercent(char comando[])
+{
+    for (int i = 0; comando[i] != '\0'; i++)
+    {
+        if (comando[i] == '%')
+        {
+            return i;
+            break;
+        }
+    }
+    return -1;
+}
+
 void separar4(char st1[], char st2[], char st3[], char st4[], char comando[])
 {
 
@@ -464,7 +477,7 @@ void separar4(char st1[], char st2[], char st3[], char st4[], char comando[])
     st4[comprimentoSt(st4) - 1] = '\0';
 }
 
-void imprimirNovo(Tlista *editor, char comando[])
+void cmd_imprimir(Tlista *editor, char comando[])
 {
     char st1[30];
     char st2[30];
@@ -571,6 +584,75 @@ void cmd_remover(Tlista *editor, char comando[])
         printf("ERRO: Editor vazio!\n");
 }
 
+void separarLocalizar(char st1[], char st2[], char st3[], char comando[])
+{
+
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    int l = 0;
+
+    int comprimento = comprimentoSt(comando);
+    fflush(stdin);
+    for (i = 0; i < comprimento; i++)
+    {
+        if (comando[i] != ' ')
+        {
+            st1[i] = comando[i];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st1[i] = '\0';
+
+    while (comando[i] == ' ')
+    {
+        i++;
+    }
+    i = i - 1;
+    //printf("i:%d", i);
+
+    for (j = i + 1; j < comprimento; j++)
+    {
+        if (comando[j] == '%')
+        {
+            st2[j - i - 1] = comando[j];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st2[j - i - 1] = '\0';
+    //st2[comprimentoSt(st2) - 1] = '\0';
+
+    while (comando[j] == ' ')
+    {
+        j++;
+    }
+    j = j - 1;
+    //multiplas virgulas ATT
+    for (k = j + 1; k < comprimento; k++)
+    {
+        if (comando[k] != ' ')
+        {
+            st3[k - j - 1] = comando[k];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st3[k - j - 1] = '\0';
+    st3[comprimentoSt(st3) - 1] = '\0';
+
+    //printf("{%s}\n", st1);
+    //printf("{%s}\n", st2);
+    //printf("{%s}\n", st3);
+}
+
 void localizarFrase(Tlista lista, char *frase)
 {
     printf("-----------------------------------\n");
@@ -620,4 +702,189 @@ void localizarFrase(Tlista lista, char *frase)
         //printf("\n");
     }
     printf("-------------------------------------\n");
+}
+
+void cmd_localizar(Tlista *editor, char comando[])
+{
+    char st1[30];
+    char st2[30];
+    char fraseLocalizar[30];
+
+    separarLocalizar(st1, st2, fraseLocalizar, comando);
+
+    int startPercent = encontrarPercent(comando);
+
+    if (!vaziaLista(*editor))
+    {
+        if (startPercent != -1)
+        {
+            localizarFrase(*editor, fraseLocalizar);
+        }
+        else
+            printf("ERRO: Parametro em falta \n");
+    }
+    else
+        printf("ERRO: Editor vazio!\n");
+}
+
+void separarAlterar(char oldString[], char newString[], char comando[])
+{
+    char st1[20];
+    char st2[20];
+    char st3[20];
+    char st4[20];
+    char st5[20];
+    char st6[20];
+
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    int l = 0;
+    int m = 0;
+    int n = 0;
+
+    int comprimento = comprimentoSt(comando);
+    fflush(stdin);
+    for (i = 0; i < comprimento; i++)
+    {
+        if (comando[i] != ' ')
+        {
+            st1[i] = comando[i];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st1[i] = '\0';
+
+    while (comando[i] == ' ')
+    {
+        i++;
+    }
+    i = i - 1;
+    //printf("i:%d", i);
+
+    for (j = i + 1; j < comprimento; j++)
+    {
+        if (comando[j] != '\0' && comando[j] != ' ' && comando[j] != ',')
+        {
+            st2[j - i - 1] = comando[j];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st2[j - i - 1] = '\0';
+    //st2[comprimentoSt(st2) - 1] = '\0';
+
+    while (comando[j] == ' ')
+    {
+        j++;
+    }
+    j = j - 1;
+    //multiplas virgulas ATT
+    for (k = j + 1; k < comprimento; k++)
+    {
+        if (comando[k] == ',')
+        {
+            st3[k - j - 1] = comando[k];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st3[k - j - 1] = '\0';
+    //st3[comprimentoSt(st3) - 1] = '\0';
+
+    while (comando[k] == ' ')
+    {
+        k++;
+    }
+    k = k - 1;
+
+    for (l = k + 1; l < comprimento; l++)
+    {
+        if (comando[l] != '\0' && comando[l] != ' ')
+        {
+            st4[l - k - 1] = comando[l];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st4[l - k - 1] = '\0';
+    //fflush(stdin);
+    st4[comprimentoSt(st4) - 1] = '\0';
+
+    while (comando[l] == ' ')
+    {
+        l++;
+    }
+    l = l - 1;
+
+    for (m = l + 1; m < comprimento; m++)
+    {
+        if (comando[m] != '\0' && comando[m] != ' ')
+        {
+            st4[m - l - 1] = comando[m];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st5[m - l - 1] = '\0';
+    //fflush(stdin);
+    //st5[comprimentoSt(st4) - 1] = '\0';
+
+    while (comando[l] == ' ')
+    {
+        m++;
+    }
+    m = m - 1;
+
+    for (n = m + 1; n < comprimento; n++)
+    {
+        if (comando[n] != '\0' && comando[n] != ' ')
+        {
+            st4[n - m - 1] = comando[n];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st5[n - m - 1] = '\0';
+    //fflush(stdin);
+    st5[comprimentoSt(st4) - 1] = '\0';
+    printf("{%s}\n", st1);
+    printf("{%s}\n", st2);
+    printf("{%s}\n", st3);
+    printf("{%s}\n", st4);
+    printf("{%s}\n", st5);
+    printf("{%s}\n", st6);
+}
+
+void cmd_alterar(Tlista *editor, char comando[])
+{
+    char oldString[LINHA_TAM];
+    char newString[LINHA_TAM];
+
+    separarAlterar(oldString, newString, comando);
+
+    if (!vaziaLista(*editor))
+    {
+        if (editor->linhaCorrent != NULL)
+        {
+            printf("Ola mundo!\n");
+        }
+        else
+            printf("ERRO: Linha corrente vazia!\n");
+    }
+    else
+        printf("ERRO: Editor vazio!\n");
 }

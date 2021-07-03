@@ -66,7 +66,7 @@ int verificarComando(char st[]);
 int compararRec(char st1[], char st2[], int i);
 void getComand(char st[], char st1[], int startCommandIndex);
 int checkCommand(int startCommandIndex, char comando[]);
-void linha(Tlista *editor, char comando[]);
+void cmd_linha(Tlista *editor, char comando[]);
 
 void copiar(char st1[], char st2[]);
 void iniciarId(Tlista *editor);
@@ -85,12 +85,18 @@ void cmd_remover(Tlista *editor, char comando[]);
 
 //
 int adicionarDepoisdaCorrente(Tlista *editor, char comando[]);
-void imprimirNovo(Tlista *editor, char comando[]);
+void cmd_imprimir(Tlista *editor, char comando[]);
 
 void funcao_teste(Tlista *editor);
 int encontrarVirgula(char comando[]);
 void separar4(char st1[], char st2[], char st3[], char st4[], char comando[]);
+void separarLocalizar(char st1[], char st2[], char st3[], char comando[]);
 
 void localizarFrase(Tlista lista, char *frase);
+void cmd_localizar(Tlista *editor, char comando[]);
+int encontrarPercent(char comando[]);
+
+void cmd_alterar(Tlista *editor, char comando[]);
+void separarAlterar(char oldString[], char newString[], char comando[]);
 
 #endif

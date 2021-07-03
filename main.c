@@ -41,42 +41,36 @@ int main()
             case CMD_REMOVER: // remover m, n
                 insertMode = 0;
                 printf("REMOVENDO\n");
-                //remover(editor,2);
                 cmd_remover(editor, comando);
                 break;
 
             case CMD_LINHA: // linha m
                 insertMode = 0;
-                //printf(" → LINHA\n");
-                //comandoLinha(*editor, comando, 2);
-                linha(editor, comando);
+                cmd_linha(editor, comando);
                 break;
 
             case CMD_LOCALIZAR: // localizar %x
                 insertMode = 0;
-                printf("LOCALIZAR\n");
-                localizarFrase(*editor, "e");
+                cmd_localizar(editor, comando);
                 break;
 
             case CMD_ALTERAR: // alterar %x %y %
                 insertMode = 0;
                 printf("ALTERAR\n");
+                cmd_alterar(editor,comando);
                 break;
 
             case CMD_ULTIMO: // ultimo (to test)
                 insertMode = 0;
-                printf("ULTIMO\n");
                 cmd_ultimo(editor);
                 break;
 
             case CMD_IMPRIMIR: // imprimir m, n
                 insertMode = 0;
-                //imprimirLista(editor);
-                imprimirNovo(editor, comando);
+                cmd_imprimir(editor, comando);
                 break;
 
             case CMD_FIM: // fim
-                //printf("FIM\n");
                 startMode = 0;
                 insertMode = 0;
                 break;
