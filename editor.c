@@ -661,12 +661,10 @@ void localizarFrase(Tlista lista, char *frase)
     int size = comprimentoSt(frase);
     for (TAtomo *paux = lista.primeiro; paux != NULL; paux = paux->dprox)
     {
-        //Para imprimir os tracos - ou ->
+
         if (paux == lista.linhaCorrent)
             printf("→ ");
-        //else
-        // printf("\n%d - ", paux->info.idLinha);
-        //percorrer cada frase
+
         for (int i = 0; paux->info.frase[i] != '\0'; i++)
         {
             cont = 0;
@@ -699,7 +697,6 @@ void localizarFrase(Tlista lista, char *frase)
             else
                 printf("%c", paux->info.frase[i]);
         }
-        //printf("\n");
     }
     printf("-------------------------------------\n");
 }
@@ -731,9 +728,9 @@ void separarAlterar(char oldString[], char newString[], char comando[])
 {
     char st1[20];
     char st2[20];
-    char st3[20];
+    char st3[20]; //oldString
     char st4[20];
-    char st5[20];
+    char st5[20]; //newString
     char st6[20];
 
     int i = 0;
@@ -767,7 +764,7 @@ void separarAlterar(char oldString[], char newString[], char comando[])
 
     for (j = i + 1; j < comprimento; j++)
     {
-        if (comando[j] != '\0' && comando[j] != ' ' && comando[j] != ',')
+        if (comando[j] == '%')
         {
             st2[j - i - 1] = comando[j];
         }
@@ -787,16 +784,16 @@ void separarAlterar(char oldString[], char newString[], char comando[])
     //multiplas virgulas ATT
     for (k = j + 1; k < comprimento; k++)
     {
-        if (comando[k] == ',')
+        if (comando[k] != '\0' && comando[k] != ' ')
         {
-            st3[k - j - 1] = comando[k];
+            oldString[k - j - 1] = comando[k];
         }
         else
         {
             break;
         }
     }
-    st3[k - j - 1] = '\0';
+    oldString[k - j - 1] = '\0';
     //st3[comprimentoSt(st3) - 1] = '\0';
 
     while (comando[k] == ' ')
@@ -807,7 +804,7 @@ void separarAlterar(char oldString[], char newString[], char comando[])
 
     for (l = k + 1; l < comprimento; l++)
     {
-        if (comando[l] != '\0' && comando[l] != ' ')
+        if (comando[l] == '%')
         {
             st4[l - k - 1] = comando[l];
         }
@@ -818,7 +815,7 @@ void separarAlterar(char oldString[], char newString[], char comando[])
     }
     st4[l - k - 1] = '\0';
     //fflush(stdin);
-    st4[comprimentoSt(st4) - 1] = '\0';
+    //st4[comprimentoSt(st4) - 1] = '\0';
 
     while (comando[l] == ' ')
     {
@@ -830,18 +827,18 @@ void separarAlterar(char oldString[], char newString[], char comando[])
     {
         if (comando[m] != '\0' && comando[m] != ' ')
         {
-            st4[m - l - 1] = comando[m];
+            newString[m - l - 1] = comando[m];
         }
         else
         {
             break;
         }
     }
-    st5[m - l - 1] = '\0';
+    newString[m - l - 1] = '\0';
     //fflush(stdin);
-    //st5[comprimentoSt(st4) - 1] = '\0';
+    //st5[comprimentoSt(st5) - 1] = '\0';
 
-    while (comando[l] == ' ')
+    while (comando[m] == ' ')
     {
         m++;
     }
@@ -851,36 +848,39 @@ void separarAlterar(char oldString[], char newString[], char comando[])
     {
         if (comando[n] != '\0' && comando[n] != ' ')
         {
-            st4[n - m - 1] = comando[n];
+            st6[n - m - 1] = comando[n];
         }
         else
         {
             break;
         }
     }
-    st5[n - m - 1] = '\0';
+    st6[n - m - 1] = '\0';
     //fflush(stdin);
-    st5[comprimentoSt(st4) - 1] = '\0';
+    st6[comprimentoSt(st6) - 1] = '\0';
     printf("{%s}\n", st1);
     printf("{%s}\n", st2);
-    printf("{%s}\n", st3);
+    printf("{%s}\n", oldString); //st3
     printf("{%s}\n", st4);
-    printf("{%s}\n", st5);
+    printf("{%s}\n", newString); //st4
     printf("{%s}\n", st6);
+}
+
+void alterarFrase(Tlista *lista, char oldString[], char newString[])
+{
 }
 
 void cmd_alterar(Tlista *editor, char comando[])
 {
     char oldString[LINHA_TAM];
     char newString[LINHA_TAM];
-
     separarAlterar(oldString, newString, comando);
 
     if (!vaziaLista(*editor))
     {
         if (editor->linhaCorrent != NULL)
         {
-            printf("Ola mundo!\n");
+            alterarFrase(*editor, oldString, newString);
         }
         else
             printf("ERRO: Linha corrente vazia!\n");
