@@ -54,6 +54,7 @@ int main()
             case CMD_LOCALIZAR: // localizar %x
                 insertMode = 0;
                 printf("LOCALIZAR\n");
+                localizarFrase(*editor, "e");
                 break;
 
             case CMD_ALTERAR: // alterar %x %y %

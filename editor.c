@@ -565,3 +565,54 @@ void cmd_remover(Tlista *editor, char comando[])
     else
         printf("ERRO: Editor vazio!\n");
 }
+
+void localizarFrase(Tlista lista, char *frase)
+{
+    printf("-----------------------------------\n");
+    int pos;
+    int cont = 0;
+    int size = comprimentoSt(frase);
+    for (TAtomo *paux = lista.primeiro; paux != NULL; paux = paux->dprox)
+    {
+        //Para imprimir os tracos - ou ->
+        if (paux == lista.linhaCorrent)
+            printf("→ ");
+        //else
+        // printf("\n%d - ", paux->info.idLinha);
+        //percorrer cada frase
+        for (int i = 0; paux->info.frase[i] != '\0'; i++)
+        {
+            cont = 0;
+            pos = i;
+            //percorrer cada letra da frase
+            for (int j = 0; j < size; j++, pos++)
+            {
+                if (paux->info.frase[pos] == '\0')
+                    break;
+                //se for igual vou somando "cont"
+                if (paux->info.frase[pos] != frase[j])
+                    break;
+                else
+                    cont++;
+            }
+            //se encontrei a substring completa, vou pintar
+            if (cont == size)
+            {
+                pos = i;
+                while (pos < size + i)
+                {
+                    printf(COLOR);
+                    printf("%c", paux->info.frase[pos]);
+                    printf(NO_COLOR);
+                    pos++;
+                }
+                i = (i + size) - 1;
+                //caso contrario vou imprimir o caracter daquela posicao [i]
+            }
+            else
+                printf("%c", paux->info.frase[i]);
+        }
+        //printf("\n");
+    }
+    printf("-------------------------------------\n");
+}
