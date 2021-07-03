@@ -498,24 +498,27 @@ void cmd_imprimir(Tlista *editor, char comando[])
         {
             if (inicPrint >= 1)
             {
-                if (inicPrint <= fimPrint && fimPrint <= editor->quantLinhas)
+                if (fimPrint <= editor->quantLinhas)
                 {
-                    for (int i = inicPrint; i <= fimPrint; i++)
+                    if (inicPrint <= fimPrint && fimPrint <= editor->quantLinhas)
                     {
-                        for (TAtomo *paux = editor->primeiro; paux != NULL; paux = paux->dprox)
+                        for (int i = inicPrint; i <= fimPrint; i++)
                         {
-                            if (paux->info.idLinha == i)
+                            for (TAtomo *paux = editor->primeiro; paux != NULL; paux = paux->dprox)
                             {
-                                if (paux == editor->linhaCorrent)
-                                    printf("%d → %s", paux->info.idLinha, paux->info.frase);
-                                else
-                                    printf("%d %s", paux->info.idLinha, paux->info.frase);
+                                if (paux->info.idLinha == i)
+                                {
+                                    if (paux == editor->linhaCorrent)
+                                        printf("%d → %s", paux->info.idLinha, paux->info.frase);
+                                    else
+                                        printf("%d %s", paux->info.idLinha, paux->info.frase);
+                                }
                             }
                         }
                     }
                 }
                 else
-                    printf("ERRO: Inicio e fim de impressao invalidos!\n");
+                    printf("ERRO: O fim da impressao deve ser %d!\n", editor->quantLinhas);
             }
             else
                 printf("ERRO: Inicio de impressao invalida!\n");
@@ -547,7 +550,7 @@ void cmd_remover(Tlista *editor, char comando[])
     int startVirgula = encontrarVirgula(comando);
     int inicPrint = converteStringToInte(st2);
     int fimPrint = converteStringToInte(st4);
-    printf("{%d , %d} \n", inicPrint, fimPrint);
+    //printf("{%d , %d} \n", inicPrint, fimPrint);
 
     if (!vaziaLista(*editor))
     {
@@ -564,7 +567,7 @@ void cmd_remover(Tlista *editor, char comando[])
                     {
                         for (int i = inicPrint; i <= fimPrint; i++)
                         {
-                            printf("esse i:%d\n", i);
+                            //printf("esse i:%d\n", i);
                             remover(editor, i);
                         }
 
@@ -663,7 +666,9 @@ void localizarFrase(Tlista lista, char *frase)
     {
 
         if (paux == lista.linhaCorrent)
-            printf("→ ");
+            printf("→ %d ", paux->info.idLinha);
+        else
+            printf("%d ", paux->info.idLinha);
 
         for (int i = 0; paux->info.frase[i] != '\0'; i++)
         {
@@ -880,7 +885,7 @@ void cmd_alterar(Tlista *editor, char comando[])
     {
         if (editor->linhaCorrent != NULL)
         {
-            alterarFrase(*editor, oldString, newString);
+            alterarFrase(editor, oldString, newString);
         }
         else
             printf("ERRO: Linha corrente vazia!\n");
