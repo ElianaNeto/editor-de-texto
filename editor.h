@@ -21,7 +21,6 @@
 
 #define LINHA_TAM 60
 
-
 //Cores
 #define COLOR "\033[0;36m"
 #define NO_COLOR "\033[0m"
@@ -71,6 +70,7 @@ void linha(Tlista *editor, char comando[]);
 
 void copiar(char st1[], char st2[]);
 void iniciarId(Tlista *editor);
+void limparTerminal();
 
 void actualizarLinhas(Tlista *editor);
 
@@ -92,6 +92,5 @@ int encontrarVirgula(char comando[]);
 void separar4(char st1[], char st2[], char st3[], char st4[], char comando[]);
 
 void localizarFrase(Tlista lista, char *frase);
-
 
 #endif

@@ -10,6 +10,7 @@ int main()
     int startMode = 1;
     int insertMode = 0;
     inicEditor(editor);
+    limparTerminal();
 
     while (startMode == 1)
     {

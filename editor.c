@@ -3,6 +3,11 @@
 #include <string.h>
 #include "editor.h"
 
+void limparTerminal()
+{
+    system("tput reset");
+}
+
 int comprimentoSt(char st[])
 {
     int i, n = 0;
