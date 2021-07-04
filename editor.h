@@ -96,7 +96,11 @@ void localizarFrase(Tlista lista, char *frase);
 void cmd_localizar(Tlista *editor, char comando[]);
 int encontrarPercent(char comando[]);
 
-void alterarFrase(Tlista *lista, char oldString[], char newString[]);
+//void alterarFrase(Tlista *lista, char oldString[], char newString[]);
+int alterarFrase(Tlista lista, char *substring, char *frase);
+void afastarCaracteres(char *str, int qtd, int ini, int op);
+void arrastarString(char *str, int pos, int size);
+
 void cmd_alterar(Tlista *editor, char comando[]);
 void separarAlterar(char oldString[], char newString[], char comando[]);
 

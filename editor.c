@@ -871,9 +871,120 @@ void separarAlterar(char oldString[], char newString[], char comando[])
     printf("{%s}\n", st6);
 }
 
-void alterarFrase(Tlista *lista, char oldString[], char newString[])
+//void alterarFrase(Tlista *lista, char oldString[], char newString[])
+//{
+//}
+
+void arrastarStringFim(char *str, int pos, int size)
 {
+	while (size >= pos)
+	{
+		str[pos] = str[pos + 1];
+		pos++;
+	}
 }
+
+void arrastarString(char *str, int pos, int size)
+{
+	while (size >= pos)
+	{
+		str[size + 1] = str[size];
+		size--;
+	}
+}
+
+void afastarCaracteres(char *str, int qtd, int ini, int op)
+{
+	int size = comprimentoSt(str);
+	//str[size+qtd]='\0';
+	int i = 1;
+	while (i <= qtd)
+	{
+
+		if (op == 1)
+		{
+			//arrastar e deixar espaco para nova string
+			arrastarString(str, ini, size);
+			size++;
+		}
+		if (op == 2)
+		{
+			//remover caracteres
+			arrastarStringFim(str, ini, size);
+		}
+
+		i++;
+	}
+}
+
+int alterarFrase(Tlista lista, char *substring, char *frase)
+{
+	// alterar apenas a linha corrente : esta na descricao do projecto
+	int pos;
+	int aux = 0;
+	int cont = 0;
+
+	int sizeF = comprimentoSt(frase);
+	int sizeS = comprimentoSt(substring);
+	TAtomo *paux = lista.linhaCorrent;
+	if (paux == NULL)
+	{
+		return NOT_FOUND;
+	}
+	int tam = 0;
+	int encontrei = 0;
+
+	for (int i = 0; paux->info.frase[i] != '\0'; i++)
+	{
+		cont = 0;
+		pos = i;
+		for (int j = 0; j < sizeS; j++, pos++)
+		{
+			//substitui o break - o prof nao gosta dele
+			if (paux->info.frase[pos] == '\0')
+				break;
+			//se for igual vou somando "cont"
+			if (paux->info.frase[pos] != substring[j])
+				break;
+			else
+				cont++;
+		}
+		//se encontrei a substring completa, vou alterar
+		if (cont == sizeS)
+		{
+			pos = i;
+			// o limite da busca e sempre a 2* string
+			tam = sizeF + i;
+			//antes de substituir devo analizar os tamanhos das strings
+			if (sizeF == 0)
+				afastarCaracteres(paux->info.frase, sizeS, i, 2);
+			else if (sizeF > sizeS)
+				afastarCaracteres(paux->info.frase, sizeF - sizeS, sizeS + i, 1);
+			else if (sizeF < sizeS)
+				afastarCaracteres(paux->info.frase, sizeS - sizeF, sizeF + i, 2);
+			aux = 0;
+			//onde adiciono a segunda frase
+			while (pos < tam)
+			{
+				paux->info.frase[pos] = frase[aux];
+				pos++;
+				aux++;
+			}
+			// a ideia e pular os caracteres alterados e so
+			//verificar os restantes
+			//espero que entendam!
+			if (sizeF != 0)
+				i = (i + sizeF) - 1;
+			encontrei = 1;
+		}
+	}
+	//aqui verifico se encontrei pelo menos uma vez ou nao
+	if (encontrei == 0)
+		return NOT_FOUND;
+	else
+		return OK;
+}
+
 
 void cmd_alterar(Tlista *editor, char comando[])
 {
@@ -885,7 +996,7 @@ void cmd_alterar(Tlista *editor, char comando[])
     {
         if (editor->linhaCorrent != NULL)
         {
-            alterarFrase(editor, oldString, newString);
+            alterarFrase(*editor, oldString, newString);
         }
         else
             printf("ERRO: Linha corrente vazia!\n");
