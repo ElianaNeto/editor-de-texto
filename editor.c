@@ -863,12 +863,12 @@ void separarAlterar(char oldString[], char newString[], char comando[])
     st6[n - m - 1] = '\0';
     //fflush(stdin);
     st6[comprimentoSt(st6) - 1] = '\0';
-    printf("{%s}\n", st1);
-    printf("{%s}\n", st2);
+    //printf("{%s}\n", st1);
+    //printf("{%s}\n", st2);
     printf("{%s}\n", oldString); //st3
-    printf("{%s}\n", st4);
+    //printf("{%s}\n", st4);
     printf("{%s}\n", newString); //st4
-    printf("{%s}\n", st6);
+    //printf("{%s}\n", st6);
 }
 
 //void alterarFrase(Tlista *lista, char oldString[], char newString[])
@@ -877,120 +877,120 @@ void separarAlterar(char oldString[], char newString[], char comando[])
 
 void arrastarStringFim(char *str, int pos, int size)
 {
-	while (size >= pos)
-	{
-		str[pos] = str[pos + 1];
-		pos++;
-	}
+    while (size >= pos)
+    {
+        str[pos] = str[pos + 1];
+        pos++;
+    }
 }
 
 void arrastarString(char *str, int pos, int size)
 {
-	while (size >= pos)
-	{
-		str[size + 1] = str[size];
-		size--;
-	}
+    while (size >= pos)
+    {
+        str[size + 1] = str[size];
+        size--;
+    }
 }
 
 void afastarCaracteres(char *str, int qtd, int ini, int op)
 {
-	int size = comprimentoSt(str);
-	//str[size+qtd]='\0';
-	int i = 1;
-	while (i <= qtd)
-	{
+    int size = comprimentoSt(str);
+    //str[size+qtd]='\0';
+    int i = 1;
+    while (i <= qtd)
+    {
 
-		if (op == 1)
-		{
-			//arrastar e deixar espaco para nova string
-			arrastarString(str, ini, size);
-			size++;
-		}
-		if (op == 2)
-		{
-			//remover caracteres
-			arrastarStringFim(str, ini, size);
-		}
+        if (op == 1)
+        {
+            //arrastar e deixar espaco para nova string
+            arrastarString(str, ini, size);
+            size++;
+        }
+        if (op == 2)
+        {
+            //remover caracteres
+            arrastarStringFim(str, ini, size);
+        }
 
-		i++;
-	}
+        i++;
+    }
 }
 
 int alterarFrase(Tlista lista, char *substring, char *frase)
 {
-	// alterar apenas a linha corrente : esta na descricao do projecto
-	int pos;
-	int aux = 0;
-	int cont = 0;
+    // alterar apenas a linha corrente : esta na descricao do projecto
+    int pos;
+    int aux = 0;
+    int cont = 0;
 
-	int sizeF = comprimentoSt(frase);
-	int sizeS = comprimentoSt(substring);
-	TAtomo *paux = lista.linhaCorrent;
-	if (paux == NULL)
-	{
-		return NOT_FOUND;
-	}
-	int tam = 0;
-	int encontrei = 0;
+    int sizeF = comprimentoSt(frase);
+    int sizeS = comprimentoSt(substring);
+    TAtomo *paux = lista.linhaCorrent;
+    if (paux == NULL)
+    {
+        return NOT_FOUND;
+    }
+    int tam = 0;
+    int encontrei = 0;
 
-	for (int i = 0; paux->info.frase[i] != '\0'; i++)
-	{
-		cont = 0;
-		pos = i;
-		for (int j = 0; j < sizeS; j++, pos++)
-		{
-			//substitui o break - o prof nao gosta dele
-			if (paux->info.frase[pos] == '\0')
-				break;
-			//se for igual vou somando "cont"
-			if (paux->info.frase[pos] != substring[j])
-				break;
-			else
-				cont++;
-		}
-		//se encontrei a substring completa, vou alterar
-		if (cont == sizeS)
-		{
-			pos = i;
-			// o limite da busca e sempre a 2* string
-			tam = sizeF + i;
-			//antes de substituir devo analizar os tamanhos das strings
-			if (sizeF == 0)
-				afastarCaracteres(paux->info.frase, sizeS, i, 2);
-			else if (sizeF > sizeS)
-				afastarCaracteres(paux->info.frase, sizeF - sizeS, sizeS + i, 1);
-			else if (sizeF < sizeS)
-				afastarCaracteres(paux->info.frase, sizeS - sizeF, sizeF + i, 2);
-			aux = 0;
-			//onde adiciono a segunda frase
-			while (pos < tam)
-			{
-				paux->info.frase[pos] = frase[aux];
-				pos++;
-				aux++;
-			}
-			// a ideia e pular os caracteres alterados e so
-			//verificar os restantes
-			//espero que entendam!
-			if (sizeF != 0)
-				i = (i + sizeF) - 1;
-			encontrei = 1;
-		}
-	}
-	//aqui verifico se encontrei pelo menos uma vez ou nao
-	if (encontrei == 0)
-		return NOT_FOUND;
-	else
-		return OK;
+    for (int i = 0; paux->info.frase[i] != '\0'; i++)
+    {
+        cont = 0;
+        pos = i;
+        for (int j = 0; j < sizeS; j++, pos++)
+        {
+            //substitui o break - o prof nao gosta dele
+            if (paux->info.frase[pos] == '\0')
+                break;
+            //se for igual vou somando "cont"
+            if (paux->info.frase[pos] != substring[j])
+                break;
+            else
+                cont++;
+        }
+        //se encontrei a substring completa, vou alterar
+        if (cont == sizeS)
+        {
+            pos = i;
+            // o limite da busca e sempre a 2* string
+            tam = sizeF + i;
+            //antes de substituir devo analizar os tamanhos das strings
+            if (sizeF == 0)
+                afastarCaracteres(paux->info.frase, sizeS, i, 2);
+            else if (sizeF > sizeS)
+                afastarCaracteres(paux->info.frase, sizeF - sizeS, sizeS + i, 1);
+            else if (sizeF < sizeS)
+                afastarCaracteres(paux->info.frase, sizeS - sizeF, sizeF + i, 2);
+            aux = 0;
+            //onde adiciono a segunda frase
+            while (pos < tam)
+            {
+                paux->info.frase[pos] = frase[aux];
+                pos++;
+                aux++;
+            }
+            // a ideia e pular os caracteres alterados e so
+            //verificar os restantes
+            //espero que entendam!
+            if (sizeF != 0)
+                i = (i + sizeF) - 1;
+            encontrei = 1;
+        }
+    }
+    //aqui verifico se encontrei pelo menos uma vez ou nao
+    if (encontrei == 0)
+        return NOT_FOUND;
+    else
+        return OK;
 }
-
 
 void cmd_alterar(Tlista *editor, char comando[])
 {
-    char oldString[LINHA_TAM];
-    char newString[LINHA_TAM];
-    separarAlterar(oldString, newString, comando);
+    char oldString[LINHA_TAM] = "";
+    char newString[LINHA_TAM] = "";
+    separarALTNOVO(oldString, newString, comando);
+    //separarAlterar(oldString, newString, comando);
 
     if (!vaziaLista(*editor))
     {
@@ -1003,4 +1003,100 @@ void cmd_alterar(Tlista *editor, char comando[])
     }
     else
         printf("ERRO: Editor vazio!\n");
+}
+
+void pegarPalavrasAlterar(char st[], char oldString[], char newString[])
+{
+    int comprimento = comprimentoSt(st);
+    int i = 0, j = 0;
+    char st1[60], st2[60];
+
+    for (i = 1; i < comprimento; i++)
+    {
+        if (st[i] != '%')
+        {
+            oldString[i-1] = st[i];
+        }
+        else
+        {
+            break;
+        }
+    }
+    oldString[i] = '\0';
+
+    for (j = i + 1; j < comprimento; j++)
+    {
+        if (st[j] != '%')
+        {
+            newString[j - i - 1] = st[j];
+        }
+        else
+        {
+            break;
+        }
+    }
+    newString[j - i - 1] = '\0';
+
+    printf("{%s}\n", oldString);
+    printf("{%s}\n", newString);
+}
+
+void ckecarParametros(char st[])
+{
+    int comprimento = comprimentoSt(st);
+    int delimitador = 0;
+    for (int i = 0; i < comprimento; i++)
+    {
+        if (st[i] == '%')
+            delimitador++;
+    }
+
+    if (delimitador < 3)
+        printf("Delimitador em falta\n");
+    else if (delimitador > 3)
+        printf("Delimitador em escesso\n");
+    else
+    {
+        printf("tudo certo\n");
+    }
+}
+
+void separarALTNOVO(char oldString[], char newString[], char comando[])
+{
+    int i = 0, j = 0;
+    char st1[60];
+    char st2[60];
+    int comprimento = comprimentoSt(comando);
+    fflush(stdin);
+    for (i = 0; i < comprimento; i++)
+    {
+        if (comando[i] != ' ')
+        {
+            st1[i] = comando[i];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st1[i] = '\0';
+
+    for (j = i + 1; j < comprimento; j++)
+    {
+        if (comando[j] != ' ')
+        {
+            st2[j - i - 1] = comando[j];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st2[j - i - 1] = '\0';
+    st2[comprimentoSt(st2) - 1] = '\0';
+
+    printf("{%s}\n", st1);
+    printf("{%s}\n", st2);
+    ckecarParametros(st2);
+    pegarPalavrasAlterar(st2, oldString, newString);
 }

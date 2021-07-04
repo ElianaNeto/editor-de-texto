@@ -56,7 +56,7 @@ int main()
 
             case CMD_ALTERAR: // alterar %x %y %
                 insertMode = 0;
-                printf("ALTERAR\n");
+                //printf("ALTERAR\n");
                 cmd_alterar(editor,comando);
                 break;
 

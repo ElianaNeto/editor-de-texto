@@ -104,4 +104,8 @@ void arrastarString(char *str, int pos, int size);
 void cmd_alterar(Tlista *editor, char comando[]);
 void separarAlterar(char oldString[], char newString[], char comando[]);
 
+void separarALTNOVO(char oldString[], char newString[], char comando[]);
+void ckecarParametros(char st[]);
+void pegarPalavrasAlterar(char st[], char oldString[], char newString[]);
+
 #endif
