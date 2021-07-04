@@ -1015,7 +1015,7 @@ void pegarPalavrasAlterar(char st[], char oldString[], char newString[])
     {
         if (st[i] != '%')
         {
-            oldString[i-1] = st[i];
+            oldString[i - 1] = st[i];
         }
         else
         {
@@ -1055,10 +1055,6 @@ void ckecarParametros(char st[])
         printf("Delimitador em falta\n");
     else if (delimitador > 3)
         printf("Delimitador em escesso\n");
-    else
-    {
-        printf("tudo certo\n");
-    }
 }
 
 void separarALTNOVO(char oldString[], char newString[], char comando[])
