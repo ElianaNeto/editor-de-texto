@@ -1033,8 +1033,8 @@ void pegarPalavrasAlterar(char st[], char oldString[], char newString[])
     }
     newString[j - i - 1] = '\0';
 
-    printf("{%s}\n", oldString);
-    printf("{%s}\n", newString);
+    //printf("{%s}\n", oldString);
+    //printf("{%s}\n", newString);
 }
 
 void ckecarParametros(char st[])
@@ -1087,8 +1087,8 @@ void separarALTNOVO(char oldString[], char newString[], char comando[])
     st2[j - i - 1] = '\0';
     st2[comprimentoSt(st2) - 1] = '\0';
 
-    printf("{%s}\n", st1);
-    printf("{%s}\n", st2);
+    //printf("{%s}\n", st1);
+    //printf("{%s}\n", st2);
     ckecarParametros(st2);
     pegarPalavrasAlterar(st2, oldString, newString);
 }
