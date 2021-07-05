@@ -3,6 +3,19 @@
 #include <string.h>
 #include "editor.h"
 
+void executarImprimir(int cod, int nelem)
+{
+    static char *msg[] = {"", "o ultimo numero do texto igual a ", "Primeiro numero invalido",
+                          "Segundo numero invalido", "Numeros invalidos"};
+    if (cod > 0 && cod <= 4)
+    {
+        if (cod == 1)
+            printf("\nERRO: %s %d\n", msg[cod], nelem);
+        else
+            printf("\nERRO: %s\n", msg[cod]);
+    }
+}
+
 void limparTerminal()
 {
     system("tput reset");
@@ -114,6 +127,9 @@ int checkCommand(int startCommandIndex, char comando[])
 
     if (compararRec(cmd, "fim\0", 0) == 0)
         return CMD_FIM;
+
+    if (compararRec(cmd, "prninv\0", 0) == 0)
+        return CMD_INV;
 
     return NOT_CMD;
 }
@@ -1152,8 +1168,8 @@ void alterarFrase1(Tlista *lista, char oldString[], char newString[])
 
     int comprimentoCorent = comprimentoSt(paux->info.frase);
     comprimentoCorent = comprimentoCorent + 3;
-    printf("o comprimento da corwn %d\n", comprimentoCorent);
-    printf("o comprimento da corwn %d\n", cmNew);
+    //printf("o comprimento da corwn %d\n", comprimentoCorent);
+    //printf("o comprimento da corwn %d\n", cmNew);
 
     int findAt = find(paux->info.frase, oldString);
 
@@ -1176,12 +1192,63 @@ void alterarFrase1(Tlista *lista, char oldString[], char newString[])
             }
         }
         else
-            printf("Sub-string not found.");
+            printf("Sub-string nao encontrada\n");
     }
     else
-    {
-        printf("Deu Bug\n");
-    }
+        printf("");
 
     //printf("%c\n", paux->info.frase);
+}
+
+void cmd_prninv(Tlista *editor, char comando[])
+{
+    char st1[30];
+    char st2[30];
+    char st3[30];
+    char st4[30];
+
+    separar4(st1, st2, st3, st4, comando);
+    int startVirgula = encontrarVirgula(comando);
+    int inicPrint = converteStringToInte(st2);
+    int fimPrint = converteStringToInte(st4);
+    //printf("{%d , %d} \n", inicPrint, fimPrint);
+    int inicio = inicPrint;
+
+    if (!vaziaLista(*editor))
+    {
+        printf("-----------------------------------\n");
+
+        if (startVirgula != -1)
+        {
+            if (inicPrint >= 1 && inicPrint <= editor->quantLinhas)
+            {
+                if (fimPrint <= editor->quantLinhas)
+                {
+                    for (int i = 0; i < fimPrint; i++)
+                    {
+                        for (TAtomo *paux = editor->primeiro; paux != NULL; paux = paux->dprox)
+                        {
+                            if (paux->info.idLinha == inicio)
+                            {
+                                if (paux == editor->linhaCorrent)
+                                    printf("%d → %s", paux->info.idLinha, paux->info.frase);
+                                else
+                                    printf("%d %s", paux->info.idLinha, paux->info.frase);
+                                inicio--;
+                            }
+                        }
+                    }
+                }
+                else
+                    printf("ERRO: qtidades de linhas escessiva!\n");
+            }
+            else
+                printf("ERRO:!\n");
+        }
+        else
+            printf("ERRO: Falta ',' \n");
+        printf("-----------------------------------\n");
+    }
+    else
+        printf("ERRO: Editor vazio!\n");
 }

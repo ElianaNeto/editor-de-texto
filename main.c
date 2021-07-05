@@ -57,7 +57,7 @@ int main()
             case CMD_ALTERAR: // alterar %x %y %
                 insertMode = 0;
                 //printf("ALTERAR\n");
-                cmd_alterar(editor,comando);
+                cmd_alterar(editor, comando);
                 break;
 
             case CMD_ULTIMO: // ultimo (to test)
@@ -73,6 +73,11 @@ int main()
             case CMD_FIM: // fim
                 startMode = 0;
                 insertMode = 0;
+                break;
+
+            case CMD_INV: // prninv m, n
+                insertMode = 0;
+                cmd_prninv(editor, comando);
                 break;
 
             default:

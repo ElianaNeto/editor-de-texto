@@ -9,6 +9,7 @@
 #define IMPOSSIBLE_REMOTION 5
 
 //Codigo dos comandos
+#define NOT_CMD -1
 #define CMD_INSERIR 1
 #define CMD_REMOVER 2
 #define CMD_LINHA 3
@@ -17,7 +18,7 @@
 #define CMD_ULTIMO 6
 #define CMD_IMPRIMIR 7
 #define CMD_FIM 8
-#define NOT_CMD -1
+#define CMD_INV 9
 
 #define LINHA_TAM 100
 
@@ -57,9 +58,7 @@ typedef enum
 
 int comprimentoSt(char st[]);
 int converteStringToInte(char str[]);
-
 TAtomo *procurarLinha(Tlista editor, int id);
-
 void inicEditor(Tlista *editor);
 Boolean vaziaLista(Tlista editor);
 int verificarComando(char st[]);
@@ -83,7 +82,6 @@ void cmd_ultimo(Tlista *lista);
 int remover(Tlista *lista, int id);
 void cmd_remover(Tlista *editor, char comando[]);
 
-//
 int adicionarDepoisdaCorrente(Tlista *editor, char comando[]);
 void cmd_imprimir(Tlista *editor, char comando[]);
 
@@ -112,5 +110,8 @@ void pegarPalavrasAlterar(char st[], char oldString[], char newString[]);
 void alterarFrase1(Tlista *lista, char oldString[], char newString[]);
 int fStrStr(char *str, char *strSub);
 int find(char *str, char *strSub);
+
+///
+void cmd_prninv(Tlista *editor, char comando[]);
 
 #endif
