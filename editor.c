@@ -30,9 +30,8 @@ int converteStringToInte(char str[])
     }
 
     for (i = j; str[i] != '\0'; ++i)
-    {
         res = res * 10 + str[i] - '0';
-    }
+
     return sign * res;
 }
 
@@ -871,10 +870,6 @@ void separarAlterar(char oldString[], char newString[], char comando[])
     //printf("{%s}\n", st6);
 }
 
-//void alterarFrase(Tlista *lista, char oldString[], char newString[])
-//{
-//}
-
 void arrastarStringFim(char *str, int pos, int size)
 {
     while (size >= pos)
@@ -996,7 +991,8 @@ void cmd_alterar(Tlista *editor, char comando[])
     {
         if (editor->linhaCorrent != NULL)
         {
-            alterarFrase(*editor, oldString, newString);
+            //alterarFrase(*editor, oldString, newString);
+            alterarFrase1(editor, oldString, newString);
         }
         else
             printf("ERRO: Linha corrente vazia!\n");
@@ -1095,4 +1091,97 @@ void separarALTNOVO(char oldString[], char newString[], char comando[])
     printf("{%s}\n", st2);
     ckecarParametros(st2);
     pegarPalavrasAlterar(st2, oldString, newString);
+}
+
+int fStrStr(char *str, char *strSub)
+{
+    int i = 0, j = 0;
+    int nTemp = i;
+    int nStrLen = strlen(str);
+    int nStrSubLen = strlen(strSub);
+    for (i = 0; i < nStrLen - nStrSubLen; i++)
+    {
+        nTemp = i;
+        for (j = 0; j < nStrSubLen; j++)
+        {
+
+            if (str[nTemp] == strSub[j])
+            {
+                if (j == nStrSubLen - 1)
+                    return 1;
+                nTemp++;
+            }
+            else
+                break;
+        }
+    }
+
+    return 0;
+}
+
+int find(char *str, char *strSub)
+{
+    int i = 0;
+    int j = 0;
+    while (str[i] != '\0')
+    {
+        if (str[i] == strSub[0])
+        {
+            j = 1;
+            while (strSub[j] != '\0' && str[j + 1] != '\0' || strSub[j] == str[j + 1])
+            {
+                j++;
+            }
+            if (strSub[j] == '\0')
+            {
+                printf("Sub-string found. %d", i);
+                return i;
+            }
+        }
+        i++;
+    }
+    return -1;
+}
+
+void alterarFrase1(Tlista *lista, char oldString[], char newString[])
+{
+    int cmOld = comprimentoSt(oldString);
+    int cmNew = comprimentoSt(newString);
+    int a = 0;
+    TAtomo *paux = lista->linhaCorrent;
+
+    int comprimentoCorent = comprimentoSt(paux->info.frase);
+    comprimentoCorent = comprimentoCorent + 3;
+    printf("o comprimento da corwn %d\n", comprimentoCorent);
+    printf("o comprimento da corwn %d\n", cmNew);
+
+    int findAt = find(paux->info.frase, oldString);
+
+    if (paux != NULL)
+    {
+        if (findAt != -1)
+        {
+            //printf("Sub-string found.\n");
+            while (comprimentoCorent >= findAt)
+            {
+                paux->info.frase[comprimentoCorent + 1] = paux->info.frase[comprimentoCorent];
+                comprimentoCorent--;
+            }
+
+            printf("%s\n", paux->info.frase);
+
+            for (int i = findAt; i <= findAt + cmNew - 1; i++, a++)
+            {
+                paux->info.frase[i] = newString[a];
+            }
+        }
+        else
+            printf("Sub-string not found.");
+    }
+    else
+    {
+        printf("Deu Bug\n");
+    }
+
+    //printf("%c\n", paux->info.frase);
 }

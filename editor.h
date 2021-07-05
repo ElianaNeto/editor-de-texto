@@ -19,7 +19,7 @@
 #define CMD_FIM 8
 #define NOT_CMD -1
 
-#define LINHA_TAM 60
+#define LINHA_TAM 100
 
 //Cores
 #define COLOR "\033[0;36m"
@@ -107,5 +107,10 @@ void separarAlterar(char oldString[], char newString[], char comando[]);
 void separarALTNOVO(char oldString[], char newString[], char comando[]);
 void ckecarParametros(char st[]);
 void pegarPalavrasAlterar(char st[], char oldString[], char newString[]);
+
+//novo alterar
+void alterarFrase1(Tlista *lista, char oldString[], char newString[]);
+int fStrStr(char *str, char *strSub);
+int find(char *str, char *strSub);
 
 #endif
