@@ -3,17 +3,40 @@
 #include <string.h>
 #include "editor.h"
 
-void executarImprimir(int cod, int nelem)
+void error(int errorCode)
 {
-    static char *msg[] = {"", "o ultimo numero do texto igual a ", "Primeiro numero invalido",
-                          "Segundo numero invalido", "Numeros invalidos"};
-    if (cod > 0 && cod <= 4)
-    {
-        if (cod == 1)
-            printf("\nERRO: %s %d\n", msg[cod], nelem);
-        else
-            printf("\nERRO: %s\n", msg[cod]);
-    }
+    char *errorMessages[] = {
+        "ERRO: QUANTIDADE DE PARAMETROS INSUFICIENTES",
+        "ERRO: FALTA VIRGULA",
+        "ERRO: LINHA DE ÍNICIO DEVE SER MENOR COM RELAÇÃO A LINHA DE TERMINOU\nExemplo: $remover 1, 2",
+        "ERRO: NÃO EXISTE A VIRGULA NO COMANDO",
+        "ERRO: NÃO TEM ESPAÇO NO COMANDO E DEVE EXISTIR",
+        "ERRO: LINHA NÃO VÁLIDA, LINHA NÃO VÁLIDA, LINHA NÃO MAIOR QUE 0",
+        "ERRO: REFERÊNCIA DA LINHA DE ÍNICIO MAIOR QUE A FINAL",
+        "ERRO: PRIMEIRO PARAMETRO NÃO PASSADO",
+        "ERRO: QUANTIDADE DE PARAMETROS INSUFICIENTES",
+        "ERRO: PRIMEIRO PARAMETRO NÃO PASSADO",
+        "ERRO: QUANTIDADE DE PARAMETROS INVÁLIDOS",
+        "ERRO: FALTA PARAMETROS PARA O COMANDO",
+        "ERRO: DELIMITADORES INCONSCISTENTE",
+        "ERRO: PARAMETROS ENVIADOS INSUFICIENTES",
+        "ERRO: NÃO EXISTE LINHA CORRENTE VÁLIDA",
+        "ERRO: LINHA COM A QUANTIDADE MÁXIMA DE CARACTERES ATINGIDA",
+        "ERRO: PARAMETROS INSUFICIENTES",
+        "ERRO: LINHA NÃO EXISTE",
+        "ERRO: LINHAS FORA DO FORA DO NÚMERO ACTUAL DE LINHAS NO EDITOR DE TEXTO:"};
+
+    printf("\n%s\n", errorMessages[errorCode]);
+}
+
+void warning(int warningCode)
+{
+    char *warningsMessages[] = {
+        "AVISO: A LINHA ACTUAL JÁ ESTA SELECIONADA",
+        "AVISO: EDITOR DE TEXTO VAZIO",
+        "AVISO: PALAVRA NÃO ENCONTRADA"};
+
+    printf("\n%s\n", warningsMessages[warningCode]);
 }
 
 void limparTerminal()

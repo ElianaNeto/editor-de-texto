@@ -71,6 +71,8 @@ typedef enum
     FALSE = 0,
     TRUE = 1
 } Boolean;
+void warning(int warningCode);
+void error(int errorCode);
 
 int comprimentoSt(char st[]);
 int converteStringToInte(char str[]);
