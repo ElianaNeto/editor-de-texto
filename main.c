@@ -76,7 +76,10 @@ int main()
             case CMD_FIM: // fim
                 //startMode = 0;
                 //insertMode = 0;
-                
+                empilhar(pilha, "ola");
+                empilhar(pilha, "elia");
+                empilhar(pilha, "t");
+                desempilhar(pilha);
 
                 printf("%s \n", pilha->pTopo->info.frase);
                 break;
