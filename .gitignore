@@ -1,4 +1,6 @@
-a.out
-editor.o
 executavel
-main.o
+#executaveis
+*.o
+*.out
+*.exec
+*.exe
