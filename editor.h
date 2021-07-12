@@ -51,26 +51,38 @@ typedef struct
 
 } Tlista;
 
-typedef struct 
+typedef struct
 {
     int chave;
-    float valor; 
-    
+    float valor;
+
 } TItem;
 
-typedef struct 
+typedef struct Atomopilha
 {
-    TItem pilha[TAM]; 
-    int Topo;
+    TInfo info;
+    struct Atomopilha *pant;
+
+} PAtomo;
+
+typedef struct
+{
+    //TItem pilha[TAM];
+    TItem *pilha;
+
+    //TInfo info;
+    PAtomo *pTopo;
 
 } TPilha;
-
 
 typedef enum
 {
     FALSE = 0,
     TRUE = 1
 } Boolean;
+
+//Funcoes para a estrutura de dados pilha
+
 void warning(int warningCode);
 void error(int errorCode);
 
