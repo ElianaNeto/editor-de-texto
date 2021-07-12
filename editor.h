@@ -7,6 +7,7 @@
 #define INVALID_INDEX 3
 #define NO_SPACE 4
 #define IMPOSSIBLE_REMOTION 5
+#define TAM 100
 
 //Codigo dos comandos
 #define NOT_CMD -1
@@ -49,6 +50,21 @@ typedef struct
     int quantLinhas;
 
 } Tlista;
+
+typedef struct 
+{
+    int chave;
+    float valor; 
+    
+} TItem;
+
+typedef struct 
+{
+    TItem pilha[TAM]; 
+    int Topo;
+
+} TPilha;
+
 
 typedef enum
 {
