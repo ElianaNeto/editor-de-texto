@@ -7,9 +7,12 @@
 int main()
 {
     Tlista *editor = (Tlista *)(malloc(sizeof(Tlista)));
+    TPilha *pilha = (TPilha *)(malloc(sizeof(TPilha)));
+
     int startMode = 1;
     int insertMode = 0;
     inicEditor(editor);
+    iniciarPilha(pilha);
     limparTerminal();
 
     while (startMode == 1)
@@ -71,8 +74,11 @@ int main()
                 break;
 
             case CMD_FIM: // fim
-                startMode = 0;
-                insertMode = 0;
+                //startMode = 0;
+                //insertMode = 0;
+                
+
+                printf("%s \n", pilha->pTopo->info.frase);
                 break;
 
             case CMD_INV: // prninv m, n

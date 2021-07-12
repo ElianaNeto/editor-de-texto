@@ -24,7 +24,8 @@ void error(int errorCode)
         "ERRO: LINHA COM A QUANTIDADE MÁXIMA DE CARACTERES ATINGIDA",
         "ERRO: PARAMETROS INSUFICIENTES",
         "ERRO: LINHA NÃO EXISTE",
-        "ERRO: LINHAS FORA DO FORA DO NÚMERO ACTUAL DE LINHAS NO EDITOR DE TEXTO:"};
+        "ERRO: LINHAS FORA DO FORA DO NÚMERO ACTUAL DE LINHAS NO EDITOR DE TEXTO:",
+        "ERRO: Pilha nao inicializada"}; //19
 
     printf("\n%s\n", errorMessages[errorCode]);
 }
@@ -34,7 +35,9 @@ void warning(int warningCode)
     char *warningsMessages[] = {
         "AVISO: A LINHA ACTUAL JÁ ESTA SELECIONADA",
         "AVISO: EDITOR DE TEXTO VAZIO",
-        "AVISO: PALAVRA NÃO ENCONTRADA"};
+        "AVISO: PALAVRA NÃO ENCONTRADA",
+        "AVISO: SEM ESPACO",
+        "AVISO: PILHA VAZIA"};
 
     printf("\n%s\n", warningsMessages[warningCode]);
 }
@@ -1274,4 +1277,42 @@ void cmd_prninv(Tlista *editor, char comando[])
     }
     else
         printf("ERRO: Editor vazio!\n");
+}
+
+int iniciarPilha(TPilha *pilha)
+{
+    //pilha->pilha = (TItem *)malloc(sizeof(TItem));
+    pilha->pTopo = NULL;
+    //if (pilha->pilha == NULL)
+    // //error(19);
+    return OK;
+}
+
+int vaziaPilha(TPilha pilha)
+{
+    return pilha.pTopo == NULL;
+}
+
+int empilhar(TPilha *pilha, char *comando)
+{
+    PAtomo *pnovo = (PAtomo *)malloc(sizeof(PAtomo));
+    if (pnovo == NULL)
+        warning(3);
+    if (vaziaPilha(*pilha))
+        pnovo->pant = NULL;
+    else
+        pnovo->pant = pilha->pTopo;
+    copiar(comando, pnovo->info.frase);
+    pilha->pTopo = pnovo;
+
+    return OK;
+}
+
+int desempilhar(TPilha *pilha)
+{
+    if (vaziaPilha(*pilha))
+        warning(4);
+    PAtomo *pdel = pilha->pTopo;
+    pilha->pTopo = pilha->pTopo->pant;
+    return OK;
 }

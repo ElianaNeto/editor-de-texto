@@ -68,7 +68,7 @@ typedef struct Atomopilha
 typedef struct
 {
     //TItem pilha[TAM];
-    TItem *pilha;
+    //TItem *pilha;
 
     //TInfo info;
     PAtomo *pTopo;
@@ -82,6 +82,10 @@ typedef enum
 } Boolean;
 
 //Funcoes para a estrutura de dados pilha
+int iniciarPilha(TPilha *pilha);
+int empilhar(TPilha *pilha, char *comando);
+int desempilhar(TPilha *pilha);
+int vaziaPilha(TPilha pilha);
 
 void warning(int warningCode);
 void error(int errorCode);
