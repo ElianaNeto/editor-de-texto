@@ -148,4 +148,9 @@ int find(char *str, char *strSub);
 ///
 void cmd_prninv(Tlista *editor, char comando[]);
 
+//NOVOS COMANDOS A SEREM IMPLEMENTADOS
+//deletar()
+//undo()
+int undo(Tlista *editor, TPilha *pilha);
+
 #endif

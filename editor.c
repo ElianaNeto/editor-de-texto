@@ -1316,3 +1316,7 @@ int desempilhar(TPilha *pilha)
     pilha->pTopo = pilha->pTopo->pant;
     return OK;
 }
+
+int undo(Tlista *editor, TPilha *pilha)
+{
+}
