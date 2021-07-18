@@ -25,7 +25,10 @@ void error(int errorCode)
         "ERRO: PARAMETROS INSUFICIENTES",
         "ERRO: LINHA NÃO EXISTE",
         "ERRO: LINHAS FORA DO FORA DO NÚMERO ACTUAL DE LINHAS NO EDITOR DE TEXTO:",
-        "ERRO: Pilha nao inicializada"}; //19
+        "ERRO: Pilha nao inicializada",
+        "ERRO: Comandos devem começar com $",
+        "ERRO: Comando inválido!",
+        "ERRO: PALAVRA NAO ENCONTRADA"}; //22
 
     printf("\n%s\n", errorMessages[errorCode]);
 }
@@ -1509,7 +1512,9 @@ int deletar(Tlista *editor, TPilha *pilha, char *string)
 {
     int stlen1 = comprimentoSt(string) + 1; // +1 do '\n'
     int stlen2 = comprimentoSt(editor->linhaCorrent->info.frase);
-    printf("1o:%d 2o:%d\n", stlen1, stlen2);
+    TInfo info;
+    copiar(string, info.frase);
+    printf("1o:%d 2o:%d .. %s\n", stlen1, stlen2, info.frase);
     if (stlen1 == stlen2)
     {
         printf("A eliminar frase\n");
@@ -1520,6 +1525,7 @@ int deletar(Tlista *editor, TPilha *pilha, char *string)
     else
     {
         printf("A eliminar palavra\n");
+        alterarString(editor, string, "");
     }
 
     return OK;
@@ -1542,7 +1548,7 @@ int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha)
             if (findAt != 0)
                 deletar(editor, pilha, string);
             else
-                printf("Deu pau\n");
+                error(22);
         }
         else
             printf("ERRO: Linha corrente vazia!\n");

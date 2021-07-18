@@ -102,17 +102,17 @@ int main()
 
             default:
                 insertMode = 0;
-                printf("ERRO: Comando inválido!\n");
+                error(21);
                 break;
             }
         }
 
         else
-        {
-            printf("\nERRO: Comandos devem começar com $\n");
-        }
+            error(20);
+        free(editor);
+        free(pilha);
     }
 
-    //fflush(stdin);*/
+    //fflush(stdin);
     return 0;
 }
