@@ -23,7 +23,7 @@
 #define CMD_DEL 10
 #define CMD_UNDO 11
 
-#define LINHA_TAM 100
+#define LINHA_TAM 80
 
 //Cores
 #define COLOR "\033[0;36m"
@@ -130,6 +130,9 @@ void localizarFrase(Tlista lista, char *frase);
 void cmd_localizar(Tlista *editor, char comando[]);
 int encontrarPercent(char comando[]);
 
+int cmdFim(int *startMode, int *insertMode);
+int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha);
+
 //void alterarFrase(Tlista *lista, char oldString[], char newString[]);
 int alterarFrase(Tlista lista, char *substring, char *frase);
 void afastarCaracteres(char *str, int qtd, int ini, int op);
@@ -137,6 +140,9 @@ void arrastarString(char *str, int pos, int size);
 
 void cmd_alterar(Tlista *editor, char comando[]);
 void separarAlterar(char oldString[], char newString[], char comando[]);
+
+int pegarString(char *comando, char *string);
+int separarDeletar(char *comando, char *string);
 
 //Creuma
 void pegarPosicaoString(TAtomo *paux, char subs[], int *posInicial, int *posFinal);
@@ -158,6 +164,6 @@ void cmd_prninv(Tlista *editor, char comando[]);
 //deletar()
 //undo()
 int undo(Tlista *editor, TPilha *pilha);
-int delectar(Tlista *editor, TPilha *pilha);
+int deletar(Tlista *editor, TPilha *pilha, char *string);
 
 #endif

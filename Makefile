@@ -1,7 +1,7 @@
 #Compilar e Executar
 all: compile
 	./executavel
-	reset
+	make reset
 
 #Compila e cria o executavel
 compile: main.o editor.o
@@ -16,5 +16,5 @@ editor.o: editor.c
 
 #Remover os arquivos .o e Limpar a tela totalmente
 reset:
-	rm -rf executavel *.o *.gch
+	rm -rf executavel *.o *.gch *.out
 	reset

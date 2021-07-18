@@ -42,6 +42,13 @@ void warning(int warningCode)
     printf("\n%s\n", warningsMessages[warningCode]);
 }
 
+int cmdFim(int *startMode, int *insertMode)
+{
+    *startMode = 0;
+    *insertMode = 0;
+    return OK;
+}
+
 void limparTerminal()
 {
     system("tput reset");
@@ -156,6 +163,12 @@ int checkCommand(int startCommandIndex, char comando[])
 
     if (compararRec(cmd, "prninv\0", 0) == 0)
         return CMD_INV;
+
+    if (compararRec(cmd, "deletar\0", 0) == 0)
+        return CMD_DEL;
+
+    if (compararRec(cmd, "undo\0", 0) == 0)
+        return CMD_UNDO;
 
     return NOT_CMD;
 }
@@ -1055,9 +1068,7 @@ void alterarString(Tlista *lista, char subString1[], char subString2[])
     //TAtomo *paux = buscarAtomoCorrente(lista);
     TAtomo *paux = lista->linhaCorrent;
     if (paux == NULL)
-    {
-        printf("Impossivel alterar,nao existe uma linha corrente \n");
-    }
+        error(20);
     else
     {
         if (subString1[0] == '\0' && subString2[0] == '\0')
@@ -1285,7 +1296,7 @@ int find(char *str, char *strSub)
             }
             if (strSub[j] == '\0')
             {
-                printf("Sub-string found. %d", i);
+                //printf("Sub-string found. %d", i);
                 return i;
             }
         }
@@ -1426,6 +1437,105 @@ int desempilhar(TPilha *pilha)
     return OK;
 }
 
+int pegarString(char *comando, char *string)
+{
+    int comprimento = comprimentoSt(comando);
+    int i = 0, j = 0;
+
+    for (i = 1; i < comprimento; i++)
+    {
+        if (comando[i] != '%')
+        {
+            string[i - 1] = comando[i];
+        }
+        else
+        {
+            break;
+        }
+    }
+    string[i] = '\0';
+    return OK;
+}
+
+int separarDeletar(char *comando, char *string)
+{
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    char st1[TAM] = "";
+    char st2[TAM] = "";
+
+    int comprimento = comprimentoSt(comando);
+    fflush(stdin);
+    for (i = 0; i < comprimento; i++)
+    {
+        if (comando[i] != ' ')
+        {
+            st1[i] = comando[i];
+        }
+        else
+        {
+            break;
+        }
+    }
+    st1[i] = '\0';
+
+    while (comando[i] == ' ' || comando[i] == '%')
+        i++;
+    i = i - 1;
+    //printf("i:%d", i);
+
+    for (j = i + 1; j < comprimento; j++)
+    {
+        if (comando[j] != '%')
+        {
+            string[j - i - 1] = comando[j];
+        }
+        else
+        {
+            break;
+        }
+    }
+    string[j - i - 1] = '\0';
+    //st2[comprimentoSt(st2) - 1] = '\0';
+
+    printf("{%s}\n", st1);
+    printf("{%s}\n", string);
+    return OK;
+}
+
+int deletar(Tlista *editor, TPilha *pilha, char *string)
+{
+    
+    return OK;
+}
+
+int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha)
+{
+    char string[] = "";
+    int findAt;
+
+    separarDeletar(comando, string);
+    //printf("String a deletar: %s\n", string);
+
+    if (!vaziaLista(*editor))
+    {
+        if (editor->linhaCorrent != NULL)
+        {
+            findAt = find(editor->linhaCorrent->info.frase, string);
+            if (findAt != -1)
+                deletar(editor, pilha, string);
+        }
+        else
+            printf("ERRO: Linha corrente vazia!\n");
+    }
+    else
+        printf("ERRO: Editor vazio!\n");
+
+    return OK;
+}
+
 int undo(Tlista *editor, TPilha *pilha)
 {
+    return OK;
 }

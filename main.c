@@ -76,17 +76,28 @@ int main()
             case CMD_FIM: // fim
                 //startMode = 0;
                 //insertMode = 0;
-                empilhar(pilha, "ola");
-                empilhar(pilha, "elia");
-                empilhar(pilha, "t");
-                desempilhar(pilha);
-
-                printf("%s \n", pilha->pTopo->info.frase);
+                cmdFim(&startMode, &insertMode);
                 break;
 
             case CMD_INV: // prninv m, n
                 insertMode = 0;
                 cmd_prninv(editor, comando);
+                break;
+
+            case CMD_DEL:
+                insertMode = 0;
+                printf("DELETAR\n");
+                cmdDeletar(editor, comando, pilha);
+                break;
+
+            case CMD_UNDO:
+                printf("UNDO\n");
+                insertMode = 0;
+                empilhar(pilha, "ola");
+                empilhar(pilha, "elia");
+                empilhar(pilha, "t");
+                desempilhar(pilha);
+                printf("%s \n", pilha->pTopo->info.frase);
                 break;
 
             default:
