@@ -1022,19 +1022,128 @@ int alterarFrase(Tlista lista, char *substring, char *frase)
         return OK;
 }
 
+void pegarPosicaoString(TAtomo *paux, char subs[], int *posInicial, int *posFinal)
+{
+
+    int i = *posInicial;
+    int sizeSub = strlen(subs);
+    int sizeFrase = strlen(paux->info.frase);
+    int flagFound = 1;
+
+    for (; i + sizeSub <= sizeFrase; i++)
+    {
+        flagFound = 1;
+        for (int j = 0; j < sizeSub; j++)
+        {
+            if (subs[j] != paux->info.frase[j + i])
+            {
+                flagFound = 0;
+                break;
+            }
+        }
+        if (flagFound == 1)
+        {
+            *posInicial = i;
+            *posFinal = i + sizeSub;
+            break;
+        }
+    }
+}
+
+void alterarString(Tlista *lista, char subString1[], char subString2[])
+{
+    //TAtomo *paux = buscarAtomoCorrente(lista);
+    TAtomo *paux = lista->linhaCorrent;
+    if (paux == NULL)
+    {
+        printf("Impossivel alterar,nao existe uma linha corrente \n");
+    }
+    else
+    {
+        if (subString1[0] == '\0' && subString2[0] == '\0')
+        {
+            printf("Erro: Sintaxe do comando errada\n");
+        }
+        else
+        {
+
+            char texto[TAM];
+            int posInicial = 0, posFinal = 0, j = 0, i = 0, k = 0, flagParagem = 0, f = 0;
+            int tamString = strlen(paux->info.frase), tamString2 = 0;
+
+            pegarPosicaoString(paux, subString1, &posInicial, &posFinal);
+
+            //printf("\nposInicial: %d, posFinal: %d\n", posInicial, posFinal);
+
+            if (posInicial != posFinal)
+            {
+                posInicial = 0;
+                posFinal = 0;
+
+                while (flagParagem == 0)
+                {
+                    pegarPosicaoString(paux, subString1, &posInicial, &posFinal);
+                    //printf("\nposInicial: %d, posFinal: %d\n", posInicial, posFinal);
+
+                    if (posInicial != posFinal)
+                    {
+                        for (; i < posInicial; i++)
+                        {
+                            texto[k++] = paux->info.frase[i];
+                        }
+
+                        for (j = 0; j < strlen(subString2); j++)
+                        {
+                            texto[k++] = subString2[j];
+                        }
+                    }
+                    else
+                    {
+                        for (int c = posInicial; c < tamString; c++)
+                        {
+                            texto[k++] = paux->info.frase[c];
+                        }
+                        texto[k] = '\0';
+                        flagParagem = 1;
+                        break;
+                    }
+
+                    if (posInicial != posFinal)
+                    {
+                        i = posFinal;
+                        posInicial = posFinal;
+                    }
+                }
+
+                tamString2 = strlen(texto);
+                for (f = 0; f < tamString2; f++)
+                {
+                    paux->info.frase[f] = texto[f];
+                }
+                paux->info.frase[f] = '\0';
+            }
+            else
+            {
+                printf("\nPalavra nao encontrada\n");
+            }
+        }
+    }
+}
+
 void cmd_alterar(Tlista *editor, char comando[])
 {
     char oldString[LINHA_TAM] = "";
     char newString[LINHA_TAM] = "";
-    separarALTNOVO(oldString, newString, comando);
-    //separarAlterar(oldString, newString, comando);
+    separarALTNOVO(oldString, newString, comando); //%ss%%
+    //separarAlterar(oldString, newString, comando); %ss % %
 
     if (!vaziaLista(*editor))
     {
         if (editor->linhaCorrent != NULL)
         {
             //alterarFrase(*editor, oldString, newString);
-            alterarFrase1(editor, oldString, newString);
+            //alterarFrase1(editor, oldString, newString);
+            alterarString(editor, oldString, newString);
         }
         else
             printf("ERRO: Linha corrente vazia!\n");

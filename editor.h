@@ -7,7 +7,7 @@
 #define INVALID_INDEX 3
 #define NO_SPACE 4
 #define IMPOSSIBLE_REMOTION 5
-#define TAM 100
+#define TAM 80
 
 //Codigo dos comandos
 #define NOT_CMD -1
@@ -20,6 +20,8 @@
 #define CMD_IMPRIMIR 7
 #define CMD_FIM 8
 #define CMD_INV 9
+#define CMD_DEL 10
+#define CMD_UNDO 11
 
 #define LINHA_TAM 100
 
@@ -136,6 +138,10 @@ void arrastarString(char *str, int pos, int size);
 void cmd_alterar(Tlista *editor, char comando[]);
 void separarAlterar(char oldString[], char newString[], char comando[]);
 
+//Creuma
+void pegarPosicaoString(TAtomo *paux, char subs[], int *posInicial, int *posFinal);
+void alterarString(Tlista *lista, char subString1[], char subString2[]);
+
 void separarALTNOVO(char oldString[], char newString[], char comando[]);
 void ckecarParametros(char st[]);
 void pegarPalavrasAlterar(char st[], char oldString[], char newString[]);
@@ -152,5 +158,6 @@ void cmd_prninv(Tlista *editor, char comando[]);
 //deletar()
 //undo()
 int undo(Tlista *editor, TPilha *pilha);
+int delectar(Tlista *editor, TPilha *pilha);
 
 #endif
