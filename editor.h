@@ -85,7 +85,7 @@ typedef enum
 
 //Funcoes para a estrutura de dados pilha
 int iniciarPilha(TPilha *pilha);
-int empilhar(TPilha *pilha, char *comando);
+int empilhar(TPilha *pilha, TInfo info);
 int desempilhar(TPilha *pilha);
 int vaziaPilha(TPilha pilha);
 

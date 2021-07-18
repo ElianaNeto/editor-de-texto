@@ -93,10 +93,10 @@ int main()
             case CMD_UNDO:
                 printf("UNDO\n");
                 insertMode = 0;
-                empilhar(pilha, "ola");
+                /*empilhar(pilha, "ola");
                 empilhar(pilha, "elia");
                 empilhar(pilha, "t");
-                desempilhar(pilha);
+                desempilhar(pilha);*/
                 printf("%s \n", pilha->pTopo->info.frase);
                 break;
 

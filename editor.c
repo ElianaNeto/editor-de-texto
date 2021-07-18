@@ -1413,7 +1413,7 @@ int vaziaPilha(TPilha pilha)
     return pilha.pTopo == NULL;
 }
 
-int empilhar(TPilha *pilha, char *comando)
+int empilhar(TPilha *pilha, TInfo info)
 {
     PAtomo *pnovo = (PAtomo *)malloc(sizeof(PAtomo));
     if (pnovo == NULL)
@@ -1422,7 +1422,8 @@ int empilhar(TPilha *pilha, char *comando)
         pnovo->pant = NULL;
     else
         pnovo->pant = pilha->pTopo;
-    copiar(comando, pnovo->info.frase);
+    copiar(info.frase, pnovo->info.frase);
+    pnovo->info.idLinha = info.idLinha;
     pilha->pTopo = pnovo;
 
     return OK;
@@ -1506,13 +1507,27 @@ int separarDeletar(char *comando, char *string)
 
 int deletar(Tlista *editor, TPilha *pilha, char *string)
 {
-    
+    int stlen1 = comprimentoSt(string) + 1; // +1 do '\n'
+    int stlen2 = comprimentoSt(editor->linhaCorrent->info.frase);
+    printf("1o:%d 2o:%d\n", stlen1, stlen2);
+    if (stlen1 == stlen2)
+    {
+        printf("A eliminar frase\n");
+        remover(editor, editor->linhaCorrent->info.idLinha);
+        empilhar(pilha, editor->linhaCorrent->info);
+        actualizarLinhas(editor);
+    }
+    else
+    {
+        printf("A eliminar palavra\n");
+    }
+
     return OK;
 }
 
 int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha)
 {
-    char string[] = "";
+    char string[TAM] = "";
     int findAt;
 
     separarDeletar(comando, string);
@@ -1522,9 +1537,12 @@ int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha)
     {
         if (editor->linhaCorrent != NULL)
         {
-            findAt = find(editor->linhaCorrent->info.frase, string);
-            if (findAt != -1)
+            //findAt = find(editor->linhaCorrent->info.frase, string);
+            findAt = fStrStr(editor->linhaCorrent->info.frase, string);
+            if (findAt != 0)
                 deletar(editor, pilha, string);
+            else
+                printf("Deu pau\n");
         }
         else
             printf("ERRO: Linha corrente vazia!\n");
