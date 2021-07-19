@@ -74,6 +74,7 @@ typedef struct
 
     //TInfo info;
     PAtomo *pTopo;
+    int nElem;
 
 } TPilha;
 
@@ -87,6 +88,10 @@ typedef enum
 int iniciarPilha(TPilha *pilha);
 int empilhar(TPilha *pilha, TInfo info);
 int desempilhar(TPilha *pilha);
+PAtomo *desempilharAtomo(TPilha *pilha);
+int adicionarDepois(Tlista *editor, TPilha *pilha);
+
+
 int vaziaPilha(TPilha pilha);
 
 void warning(int warningCode);

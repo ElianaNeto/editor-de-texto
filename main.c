@@ -18,6 +18,7 @@ int main()
     while (startMode == 1)
     {
         char comando[LINHA_TAM];
+        //char *comando = (char *)malloc(sizeof(char) * TAM);
         fgets(comando, sizeof(comando), stdin);
         //scanf("%[^\n]", comando);
         int ehComando = verificarComando(comando);
@@ -86,7 +87,7 @@ int main()
 
             case CMD_DEL: // deletar %x%
                 insertMode = 0;
-                printf("DELETAR\n");
+                //printf("DELETAR\n");
                 cmdDeletar(editor, comando, pilha);
                 break;
 
@@ -97,7 +98,8 @@ int main()
                 empilhar(pilha, "elia");
                 empilhar(pilha, "t");
                 desempilhar(pilha);*/
-                printf("%s \n", pilha->pTopo->info.frase);
+                //printf("%s \n", pilha->pTopo->info.frase);
+                undo(editor, pilha);
                 break;
 
             default:

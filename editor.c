@@ -1441,6 +1441,19 @@ int desempilhar(TPilha *pilha)
     return OK;
 }
 
+PAtomo *desempilharAtomo(TPilha *pilha)
+{
+    PAtomo *pdel = NULL;
+    if (!vaziaPilha(*pilha))
+    {
+        pdel = pilha->pTopo;
+        pilha->pTopo = pilha->pTopo->pant;
+        pdel->pant = NULL;
+        pilha->nElem--;
+    }
+    return pdel;
+}
+
 int pegarString(char *comando, char *string)
 {
     int comprimento = comprimentoSt(comando);
@@ -1503,8 +1516,8 @@ int separarDeletar(char *comando, char *string)
     string[j - i - 1] = '\0';
     //st2[comprimentoSt(st2) - 1] = '\0';
 
-    printf("{%s}\n", st1);
-    printf("{%s}\n", string);
+    //printf("{%s}\n", st1);
+    //printf("{%s}\n", string);
     return OK;
 }
 
@@ -1555,9 +1568,15 @@ int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha)
             findAt = fStrStr(editor->linhaCorrent->info.frase, string);
             if (findAt != 0)
             {
-                deletar(editor, pilha, string);
                 if (listaUnitaria(editor))
+                {
+                    empilhar(pilha, editor->linhaCorrent->info);
                     inicEditor(editor);
+                }
+                else
+                {
+                    deletar(editor, pilha, string);
+                }
             }
 
             else
@@ -1572,7 +1591,69 @@ int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha)
     return OK;
 }
 
+int adicionarDepois(Tlista *editor, TPilha *pilha)
+{
+    TAtomo *pnovo = (TAtomo *)malloc(sizeof(TAtomo));
+    if (pnovo == NULL)
+        return NO_SPACE;
+
+    //copiar(pilha->pTopo->info.frase, pnovo->info.frase);
+
+    if (pnovo == NULL)
+        return NO_SPACE;
+
+    pnovo->info = pilha->pTopo->info;
+    TAtomo *paux = procurarLinha(*editor, pilha->pTopo->info.idLinha - 1); // Procura pela chave
+    if (paux == NULL)                                                      // Chave inexistente
+    {
+        free(pnovo);
+        return NOT_FOUND;
+        printf("nao encontrou \n");
+    }
+    TAtomo *pcorrent = NULL, *pd = editor->primeiro;
+    while (pd != NULL && pcorrent != paux)
+    {
+        pcorrent = pd;
+        pd = pd->dprox;
+    }
+
+    if (pcorrent == editor->ultimo)
+    {
+        editor->ultimo->dprox = pnovo;
+        pnovo->eprox = editor->ultimo;
+        editor->ultimo = pnovo;
+    }
+
+    else
+    {
+        pnovo->dprox = pcorrent->dprox;
+        pnovo->eprox = pcorrent;
+        pcorrent->dprox = pnovo;
+        pd->eprox = pnovo;
+    }
+
+    editor->quantLinhas++;
+    actualizarLinhas(editor);
+    printf("ola \n");
+
+    return OK;
+}
+
 int undo(Tlista *editor, TPilha *pilha)
 {
+    //para frase toda
+    if (vaziaLista(*editor))
+        adicionarLinha(editor, pilha->pTopo->info.frase);
+
+    else
+    {
+        adicionarDepois(editor, pilha);
+        //copiar(pilha->pTopo->info.frase, editor->linhaCorrent->info.frase);
+        desempilhar(pilha);
+        actualizarLinhas(editor);
+    }
+
+    //para palavra
+
     return OK;
 }
