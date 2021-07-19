@@ -17,12 +17,15 @@ int main()
 
     while (startMode == 1)
     {
-        //char comando[LINHA_TAM];
-        char *comando = (char *)malloc(sizeof(char) * TAM);
+        char comando[LINHA_TAM];
+        //char *comando = (char *)malloc(sizeof(char) * TAM);
         fgets(comando, sizeof(comando), stdin);
         //scanf("%[^\n]", comando);
+        printf("%s", comando);
+
         int ehComando = verificarComando(comando);
-        if (ehComando == NOT_CMD && insertMode == 1)
+        printf(" eh comando %d\n ", ehComando);
+        if (ehComando != NOT_CMD && insertMode == 1)
         {
             if (editor->linhaCorrent == NULL)
                 adicionarLinha(editor, comando);
@@ -92,7 +95,7 @@ int main()
                 break;
 
             case CMD_UNDO: //undo
-                printf("UNDO\n");
+                // printf("UNDO\n");
                 insertMode = 0;
                 /*empilhar(pilha, "ola");
                 empilhar(pilha, "elia");
