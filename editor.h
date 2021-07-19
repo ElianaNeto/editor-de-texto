@@ -144,7 +144,7 @@ void separarAlterar(char oldString[], char newString[], char comando[]);
 int pegarString(char *comando, char *string);
 int separarDeletar(char *comando, char *string);
 
-//Creuma
+//
 void pegarPosicaoString(TAtomo *paux, char subs[], int *posInicial, int *posFinal);
 void alterarString(Tlista *lista, char subString1[], char subString2[]);
 

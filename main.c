@@ -84,13 +84,13 @@ int main()
                 cmd_prninv(editor, comando);
                 break;
 
-            case CMD_DEL:
+            case CMD_DEL: // deletar %x%
                 insertMode = 0;
                 printf("DELETAR\n");
                 cmdDeletar(editor, comando, pilha);
                 break;
 
-            case CMD_UNDO:
+            case CMD_UNDO: //undo
                 printf("UNDO\n");
                 insertMode = 0;
                 /*empilhar(pilha, "ola");
@@ -109,8 +109,6 @@ int main()
 
         else
             error(20);
-        free(editor);
-        free(pilha);
     }
 
     //fflush(stdin);

@@ -1513,19 +1513,27 @@ int deletar(Tlista *editor, TPilha *pilha, char *string)
     int stlen1 = comprimentoSt(string) + 1; // +1 do '\n'
     int stlen2 = comprimentoSt(editor->linhaCorrent->info.frase);
     TInfo info;
+    info.idLinha = editor->linhaCorrent->info.idLinha;
     copiar(string, info.frase);
     printf("1o:%d 2o:%d .. %s\n", stlen1, stlen2, info.frase);
     if (stlen1 == stlen2)
     {
         printf("A eliminar frase\n");
-        remover(editor, editor->linhaCorrent->info.idLinha);
-        empilhar(pilha, editor->linhaCorrent->info);
+        if (listaUnitaria(editor))
+            empilhar(pilha, editor->linhaCorrent->info);
+
+        else
+        {
+            remover(editor, editor->linhaCorrent->info.idLinha);
+            empilhar(pilha, editor->linhaCorrent->info);
+        }
         actualizarLinhas(editor);
     }
     else
     {
         printf("A eliminar palavra\n");
         alterarString(editor, string, "");
+        empilhar(pilha, info);
     }
 
     return OK;
@@ -1546,7 +1554,12 @@ int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha)
             //findAt = find(editor->linhaCorrent->info.frase, string);
             findAt = fStrStr(editor->linhaCorrent->info.frase, string);
             if (findAt != 0)
+            {
                 deletar(editor, pilha, string);
+                if (listaUnitaria(editor))
+                    inicEditor(editor);
+            }
+
             else
                 error(22);
         }
