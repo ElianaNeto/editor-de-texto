@@ -33,6 +33,7 @@ typedef struct
 {
     int idLinha;
     char frase[LINHA_TAM];
+    char fraseAux[LINHA_TAM];
 
 } TInfo;
 
@@ -90,7 +91,7 @@ int empilhar(TPilha *pilha, TInfo info);
 int desempilhar(TPilha *pilha);
 PAtomo *desempilharAtomo(TPilha *pilha);
 int adicionarDepois(Tlista *editor, TPilha *pilha);
-
+int inserirPalavra(Tlista *lista, int pos, char *string);
 
 int vaziaPilha(TPilha pilha);
 

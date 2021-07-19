@@ -1556,7 +1556,8 @@ int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha)
 {
     char string[TAM] = "";
     int findAt;
-
+    int stlen1 = comprimentoSt(string) + 1; // +1 do '\n'
+    int stlen2 = comprimentoSt(editor->linhaCorrent->info.frase);
     separarDeletar(comando, string);
     //printf("String a deletar: %s\n", string);
 
@@ -1564,14 +1565,20 @@ int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha)
     {
         if (editor->linhaCorrent != NULL)
         {
+            copiar(editor->linhaCorrent->info.frase, editor->linhaCorrent->info.fraseAux);
             //findAt = find(editor->linhaCorrent->info.frase, string);
             findAt = fStrStr(editor->linhaCorrent->info.frase, string);
             if (findAt != 0)
             {
                 if (listaUnitaria(editor))
                 {
-                    empilhar(pilha, editor->linhaCorrent->info);
-                    inicEditor(editor);
+                    if (stlen1 == stlen2)
+                    {
+                        empilhar(pilha, editor->linhaCorrent->info);
+                        inicEditor(editor);
+                    }
+                    else
+                        deletar(editor, pilha, string);
                 }
                 else
                 {
@@ -1639,13 +1646,27 @@ int adicionarDepois(Tlista *editor, TPilha *pilha)
     return OK;
 }
 
+int inserirPalavra(Tlista *lista, int pos, char *string)
+{
+
+    /*for (int aux = comprimentoSt(lista->linhaCorrent->info.frase); aux >= pos + comprimentoSt(string); aux--)
+        lista->linhaCorrent->info.frase[aux + 1] = lista->linhaCorrent->info.frase[aux];*/
+    //arrastarString(lista->linhaCorrent->info.frase, pos, comprimentoSt(lista->linhaCorrent->info.frase));
+
+    /*for (int i = pos; i <= pos + comprimentoSt(string); i++)
+        lista->linhaCorrent->info.frase[i] = string[i];*/
+
+    return OK;
+}
+
 int undo(Tlista *editor, TPilha *pilha)
 {
     //para frase toda
+    printf("linha aux %s \n", editor->linhaCorrent->info.fraseAux);
     if (vaziaLista(*editor))
         adicionarLinha(editor, pilha->pTopo->info.frase);
 
-    else
+    else if (comprimentoSt(pilha->pTopo->info.frase) + 1 == comprimentoSt(editor->linhaCorrent->info.fraseAux))
     {
         adicionarDepois(editor, pilha);
         //copiar(pilha->pTopo->info.frase, editor->linhaCorrent->info.frase);
@@ -1654,6 +1675,14 @@ int undo(Tlista *editor, TPilha *pilha)
     }
 
     //para palavra
+    else if (comprimentoSt(pilha->pTopo->info.frase) < comprimentoSt(editor->linhaCorrent->info.fraseAux))
+    {
+        printf("A eliminar palavra\n");
+        //int findAt = find(editor->linhaAux->info.frase, pilha->pTopo->info.frase);
+        int findAt = fStrStr(editor->linhaCorrent->info.fraseAux, pilha->pTopo->info.frase);
+        //inserirPalavra(editor, findAt, pilha->pTopo->info.frase);
+        copiar(editor->linhaCorrent->info.fraseAux, editor->linhaCorrent->info.frase);
+    }
 
     return OK;
 }
