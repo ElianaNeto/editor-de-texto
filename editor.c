@@ -52,12 +52,13 @@ int cmdFim(int *startMode, int *insertMode)
     return OK;
 }
 
-void limparTerminal()
+int limparTerminal()
 {
     system("tput reset");
+    return OK;
 }
 
-int comprimentoSt(char st[])
+int comprimentoSt(char *st)
 {
     int i, n = 0;
     for (i = 0; st[i] != '\0'; i++)
@@ -65,7 +66,7 @@ int comprimentoSt(char st[])
     return n;
 }
 
-int converteStringToInte(char str[])
+int converteStringToInte(char *str)
 {
     int res = 0;
     int sign = 1;
@@ -84,12 +85,13 @@ int converteStringToInte(char str[])
     return sign * res;
 }
 
-void inicEditor(Tlista *editor)
+int inicEditor(Tlista *editor)
 {
     editor->primeiro = NULL;
     editor->ultimo = NULL;
     editor->linhaCorrent = NULL;
     editor->quantLinhas = 0;
+    return OK;
 }
 
 Boolean vaziaLista(Tlista editor)
@@ -97,7 +99,7 @@ Boolean vaziaLista(Tlista editor)
     return (editor.primeiro == NULL);
 }
 
-int verificarComando(char st[])
+int verificarComando(char *st)
 {
     int i = 0;
     int sinalComando = 0;
@@ -116,14 +118,14 @@ int verificarComando(char st[])
     return -1;
 }
 
-int compararRec(char st1[], char st2[], int i)
+int compararRec(char *st1, char *st2, int i)
 {
     if ((st1[i] == '\0') || (st1[i] != st2[i]))
         return st1[i] - st2[i];
     return compararRec(st1, st2, i + 1);
 }
 
-void getComand(char st[], char st1[], int startCommandIndex)
+int getComand(char *st, char *st1, int startCommandIndex)
 {
     int i = startCommandIndex + 1;
     int j = 0;
@@ -134,9 +136,10 @@ void getComand(char st[], char st1[], int startCommandIndex)
         i++;
     }
     st[j] = '\0';
+    return OK;
 }
 
-int checkCommand(int startCommandIndex, char comando[])
+int checkCommand(int startCommandIndex, char *comando)
 {
     char cmd[LINHA_TAM];
     getComand(cmd, comando, startCommandIndex);
@@ -175,11 +178,12 @@ int checkCommand(int startCommandIndex, char comando[])
 
     return NOT_CMD;
 }
-void copiar(char st1[], char st2[])
+int copiar(char *st1, char *st2)
 {
     int i = 0;
     while ((st2[i] = st1[i]) != '\0')
         i++;
+    return OK;
 }
 
 Boolean listaUnitaria(Tlista *editor)
@@ -195,7 +199,7 @@ TAtomo *procurarLinha(Tlista editor, int id)
     return paux;
 }
 
-void comandoLinha(Tlista editor, char comando[], int *id)
+int comandoLinha(Tlista editor, char *comando, int *id)
 {
     // int a = verificarComando(comando);
     char st1[30];
@@ -241,12 +245,12 @@ void comandoLinha(Tlista editor, char comando[], int *id)
     //printf("comprimento %d \n", comprimentoSt(st2));
     //printf("{%s}\n", st2);
     //printf("%d \n", *id);
+    return OK;
 }
 
-void cmd_linha(Tlista *editor, char comando[])
+int cmdLinha(Tlista *editor, char *comando)
 {
     //→
-
     int id = 0;
     comandoLinha(*editor, comando, &id);
     TAtomo *idAux = (TAtomo *)malloc(sizeof(TAtomo));
@@ -265,24 +269,26 @@ void cmd_linha(Tlista *editor, char comando[])
     }
     else
         printf("ERRO:Lista vazio\n");
+    return OK;
 }
 
-void iniciarId(Tlista *editor)
+int iniciarId(Tlista *editor)
 {
     for (TAtomo *paux = editor->primeiro; paux != NULL; paux = paux->dprox)
         paux->info.idLinha = 0;
+    return OK;
 }
 
-void actualizarLinhas(Tlista *editor)
+int actualizarLinhas(Tlista *editor)
 {
-
     iniciarId(editor);
     editor->primeiro->info.idLinha = 1;
     for (TAtomo *paux = editor->primeiro->dprox; paux != NULL; paux = paux->dprox)
         paux->info.idLinha = paux->eprox->info.idLinha + 1;
+    return OK;
 }
 
-int adicionarDepoisdaCorrente(Tlista *editor, char comando[])
+int adicionarDepoisdaCorrente(Tlista *editor, char *comando)
 {
     TAtomo *pnovo = (TAtomo *)malloc(sizeof(TAtomo));
     if (pnovo == NULL)
@@ -316,8 +322,7 @@ int adicionarDepoisdaCorrente(Tlista *editor, char comando[])
     actualizarLinhas(editor);
     return OK;
 }
-
-int adicionarLinha(Tlista *editor, char comando[])
+int adicionarLinha(Tlista *editor, char *comando)
 {
     TAtomo *pnovo = (TAtomo *)malloc(sizeof(TAtomo));
     if (pnovo == NULL)
@@ -351,12 +356,13 @@ int adicionarLinha(Tlista *editor, char comando[])
     return OK;
 }
 
-void cmd_ultimo(Tlista *lista)
+int cmdUltimo(Tlista *lista)
 {
     if (!vaziaLista(*lista))
         printf("%d\n", lista->ultimo->info.idLinha);
     else
         printf("ERRO: Editor vazio!\n");
+    return OK;
 }
 
 int remover(Tlista *lista, int id)
@@ -389,7 +395,7 @@ int remover(Tlista *lista, int id)
     return OK;
 }
 
-void imprimirLista(Tlista *lista)
+int imprimirLista(Tlista *lista)
 {
     if (!vaziaLista(*lista))
     {
@@ -406,9 +412,10 @@ void imprimirLista(Tlista *lista)
     }
     else
         printf("ERRO: Editor vazio!\n");
+    return OK;
 }
 
-void funcao_teste(Tlista *editor)
+int funcaoTeste(Tlista *editor)
 {
     TAtomo *p = NULL;
     for (TAtomo *paux = editor->primeiro; paux != NULL; paux = paux->dprox)
@@ -420,9 +427,10 @@ void funcao_teste(Tlista *editor)
         }
     }
     printf("o dpt da linha corrent: %s\n", p->info.frase);
+    return OK;
 }
 
-int encontrarVirgula(char comando[])
+int encontrarVirgula(char *comando)
 {
     for (int i = 0; comando[i] != '\0'; i++)
     {
@@ -435,7 +443,7 @@ int encontrarVirgula(char comando[])
     return -1;
 }
 
-int encontrarPercent(char comando[])
+int encontrarPercent(char *comando)
 {
     for (int i = 0; comando[i] != '\0'; i++)
     {
@@ -448,7 +456,7 @@ int encontrarPercent(char comando[])
     return -1;
 }
 
-void separar4(char st1[], char st2[], char st3[], char st4[], char comando[])
+int separar4(char *st1, char *st2, char *st3, char *st4, char *comando)
 {
 
     int i = 0;
@@ -532,9 +540,10 @@ void separar4(char st1[], char st2[], char st3[], char st4[], char comando[])
     st4[l - k - 1] = '\0';
     //fflush(stdin);
     st4[comprimentoSt(st4) - 1] = '\0';
+    return OK;
 }
 
-void cmd_imprimir(Tlista *editor, char comando[])
+int cmdImprimir(Tlista *editor, char *comando)
 {
     char st1[30];
     char st2[30];
@@ -594,9 +603,10 @@ void cmd_imprimir(Tlista *editor, char comando[])
     //printf("{%s}\n", st3);
     //printf("{%s}\n", st4);
     //printf("%d \n", *id);
+    return OK;
 }
 
-void cmd_remover(Tlista *editor, char comando[])
+int cmdRemover(Tlista *editor, char *comando)
 {
     char st1[30];
     char st2[30];
@@ -642,9 +652,10 @@ void cmd_remover(Tlista *editor, char comando[])
     }
     else
         printf("ERRO: Editor vazio!\n");
+    return OK;
 }
 
-void separarLocalizar(char st1[], char st2[], char st3[], char comando[])
+int separarLocalizar(char *st1, char *st2, char *st3, char *comando)
 {
 
     int i = 0;
@@ -711,9 +722,10 @@ void separarLocalizar(char st1[], char st2[], char st3[], char comando[])
     //printf("{%s}\n", st1);
     //printf("{%s}\n", st2);
     //printf("{%s}\n", st3);
+    return OK;
 }
 
-void localizarFrase(Tlista lista, char *frase)
+int localizarFrase(Tlista lista, char *frase)
 {
     printf("-----------------------------------\n");
     int pos;
@@ -761,9 +773,10 @@ void localizarFrase(Tlista lista, char *frase)
         }
     }
     printf("-------------------------------------\n");
+    return OK;
 }
 
-void cmd_localizar(Tlista *editor, char comando[])
+int cmdLocalizar(Tlista *editor, char *comando)
 {
     char st1[30];
     char st2[30];
@@ -784,9 +797,10 @@ void cmd_localizar(Tlista *editor, char comando[])
     }
     else
         printf("ERRO: Editor vazio!\n");
+    return OK;
 }
 
-void separarAlterar(char oldString[], char newString[], char comando[])
+int separarAlterar(char oldString[], char newString[], char *comando)
 {
     char st1[20];
     char st2[20];
@@ -926,27 +940,30 @@ void separarAlterar(char oldString[], char newString[], char comando[])
     //printf("{%s}\n", st4);
     printf("{%s}\n", newString); //st4
     //printf("{%s}\n", st6);
+    return OK;
 }
 
-void arrastarStringFim(char *str, int pos, int size)
+int arrastarStringFim(char *str, int pos, int size)
 {
     while (size >= pos)
     {
         str[pos] = str[pos + 1];
         pos++;
     }
+    return OK;
 }
 
-void arrastarString(char *str, int pos, int size)
+int arrastarString(char *str, int pos, int size)
 {
     while (size >= pos)
     {
         str[size + 1] = str[size];
         size--;
     }
+    return OK;
 }
 
-void afastarCaracteres(char *str, int qtd, int ini, int op)
+int afastarCaracteres(char *str, int qtd, int ini, int op)
 {
     int size = comprimentoSt(str);
     //str[size+qtd]='\0';
@@ -968,6 +985,7 @@ void afastarCaracteres(char *str, int qtd, int ini, int op)
 
         i++;
     }
+    return OK;
 }
 
 int alterarFrase(Tlista lista, char *substring, char *frase)
@@ -1038,7 +1056,7 @@ int alterarFrase(Tlista lista, char *substring, char *frase)
         return OK;
 }
 
-void pegarPosicaoString(TAtomo *paux, char subs[], int *posInicial, int *posFinal)
+int pegarPosicaoString(TAtomo *paux, char *subs, int *posInicial, int *posFinal)
 {
 
     int i = *posInicial;
@@ -1064,9 +1082,9 @@ void pegarPosicaoString(TAtomo *paux, char subs[], int *posInicial, int *posFina
             break;
         }
     }
+    return OK;
 }
-
-void alterarString(Tlista *lista, char subString1[], char subString2[])
+int alterarString(Tlista *lista, char *subString1, char *subString2)
 {
     //TAtomo *paux = buscarAtomoCorrente(lista);
     TAtomo *paux = lista->linhaCorrent;
@@ -1142,9 +1160,10 @@ void alterarString(Tlista *lista, char subString1[], char subString2[])
             }
         }
     }
+    return OK;
 }
 
-void cmd_alterar(Tlista *editor, char comando[])
+int cmdAlterar(Tlista *editor, char *comando)
 {
     char oldString[LINHA_TAM] = "";
     char newString[LINHA_TAM] = "";
@@ -1164,9 +1183,10 @@ void cmd_alterar(Tlista *editor, char comando[])
     }
     else
         printf("ERRO: Editor vazio!\n");
+    return OK;
 }
 
-void pegarPalavrasAlterar(char st[], char oldString[], char newString[])
+int pegarPalavrasAlterar(char *st, char *oldString, char *newString)
 {
     int comprimento = comprimentoSt(st);
     int i = 0, j = 0;
@@ -1200,9 +1220,10 @@ void pegarPalavrasAlterar(char st[], char oldString[], char newString[])
 
     //printf("{%s}\n", oldString);
     //printf("{%s}\n", newString);
+    return OK;
 }
 
-void ckecarParametros(char st[])
+int ckecarParametros(char *st)
 {
     int comprimento = comprimentoSt(st);
     int delimitador = 0;
@@ -1216,9 +1237,10 @@ void ckecarParametros(char st[])
         printf("Delimitador em falta\n");
     else if (delimitador > 3)
         printf("Delimitador em escesso\n");
+    return OK;
 }
 
-void separarALTNOVO(char oldString[], char newString[], char comando[])
+int separarALTNOVO(char *oldString, char *newString, char *comando)
 {
     int i = 0, j = 0;
     char st1[60];
@@ -1256,6 +1278,7 @@ void separarALTNOVO(char oldString[], char newString[], char comando[])
     //printf("{%s}\n", st2);
     ckecarParametros(st2);
     pegarPalavrasAlterar(st2, oldString, newString);
+    return OK;
 }
 
 int fStrStr(char *str, char *strSub)
@@ -1308,7 +1331,7 @@ int find(char *str, char *strSub)
     return -1;
 }
 
-void alterarFrase1(Tlista *lista, char oldString[], char newString[])
+int alterarFrase1(Tlista *lista, char *oldString, char *newString)
 {
     int cmOld = comprimentoSt(oldString);
     int cmNew = comprimentoSt(newString);
@@ -1347,9 +1370,10 @@ void alterarFrase1(Tlista *lista, char oldString[], char newString[])
         printf("");
 
     //printf("%c\n", paux->info.frase);
+    return OK;
 }
 
-void cmd_prninv(Tlista *editor, char comando[])
+int cmdPrninv(Tlista *editor, char *comando)
 {
     char st1[30];
     char st2[30];
@@ -1400,6 +1424,7 @@ void cmd_prninv(Tlista *editor, char comando[])
     }
     else
         printf("ERRO: Editor vazio!\n");
+    return OK;
 }
 
 int iniciarPilha(TPilha *pilha)

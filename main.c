@@ -17,8 +17,8 @@ int main()
 
     while (startMode == 1)
     {
-        char comando[LINHA_TAM];
-        //char *comando = (char *)malloc(sizeof(char) * TAM);
+        //char comando[LINHA_TAM];
+        char *comando = (char *)malloc(sizeof(char) * TAM);
         fgets(comando, sizeof(comando), stdin);
         //scanf("%[^\n]", comando);
         int ehComando = verificarComando(comando);
@@ -45,33 +45,33 @@ int main()
             case CMD_REMOVER: // remover m, n
                 insertMode = 0;
                 //printf("REMOVENDO\n");
-                cmd_remover(editor, comando);
+                cmdRemover(editor, comando);
                 break;
 
             case CMD_LINHA: // linha m
                 insertMode = 0;
-                cmd_linha(editor, comando);
+                cmdLinha(editor, comando);
                 break;
 
             case CMD_LOCALIZAR: // localizar %x
                 insertMode = 0;
-                cmd_localizar(editor, comando);
+                cmdLocalizar(editor, comando);
                 break;
 
             case CMD_ALTERAR: // alterar %x %y %
                 insertMode = 0;
                 //printf("ALTERAR\n");
-                cmd_alterar(editor, comando);
+                cmdAlterar(editor, comando);
                 break;
 
             case CMD_ULTIMO: // ultimo (to test)
                 insertMode = 0;
-                cmd_ultimo(editor);
+                cmdUltimo(editor);
                 break;
 
             case CMD_IMPRIMIR: // imprimir m, n
                 insertMode = 0;
-                cmd_imprimir(editor, comando);
+                cmdImprimir(editor, comando);
                 break;
 
             case CMD_FIM: // fim
@@ -82,7 +82,7 @@ int main()
 
             case CMD_INV: // prninv m, n
                 insertMode = 0;
-                cmd_prninv(editor, comando);
+                cmdPrninv(editor, comando);
                 break;
 
             case CMD_DEL: // deletar %x%

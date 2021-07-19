@@ -32,8 +32,8 @@
 typedef struct
 {
     int idLinha;
-    char frase[LINHA_TAM];
-    char fraseAux[LINHA_TAM];
+    char *frase;
+    char *fraseAux;
 
 } TInfo;
 
@@ -53,13 +53,6 @@ typedef struct
     int quantLinhas;
 
 } Tlista;
-
-typedef struct
-{
-    int chave;
-    float valor;
-
-} TItem;
 
 typedef struct Atomopilha
 {
@@ -85,6 +78,9 @@ typedef enum
     TRUE = 1
 } Boolean;
 
+void warning(int warningCode);
+void error(int errorCode);
+
 //Funcoes para a estrutura de dados pilha
 int iniciarPilha(TPilha *pilha);
 int empilhar(TPilha *pilha, TInfo info);
@@ -95,78 +91,75 @@ int inserirPalavra(Tlista *lista, int pos, char *string);
 
 int vaziaPilha(TPilha pilha);
 
-void warning(int warningCode);
-void error(int errorCode);
-
-int comprimentoSt(char st[]);
-int converteStringToInte(char str[]);
+int comprimentoSt(char *st);
+int converteStringToInte(char *str);
 TAtomo *procurarLinha(Tlista editor, int id);
-void inicEditor(Tlista *editor);
+int inicEditor(Tlista *editor);
 Boolean vaziaLista(Tlista editor);
-int verificarComando(char st[]);
-int compararRec(char st1[], char st2[], int i);
-void getComand(char st[], char st1[], int startCommandIndex);
-int checkCommand(int startCommandIndex, char comando[]);
-void cmd_linha(Tlista *editor, char comando[]);
+int verificarComando(char *st);
+int compararRec(char *st1, char *st2, int i);
+int getcomandod(char *st, char *st1, int startCommandIndex);
+int checkCommand(int startCommandIndex, char *comando);
+int cmdLinha(Tlista *editor, char *comando);
 
-void copiar(char st1[], char st2[]);
-void iniciarId(Tlista *editor);
-void limparTerminal();
+int copiar(char *st1, char *st2);
+int iniciarId(Tlista *editor);
+int limparTerminal();
 
-void actualizarLinhas(Tlista *editor);
+int actualizarLinhas(Tlista *editor);
 
 //operacoes do editor
-int adicionarLinha(Tlista *editor, char comando[]);
-void imprimirLista(Tlista *lista);
-void comandoLinha(Tlista editor, char comando[], int *id);
-void cmd_ultimo(Tlista *lista);
+int adicionarLinha(Tlista *editor, char *comando);
+int imprimirLista(Tlista *lista);
+int comandoLinha(Tlista editor, char *comando, int *id);
+int cmdUltimo(Tlista *lista);
 
 int remover(Tlista *lista, int id);
-void cmd_remover(Tlista *editor, char comando[]);
+int cmdRemover(Tlista *editor, char *comando);
 
-int adicionarDepoisdaCorrente(Tlista *editor, char comando[]);
-void cmd_imprimir(Tlista *editor, char comando[]);
+int adicionarDepoisdaCorrente(Tlista *editor, char *comando);
+int cmdImprimir(Tlista *editor, char *comando);
 
-void funcao_teste(Tlista *editor);
-int encontrarVirgula(char comando[]);
-void separar4(char st1[], char st2[], char st3[], char st4[], char comando[]);
-void separarLocalizar(char st1[], char st2[], char st3[], char comando[]);
+int funcaoTeste(Tlista *editor);
+int encontrarVirgula(char *comando);
+int separar4(char *st1, char *st2, char *st3, char *st4, char *comando);
+int separarLocalizar(char *st1, char *st2, char *st3, char *comando);
 
-void localizarFrase(Tlista lista, char *frase);
-void cmd_localizar(Tlista *editor, char comando[]);
-int encontrarPercent(char comando[]);
+int localizarFrase(Tlista lista, char *frase);
+int cmdLocalizar(Tlista *editor, char *comando);
+int encontrarPercent(char *comando);
 
 int cmdFim(int *startMode, int *insertMode);
 int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha);
 
-//void alterarFrase(Tlista *lista, char oldString[], char newString[]);
+//int alterarFrase(Tlista *lista, char oldString, char newString);
 int alterarFrase(Tlista lista, char *substring, char *frase);
-void afastarCaracteres(char *str, int qtd, int ini, int op);
-void arrastarString(char *str, int pos, int size);
+int afastarCaracteres(char *str, int qtd, int ini, int op);
+int arrastarString(char *str, int pos, int size);
 
-void cmd_alterar(Tlista *editor, char comando[]);
-void separarAlterar(char oldString[], char newString[], char comando[]);
+int cmdAlterar(Tlista *editor, char *comando);
+int separarAlterar(char *oldString, char *newString, char *comando);
 
 int pegarString(char *comando, char *string);
 int separarDeletar(char *comando, char *string);
 
 //
-void pegarPosicaoString(TAtomo *paux, char subs[], int *posInicial, int *posFinal);
-void alterarString(Tlista *lista, char subString1[], char subString2[]);
+int pegarPosicaoString(TAtomo *paux, char *subs, int *posInicial, int *posFinal);
+int alterarString(Tlista *lista, char *subString1, char *subString2);
 
-void separarALTNOVO(char oldString[], char newString[], char comando[]);
-void ckecarParametros(char st[]);
-void pegarPalavrasAlterar(char st[], char oldString[], char newString[]);
+int separarALTNOVO(char *oldString, char *newString, char *comando);
+int ckecarParametros(char *st);
+int pegarPalavrasAlterar(char *st, char *oldString, char *newString);
 
 //novo alterar
-void alterarFrase1(Tlista *lista, char oldString[], char newString[]);
+int alterarFrase1(Tlista *lista, char *oldString, char *newString);
 int fStrStr(char *str, char *strSub);
 int find(char *str, char *strSub);
 
 ///
-void cmd_prninv(Tlista *editor, char comando[]);
+int cmdPrninv(Tlista *editor, char *comando);
 
-//NOVOS COMANDOS A SEREM IMPLEMENTADOS
+//NOVOS comandoS A SEREM IMPLEMENTADOS
 //deletar()
 //undo()
 int undo(Tlista *editor, TPilha *pilha);
