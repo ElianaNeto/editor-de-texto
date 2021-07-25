@@ -1,0 +1,122 @@
+$inserir
+Amostra de dados de Entrada
+algumas pessoass
+algum tempo
+mas você não pode emganar
+todas as pessoas
+todo o tempo.
+Abraham Lincoln
+$linha 1
+$imprimir 1
+ERRO: Falta virgula
+------------------------------------
+$imprimir 1,1
+------------------------------------
+1 algumas pessoass
+------------------------------------
+$alterar %ss%%
+$imprimir 1, 1
+-----------------------------------
+1 algumas peoa
+-----------------------------------
+$alterar %o%sso
+ERRO: Delimitador ocorre somente duas vezes 
+-------------------------------------------------------------- 
+$alterar %o%sso%
+$imprimir 1,1 
+---------------------------------------------------------------- 
+1 algumas pessoa 
+---------------------------------------------------------------- 
+alterar %0a%oas%
+ERRO: Comandos devem começar com $
+ -------------------------------------------------------------- 
+$alterar %oa%oas%
+$imprimir 1,1 
+-------------------------------------------------------------- 
+1 algumas pessoas 
+--------------------------------------------------------------- 
+$linha 1
+$alterar %algo%algem
+ERRO: palavra não encontrada 
+-------------------------------------------------------------- 
+$imprimir 1,1 
+-------------------------------------------------------------- 
+1 algumas pessoas 
+--------------------------------------------------------------- 
+$insere
+voce pode enganar
+algumas pessoas
+todo tempo e
+todo o tempo e
+voce pode enganar
+ERRO: “insere” não é comando valido 
+-------------------------------------------------------------- 
+$inserir
+voce pode enganar
+algumas pessoas
+todo tempo e
+todo o tempo e
+voce pode enganar
+$ultimo
+11
+$imprimir 1, 11
+------------------------------------
+1 voce pode enganar
+2 algumas pessoas
+3 todo tempo e
+4 todo o tempo e
+5 voce pode enganar
+6 algumas pessoas
+7 algum tempo
+8 mas você não pode emganar
+9 todas as pessoas
+10 todo o tempo
+11 Abraham Lincoln 
+---------------------------------------------------------------- 
+$linha 6
+$alterar %algumas%todas as %
+$imprimir 6, 6 
+-----------------------------------------------------------------
+6 todas as pessoas 
+------------------------------------------------------------------ 
+$linha 8
+$alterar %em%en%
+$imprimir 8,8 
+------------------------------------------------------------------
+8 mas você não pode enganar 
+------------------------------------------------------------------ 
+$linha 9
+$Alterar %os%as
+$imprimir 9,9 
+-------------------------------------------------------------------
+9 todas as pessoas 
+------------------------------------------------------------------- 
+$remover 3,3
+$imprimir 1,11 
+-------------------------------------------------------------------- 
+ERRO: o ultimo numero do texto igual a 10 
+--------------------------------------------------------------------- 
+$localizar %tod 
+--------------------------------------------------------------------
+
+1 voce pode enganar 2 algumas pessoas
+3 todo o tempo e
+4 voce pode enganar 5 todas as pessoas
+6 algum tempo ,
+7 mas você não pode enganar
+8 todas as pessoas
+10 Abraham Lincoln 
+---------------------------------------------------------------------- 
+$imprimir 1, 10 
+--------------------------------------------------------------------- 
+1 voce pode enganar
+2 algumas pessoas
+3 todo o tempo e
+4 voce pode enganar
+5 todas as pessoas
+6 algum tempo ,
+7 mas você não pod enganar
+8 todas as pessoas
+10 Abraham Lincoln 
+-------------------------------------------------
+$fim
