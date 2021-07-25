@@ -52,46 +52,44 @@ int cmdFim(int *startMode, int *insertMode)
     return OK;
 }
 
-int limparTerminal()
+void limparTerminal()
 {
     system("tput reset");
-    return OK;
 }
 
-int comprimentoSt(char *st)
+int comprimentoSt(char st[])
 {
     int i, n = 0;
-    for (i = 0; *(st + i) != '\0'; i++)
+    for (i = 0; st[i] != '\0'; i++)
         n++;
     return n;
 }
 
-int converteStringToInte(char *str)
+int converteStringToInte(char str[])
 {
     int res = 0;
     int sign = 1;
     int i;
     int j = 0;
 
-    if (*(str + 0) == '-')
+    if (str[0] == '-')
     {
         sign = -1;
         j++;
     }
 
-    for (i = j; *(str + i) != '\0'; ++i)
-        res = res * 10 + (*(str + i)) - '0';
+    for (i = j; str[i] != '\0'; ++i)
+        res = res * 10 + str[i] - '0';
 
     return sign * res;
 }
 
-int inicEditor(Tlista *editor)
+void inicEditor(Tlista *editor)
 {
     editor->primeiro = NULL;
     editor->ultimo = NULL;
     editor->linhaCorrent = NULL;
     editor->quantLinhas = 0;
-    return OK;
 }
 
 Boolean vaziaLista(Tlista editor)
@@ -99,13 +97,13 @@ Boolean vaziaLista(Tlista editor)
     return (editor.primeiro == NULL);
 }
 
-int verificarComando(char *st)
+int verificarComando(char st[])
 {
     int i = 0;
     int sinalComando = 0;
-    while (*(st + i) != '\0')
+    while (st[i] != '\0')
     {
-        if (*(st + i) == '$')
+        if (st[i] == '$')
         {
             sinalComando = 1;
             break;
@@ -118,28 +116,27 @@ int verificarComando(char *st)
     return -1;
 }
 
-int compararRec(char *st1, char *st2, int i)
+int compararRec(char st1[], char st2[], int i)
 {
-    if ((*(st1 + i) == '\0') || (*(st2 + i) != *(st2 + i)))
-        return (*(st1 + i)) - (*(st2 + i));
+    if ((st1[i] == '\0') || (st1[i] != st2[i]))
+        return st1[i] - st2[i];
     return compararRec(st1, st2, i + 1);
 }
 
-int getComand(char *st, char *st1, int startCommandIndex)
+void getComand(char st[], char st1[], int startCommandIndex)
 {
     int i = startCommandIndex + 1;
     int j = 0;
-    while (*(st1 + i) != ' ' && *(st1 + i) != '\n')
+    while (st1[i] != ' ' && st1[i] != '\n')
     {
-        *(st + j) = *(st1 + i);
+        st[j] = st1[i];
         j++;
         i++;
     }
-    *(st + j) = '\0';
-    return OK;
+    st[j] = '\0';
 }
 
-int checkCommand(int startCommandIndex, char *comando)
+int checkCommand(int startCommandIndex, char comando[])
 {
     char cmd[LINHA_TAM];
     getComand(cmd, comando, startCommandIndex);
@@ -178,12 +175,11 @@ int checkCommand(int startCommandIndex, char *comando)
 
     return NOT_CMD;
 }
-int copiar(char *st1, char *st2)
+void copiar(char st1[], char st2[])
 {
     int i = 0;
-    while ((*(st2 + i) = *(st1 + i)) != '\0')
+    while ((st2[i] = st1[i]) != '\0')
         i++;
-    return OK;
 }
 
 Boolean listaUnitaria(Tlista *editor)
@@ -199,32 +195,29 @@ TAtomo *procurarLinha(Tlista editor, int id)
     return paux;
 }
 
-int comandoLinha(Tlista editor, char *comando, int *id)
+void comandoLinha(Tlista editor, char comando[], int *id)
 {
     // int a = verificarComando(comando);
-    char *st1 = (char *)malloc(sizeof(char) * TAM);
-    char *st2 = (char *)malloc(sizeof(char) * TAM);
-
-    //char *comando = (char *)malloc(sizeof(char) * TAM);
-
+    char st1[30];
+    char st2[30];
     int i = 0;
     int j = 0;
     int comprimento = comprimentoSt(comando);
 
     for (i = 0; i < comprimento; i++)
     {
-        if (*(comando + i) != ' ')
+        if (comando[i] != ' ')
         {
-            *(st1 + i) = *(comando + i);
+            st1[i] = comando[i];
         }
         else
         {
             break;
         }
     }
-    *(st1 + i) = '\0';
+    st1[i] = '\0';
 
-    while (*(comando + i) == ' ')
+    while (comando[i] == ' ')
     {
         i++;
     }
@@ -233,27 +226,27 @@ int comandoLinha(Tlista editor, char *comando, int *id)
 
     for (j = i + 1; j < comprimento; j++)
     {
-        if (*(comando + j) != '\0' && *(comando + j) != ' ')
+        if (comando[j] != '\0' && comando[j] != ' ')
         {
-            *(st2 + (j - i - 1)) = *(comando + j);
+            st2[j - i - 1] = comando[j];
         }
         else
         {
             break;
         }
     }
-    *(st2 + (j - i - 1)) = '\0';
-    *(st2 + (comprimentoSt(st2) - 1)) = '\0';
+    st2[j - i - 1] = '\0';
+    st2[comprimentoSt(st2) - 1] = '\0';
     *id = converteStringToInte(st2);
     //printf("comprimento %d \n", comprimentoSt(st2));
     //printf("{%s}\n", st2);
     //printf("%d \n", *id);
-    return OK;
 }
 
-int cmdLinha(Tlista *editor, char *comando)
+void cmd_linha(Tlista *editor, char comando[])
 {
     //→
+
     int id = 0;
     comandoLinha(*editor, comando, &id);
     TAtomo *idAux = (TAtomo *)malloc(sizeof(TAtomo));
@@ -272,26 +265,24 @@ int cmdLinha(Tlista *editor, char *comando)
     }
     else
         printf("ERRO:Lista vazio\n");
-    return OK;
 }
 
-int iniciarId(Tlista *editor)
+void iniciarId(Tlista *editor)
 {
     for (TAtomo *paux = editor->primeiro; paux != NULL; paux = paux->dprox)
         paux->info.idLinha = 0;
-    return OK;
 }
 
-int actualizarLinhas(Tlista *editor)
+void actualizarLinhas(Tlista *editor)
 {
+
     iniciarId(editor);
     editor->primeiro->info.idLinha = 1;
     for (TAtomo *paux = editor->primeiro->dprox; paux != NULL; paux = paux->dprox)
         paux->info.idLinha = paux->eprox->info.idLinha + 1;
-    return OK;
 }
 
-int adicionarDepoisdaCorrente(Tlista *editor, char *comando)
+int adicionarDepoisdaCorrente(Tlista *editor, char comando[])
 {
     TAtomo *pnovo = (TAtomo *)malloc(sizeof(TAtomo));
     if (pnovo == NULL)
@@ -325,7 +316,8 @@ int adicionarDepoisdaCorrente(Tlista *editor, char *comando)
     actualizarLinhas(editor);
     return OK;
 }
-int adicionarLinha(Tlista *editor, char *comando)
+
+int adicionarLinha(Tlista *editor, char comando[])
 {
     TAtomo *pnovo = (TAtomo *)malloc(sizeof(TAtomo));
     if (pnovo == NULL)
@@ -359,13 +351,12 @@ int adicionarLinha(Tlista *editor, char *comando)
     return OK;
 }
 
-int cmdUltimo(Tlista *lista)
+void cmd_ultimo(Tlista *lista)
 {
     if (!vaziaLista(*lista))
         printf("%d\n", lista->ultimo->info.idLinha);
     else
         printf("ERRO: Editor vazio!\n");
-    return OK;
 }
 
 int remover(Tlista *lista, int id)
@@ -398,7 +389,7 @@ int remover(Tlista *lista, int id)
     return OK;
 }
 
-int imprimirLista(Tlista *lista)
+void imprimirLista(Tlista *lista)
 {
     if (!vaziaLista(*lista))
     {
@@ -415,10 +406,9 @@ int imprimirLista(Tlista *lista)
     }
     else
         printf("ERRO: Editor vazio!\n");
-    return OK;
 }
 
-int funcaoTeste(Tlista *editor)
+void funcao_teste(Tlista *editor)
 {
     TAtomo *p = NULL;
     for (TAtomo *paux = editor->primeiro; paux != NULL; paux = paux->dprox)
@@ -430,14 +420,13 @@ int funcaoTeste(Tlista *editor)
         }
     }
     printf("o dpt da linha corrent: %s\n", p->info.frase);
-    return OK;
 }
 
-int encontrarVirgula(char *comando)
+int encontrarVirgula(char comando[])
 {
-    for (int i = 0; *(comando + i) != '\0'; i++)
+    for (int i = 0; comando[i] != '\0'; i++)
     {
-        if (*(comando + i) == ',')
+        if (comando[i] == ',')
         {
             return i;
             break;
@@ -446,11 +435,11 @@ int encontrarVirgula(char *comando)
     return -1;
 }
 
-int encontrarPercent(char *comando)
+int encontrarPercent(char comando[])
 {
-    for (int i = 0; *(comando + i) != '\0'; i++)
+    for (int i = 0; comando[i] != '\0'; i++)
     {
-        if (*(comando + i) == '%')
+        if (comando[i] == '%')
         {
             return i;
             break;
@@ -459,7 +448,7 @@ int encontrarPercent(char *comando)
     return -1;
 }
 
-int separar4(char *st1, char *st2, char *st3, char *st4, char *comando)
+void separar4(char st1[], char st2[], char st3[], char st4[], char comando[])
 {
 
     int i = 0;
@@ -471,18 +460,18 @@ int separar4(char *st1, char *st2, char *st3, char *st4, char *comando)
     fflush(stdin);
     for (i = 0; i < comprimento; i++)
     {
-        if (*(comando + i) != ' ')
+        if (comando[i] != ' ')
         {
-            *(st1 + i) = *(comando + i);
+            st1[i] = comando[i];
         }
         else
         {
             break;
         }
     }
-    *(st1 + i) = '\0';
+    st1[i] = '\0';
 
-    while (*(comando + i) == ' ')
+    while (comando[i] == ' ')
     {
         i++;
     }
@@ -491,19 +480,19 @@ int separar4(char *st1, char *st2, char *st3, char *st4, char *comando)
 
     for (j = i + 1; j < comprimento; j++)
     {
-        if (*(comando + j) != '\0' && *(comando + j) != ' ' && *(comando + j) != ',')
+        if (comando[j] != '\0' && comando[j] != ' ' && comando[j] != ',')
         {
-            *(st2 + (j - i - 1)) = *(comando + j);
+            st2[j - i - 1] = comando[j];
         }
         else
         {
             break;
         }
     }
-    *(st2 + (j - i - 1)) = '\0';
+    st2[j - i - 1] = '\0';
     //st2[comprimentoSt(st2) - 1] = '\0';
 
-    while (*(comando + j) == ' ')
+    while (comando[j] == ' ')
     {
         j++;
     }
@@ -511,19 +500,19 @@ int separar4(char *st1, char *st2, char *st3, char *st4, char *comando)
     //multiplas virgulas ATT
     for (k = j + 1; k < comprimento; k++)
     {
-        if (*(comando + j) == ',')
+        if (comando[k] == ',')
         {
-            *(st3 + (k - j - 1)) = *(comando + k);
+            st3[k - j - 1] = comando[k];
         }
         else
         {
             break;
         }
     }
-    *(st3 + (k - j - 1)) = '\0';
+    st3[k - j - 1] = '\0';
     //st3[comprimentoSt(st3) - 1] = '\0';
 
-    while (*(comando + k) == ' ')
+    while (comando[k] == ' ')
     {
         k++;
     }
@@ -531,28 +520,26 @@ int separar4(char *st1, char *st2, char *st3, char *st4, char *comando)
 
     for (l = k + 1; l < comprimento; l++)
     {
-        if (*(comando + l) != '\0' && *(comando + l) != ' ')
+        if (comando[l] != '\0' && comando[l] != ' ')
         {
-            *(st4 + (l - k - 1)) = *(comando + l);
+            st4[l - k - 1] = comando[l];
         }
         else
         {
             break;
         }
     }
-    *(st4 + (l - k - 1)) = '\0';
+    st4[l - k - 1] = '\0';
     //fflush(stdin);
-    *(st4 + (comprimentoSt(st4) - 1)) = '\0';
-    return OK;
+    st4[comprimentoSt(st4) - 1] = '\0';
 }
 
-int cmdImprimir(Tlista *editor, char *comando)
+void cmd_imprimir(Tlista *editor, char comando[])
 {
-
-    char *st1 = (char *)malloc(sizeof(char) * TAM);
-    char *st2 = (char *)malloc(sizeof(char) * TAM);
-    char *st3 = (char *)malloc(sizeof(char) * TAM);
-    char *st4 = (char *)malloc(sizeof(char) * TAM);
+    char st1[30];
+    char st2[30];
+    char st3[30];
+    char st4[30];
 
     separar4(st1, st2, st3, st4, comando);
     int startVirgula = encontrarVirgula(comando);
@@ -607,15 +594,14 @@ int cmdImprimir(Tlista *editor, char *comando)
     //printf("{%s}\n", st3);
     //printf("{%s}\n", st4);
     //printf("%d \n", *id);
-    return OK;
 }
 
-int cmdRemover(Tlista *editor, char *comando)
+void cmd_remover(Tlista *editor, char comando[])
 {
-    char *st1 = (char *)malloc(sizeof(char) * TAM);
-    char *st2 = (char *)malloc(sizeof(char) * TAM);
-    char *st3 = (char *)malloc(sizeof(char) * TAM);
-    char *st4 = (char *)malloc(sizeof(char) * TAM);
+    char st1[30];
+    char st2[30];
+    char st3[30];
+    char st4[30];
 
     separar4(st1, st2, st3, st4, comando);
     int startVirgula = encontrarVirgula(comando);
@@ -656,10 +642,9 @@ int cmdRemover(Tlista *editor, char *comando)
     }
     else
         printf("ERRO: Editor vazio!\n");
-    return OK;
 }
 
-int separarLocalizar(char *st1, char *st2, char *st3, char *comando)
+void separarLocalizar(char st1[], char st2[], char st3[], char comando[])
 {
 
     int i = 0;
@@ -671,18 +656,18 @@ int separarLocalizar(char *st1, char *st2, char *st3, char *comando)
     fflush(stdin);
     for (i = 0; i < comprimento; i++)
     {
-        if (*(comando + i) != ' ')
+        if (comando[i] != ' ')
         {
-            *(st1 + i) = *(comando + i);
+            st1[i] = comando[i];
         }
         else
         {
             break;
         }
     }
-    *(st1 + i) = '\0';
+    st1[i] = '\0';
 
-    while (*(comando + i) == ' ')
+    while (comando[i] == ' ')
     {
         i++;
     }
@@ -691,19 +676,19 @@ int separarLocalizar(char *st1, char *st2, char *st3, char *comando)
 
     for (j = i + 1; j < comprimento; j++)
     {
-        if (*(comando + j) == '%')
+        if (comando[j] == '%')
         {
-            *(st2 + (j - i - 1)) = *(comando + j);
+            st2[j - i - 1] = comando[j];
         }
         else
         {
             break;
         }
     }
-    *(st2 + (j - i - 1)) = '\0';
+    st2[j - i - 1] = '\0';
     //st2[comprimentoSt(st2) - 1] = '\0';
 
-    while (*(comando + j) == ' ')
+    while (comando[j] == ' ')
     {
         j++;
     }
@@ -711,26 +696,24 @@ int separarLocalizar(char *st1, char *st2, char *st3, char *comando)
     //multiplas virgulas ATT
     for (k = j + 1; k < comprimento; k++)
     {
-        if (*(comando + k) != ' ')
+        if (comando[k] != ' ')
         {
-            *(st2 + (k - j - 1)) = *(comando + k);
+            st3[k - j - 1] = comando[k];
         }
         else
         {
             break;
         }
     }
-    *(st3 + (k - j - 1)) = '\0';
-    //st3[comprimentoSt(st3) - 1] = '\0';
-    *(st3 + (comprimentoSt(st3) - 1)) = '\0';
+    st3[k - j - 1] = '\0';
+    st3[comprimentoSt(st3) - 1] = '\0';
 
     //printf("{%s}\n", st1);
     //printf("{%s}\n", st2);
     //printf("{%s}\n", st3);
-    return OK;
 }
 
-int localizarFrase(Tlista lista, char *frase)
+void localizarFrase(Tlista lista, char *frase)
 {
     printf("-----------------------------------\n");
     int pos;
@@ -744,17 +727,17 @@ int localizarFrase(Tlista lista, char *frase)
         else
             printf("%d ", paux->info.idLinha);
 
-        for (int i = 0; *(paux->info.frase + i) != '\0'; i++)
+        for (int i = 0; paux->info.frase[i] != '\0'; i++)
         {
             cont = 0;
             pos = i;
             //percorrer cada letra da frase
             for (int j = 0; j < size; j++, pos++)
             {
-                if (*(paux->info.frase + pos) == '\0')
+                if (paux->info.frase[pos] == '\0')
                     break;
                 //se for igual vou somando "cont"
-                if (*(paux->info.frase + pos) != *(frase + j))
+                if (paux->info.frase[pos] != frase[j])
                     break;
                 else
                     cont++;
@@ -766,7 +749,7 @@ int localizarFrase(Tlista lista, char *frase)
                 while (pos < size + i)
                 {
                     printf(COLOR);
-                    printf("%c", *(paux->info.frase + pos));
+                    printf("%c", paux->info.frase[pos]);
                     printf(NO_COLOR);
                     pos++;
                 }
@@ -774,19 +757,17 @@ int localizarFrase(Tlista lista, char *frase)
                 //caso contrario vou imprimir o caracter daquela posicao [i]
             }
             else
-                printf("%c", *(paux->info.frase + i));
+                printf("%c", paux->info.frase[i]);
         }
     }
     printf("-------------------------------------\n");
-    return OK;
 }
 
-int cmdLocalizar(Tlista *editor, char *comando)
+void cmd_localizar(Tlista *editor, char comando[])
 {
-    //char *comando = (char *)malloc(sizeof(char) * TAM);
-    char *st1 = (char *)malloc(sizeof(char) * TAM);
-    char *st2 = (char *)malloc(sizeof(char) * TAM);
-    char *fraseLocalizar = (char *)malloc(sizeof(char) * TAM);
+    char st1[30];
+    char st2[30];
+    char fraseLocalizar[30];
 
     separarLocalizar(st1, st2, fraseLocalizar, comando);
 
@@ -803,24 +784,16 @@ int cmdLocalizar(Tlista *editor, char *comando)
     }
     else
         printf("ERRO: Editor vazio!\n");
-    return OK;
 }
 
-int separarAlterar(char oldString[], char newString[], char *comando)
+void separarAlterar(char oldString[], char newString[], char comando[])
 {
-    /*char st1[20];
+    char st1[20];
     char st2[20];
     char st3[20]; //oldString
     char st4[20];
     char st5[20]; //newString
-    char st6[20];*/
-
-    char *st1 = (char *)malloc(sizeof(char) * TAM);
-    char *st2 = (char *)malloc(sizeof(char) * TAM);
-    char *st3 = (char *)malloc(sizeof(char) * TAM);
-    char *st4 = (char *)malloc(sizeof(char) * TAM);
-    char *st5 = (char *)malloc(sizeof(char) * TAM);
-    char *st6 = (char *)malloc(sizeof(char) * TAM);
+    char st6[20];
 
     int i = 0;
     int j = 0;
@@ -833,18 +806,18 @@ int separarAlterar(char oldString[], char newString[], char *comando)
     fflush(stdin);
     for (i = 0; i < comprimento; i++)
     {
-        if (*(comando + i) != ' ')
+        if (comando[i] != ' ')
         {
-            *(st1 + i) = *(comando + i);
+            st1[i] = comando[i];
         }
         else
         {
             break;
         }
     }
-    *(st1 + i) = '\0';
+    st1[i] = '\0';
 
-    while (*(comando + i) == ' ')
+    while (comando[i] == ' ')
     {
         i++;
     }
@@ -853,19 +826,19 @@ int separarAlterar(char oldString[], char newString[], char *comando)
 
     for (j = i + 1; j < comprimento; j++)
     {
-        if (*(comando + j) == '%')
+        if (comando[j] == '%')
         {
-            *(st2 + (j - i - 1)) = *(comando + j);
+            st2[j - i - 1] = comando[j];
         }
         else
         {
             break;
         }
     }
-    *(st2 + (j - i - 1)) = '\0';
+    st2[j - i - 1] = '\0';
     //st2[comprimentoSt(st2) - 1] = '\0';
 
-    while (*(comando + j) == ' ')
+    while (comando[j] == ' ')
     {
         j++;
     }
@@ -873,20 +846,19 @@ int separarAlterar(char oldString[], char newString[], char *comando)
     //multiplas virgulas ATT
     for (k = j + 1; k < comprimento; k++)
     {
-        if (*(comando + k) != '\0' && *(comando + k) != ' ')
+        if (comando[k] != '\0' && comando[k] != ' ')
         {
-            *(oldString + (k - j - 1)) = *(comando + k);
-            // oldString[k - j - 1] = *(comando + k);
+            oldString[k - j - 1] = comando[k];
         }
         else
         {
             break;
         }
     }
-    *(oldString + (k - j - 1)) = '\0';
+    oldString[k - j - 1] = '\0';
     //st3[comprimentoSt(st3) - 1] = '\0';
 
-    while (*(comando + k) == ' ')
+    while (comando[k] == ' ')
     {
         k++;
     }
@@ -894,41 +866,41 @@ int separarAlterar(char oldString[], char newString[], char *comando)
 
     for (l = k + 1; l < comprimento; l++)
     {
-        if (*(comando + l) == '%')
+        if (comando[l] == '%')
         {
-            *(st2 + (k - j - 1)) = *(comando + l);
+            st4[l - k - 1] = comando[l];
         }
         else
         {
             break;
         }
     }
-    *(st2 + (k - j - 1)) = '\0';
+    st4[l - k - 1] = '\0';
     //fflush(stdin);
     //st4[comprimentoSt(st4) - 1] = '\0';
 
-    while (*(comando + l) == ' ')
+    while (comando[l] == ' ')
     {
         l++;
     }
     l = l - 1;
 
     for (m = l + 1; m < comprimento; m++)
-    { //*(st2 + (k - j - 1))
-        if (*(comando + m) != '\0' && *(comando + m) != ' ')
+    {
+        if (comando[m] != '\0' && comando[m] != ' ')
         {
-            *(newString + (m - l - 1)) = *(comando + m);
+            newString[m - l - 1] = comando[m];
         }
         else
         {
             break;
         }
     }
-    *(newString + (m - l - 1)) = '\0';
+    newString[m - l - 1] = '\0';
     //fflush(stdin);
     //st5[comprimentoSt(st5) - 1] = '\0';
 
-    while (*(comando + m) == ' ')
+    while (comando[m] == ' ')
     {
         m++;
     }
@@ -936,52 +908,45 @@ int separarAlterar(char oldString[], char newString[], char *comando)
 
     for (n = m + 1; n < comprimento; n++)
     {
-        if (*(comando + n) != '\0' && *(comando + n) != ' ')
+        if (comando[n] != '\0' && comando[n] != ' ')
         {
-            *(st6 + (n - m - 1)) = *(comando + n);
+            st6[n - m - 1] = comando[n];
         }
         else
         {
             break;
         }
     }
-    *(st6 + (n - m - 1)) = '\0';
+    st6[n - m - 1] = '\0';
     //fflush(stdin);
-    *(st6 + (comprimentoSt(st6) - 1)) = '\0';
-    //st6[comprimentoSt(st6) - 1] = '\0';
+    st6[comprimentoSt(st6) - 1] = '\0';
     //printf("{%s}\n", st1);
     //printf("{%s}\n", st2);
-    //printf("{%s}\n", oldString); //st3
+    printf("{%s}\n", oldString); //st3
     //printf("{%s}\n", st4);
-    //printf("{%s}\n", newString); //st4
+    printf("{%s}\n", newString); //st4
     //printf("{%s}\n", st6);
-    return OK;
 }
 
-int arrastarStringFim(char *str, int pos, int size)
+void arrastarStringFim(char *str, int pos, int size)
 {
     while (size >= pos)
     {
-        *(str + pos) = *(str + pos + 1);
-        // str[pos] = str[pos + 1];
+        str[pos] = str[pos + 1];
         pos++;
     }
-    return OK;
 }
 
-int arrastarString(char *str, int pos, int size)
+void arrastarString(char *str, int pos, int size)
 {
     while (size >= pos)
     {
-        *(str + size + 1) = *(str + size);
-
-        //str[size + 1] = str[size];
+        str[size + 1] = str[size];
         size--;
     }
-    return OK;
 }
 
-int afastarCaracteres(char *str, int qtd, int ini, int op)
+void afastarCaracteres(char *str, int qtd, int ini, int op)
 {
     int size = comprimentoSt(str);
     //str[size+qtd]='\0';
@@ -1003,7 +968,6 @@ int afastarCaracteres(char *str, int qtd, int ini, int op)
 
         i++;
     }
-    return OK;
 }
 
 int alterarFrase(Tlista lista, char *substring, char *frase)
@@ -1023,17 +987,17 @@ int alterarFrase(Tlista lista, char *substring, char *frase)
     int tam = 0;
     int encontrei = 0;
 
-    for (int i = 0; *(paux->info.frase + i) != '\0'; i++)
+    for (int i = 0; paux->info.frase[i] != '\0'; i++)
     {
         cont = 0;
         pos = i;
         for (int j = 0; j < sizeS; j++, pos++)
         {
             //substitui o break - o prof nao gosta dele
-            if (*(paux->info.frase + pos) == '\0')
+            if (paux->info.frase[pos] == '\0')
                 break;
             //se for igual vou somando "cont"
-            if (*(paux->info.frase + pos) != substring[j])
+            if (paux->info.frase[pos] != substring[j])
                 break;
             else
                 cont++;
@@ -1055,7 +1019,7 @@ int alterarFrase(Tlista lista, char *substring, char *frase)
             //onde adiciono a segunda frase
             while (pos < tam)
             {
-                *(paux->info.frase + pos) = frase[aux];
+                paux->info.frase[pos] = frase[aux];
                 pos++;
                 aux++;
             }
@@ -1074,7 +1038,7 @@ int alterarFrase(Tlista lista, char *substring, char *frase)
         return OK;
 }
 
-int pegarPosicaoString(TAtomo *paux, char *subs, int *posInicial, int *posFinal)
+void pegarPosicaoString(TAtomo *paux, char subs[], int *posInicial, int *posFinal)
 {
 
     int i = *posInicial;
@@ -1087,7 +1051,7 @@ int pegarPosicaoString(TAtomo *paux, char *subs, int *posInicial, int *posFinal)
         flagFound = 1;
         for (int j = 0; j < sizeSub; j++)
         {
-            if (*(subs + j) != *(paux->info.frase + (j + i)))
+            if (subs[j] != paux->info.frase[j + i])
             {
                 flagFound = 0;
                 break;
@@ -1100,9 +1064,9 @@ int pegarPosicaoString(TAtomo *paux, char *subs, int *posInicial, int *posFinal)
             break;
         }
     }
-    return OK;
 }
-int alterarString(Tlista *lista, char *subString1, char *subString2)
+
+void alterarString(Tlista *lista, char subString1[], char subString2[])
 {
     //TAtomo *paux = buscarAtomoCorrente(lista);
     TAtomo *paux = lista->linhaCorrent;
@@ -1110,15 +1074,14 @@ int alterarString(Tlista *lista, char *subString1, char *subString2)
         error(20);
     else
     {
-        if (*(subString1 + 0) == '\0' && *(subString2 + 0) == '\0')
+        if (subString1[0] == '\0' && subString2[0] == '\0')
         {
             printf("Erro: Sintaxe do comando errada\n");
         }
         else
         {
 
-            char *texto = (char *)malloc(sizeof(char) * TAM);
-
+            char texto[TAM];
             int posInicial = 0, posFinal = 0, j = 0, i = 0, k = 0, flagParagem = 0, f = 0;
             int tamString = strlen(paux->info.frase), tamString2 = 0;
 
@@ -1140,21 +1103,21 @@ int alterarString(Tlista *lista, char *subString1, char *subString2)
                     {
                         for (; i < posInicial; i++)
                         {
-                            *(texto + (k++)) = *(paux->info.frase + i);
+                            texto[k++] = paux->info.frase[i];
                         }
 
                         for (j = 0; j < strlen(subString2); j++)
                         {
-                            *(texto + (k++)) = subString2[j];
+                            texto[k++] = subString2[j];
                         }
                     }
                     else
                     {
                         for (int c = posInicial; c < tamString; c++)
                         {
-                            *(texto + (k++)) = *(paux->info.frase + c);
+                            texto[k++] = paux->info.frase[c];
                         }
-                        *(texto + k) = '\0';
+                        texto[k] = '\0';
                         flagParagem = 1;
                         break;
                     }
@@ -1169,9 +1132,9 @@ int alterarString(Tlista *lista, char *subString1, char *subString2)
                 tamString2 = strlen(texto);
                 for (f = 0; f < tamString2; f++)
                 {
-                    *(paux->info.frase + f) = *(texto + f);
+                    paux->info.frase[f] = texto[f];
                 }
-                *(paux->info.frase + f) = '\0';
+                paux->info.frase[f] = '\0';
             }
             else
             {
@@ -1179,10 +1142,9 @@ int alterarString(Tlista *lista, char *subString1, char *subString2)
             }
         }
     }
-    return OK;
 }
 
-int cmdAlterar(Tlista *editor, char *comando)
+void cmd_alterar(Tlista *editor, char comando[])
 {
     char oldString[LINHA_TAM] = "";
     char newString[LINHA_TAM] = "";
@@ -1202,53 +1164,51 @@ int cmdAlterar(Tlista *editor, char *comando)
     }
     else
         printf("ERRO: Editor vazio!\n");
-    return OK;
 }
 
-int pegarPalavrasAlterar(char *st, char *oldString, char *newString)
+void pegarPalavrasAlterar(char st[], char oldString[], char newString[])
 {
     int comprimento = comprimentoSt(st);
     int i = 0, j = 0;
-    //char st1[60], st2[60];
+    char st1[60], st2[60];
 
     for (i = 1; i < comprimento; i++)
     {
-        if (*(st + i) != '%')
+        if (st[i] != '%')
         {
-            *(oldString + (i - 1)) = *(st + i);
+            oldString[i - 1] = st[i];
         }
         else
         {
             break;
         }
     }
-    *(oldString + i) = '\0';
+    oldString[i] = '\0';
 
     for (j = i + 1; j < comprimento; j++)
     {
-        if (*(st + j) != '%')
+        if (st[j] != '%')
         {
-            *(newString + (j - i - 1)) = *(st + j);
+            newString[j - i - 1] = st[j];
         }
         else
         {
             break;
         }
     }
-    *(newString + (j - i - 1)) = '\0';
+    newString[j - i - 1] = '\0';
 
     //printf("{%s}\n", oldString);
     //printf("{%s}\n", newString);
-    return OK;
 }
 
-int ckecarParametros(char *st)
+void ckecarParametros(char st[])
 {
     int comprimento = comprimentoSt(st);
     int delimitador = 0;
     for (int i = 0; i < comprimento; i++)
     {
-        if (*(st + i) == '%')
+        if (st[i] == '%')
             delimitador++;
     }
 
@@ -1256,49 +1216,46 @@ int ckecarParametros(char *st)
         printf("Delimitador em falta\n");
     else if (delimitador > 3)
         printf("Delimitador em escesso\n");
-    return OK;
 }
 
-int separarALTNOVO(char *oldString, char *newString, char *comando)
+void separarALTNOVO(char oldString[], char newString[], char comando[])
 {
     int i = 0, j = 0;
-    char *st1 = (char *)malloc(sizeof(char) * 60);
-    char *st2 = (char *)malloc(sizeof(char) * 60);
+    char st1[60];
+    char st2[60];
     int comprimento = comprimentoSt(comando);
     fflush(stdin);
     for (i = 0; i < comprimento; i++)
     {
-        if (*(comando + i) != ' ')
+        if (comando[i] != ' ')
         {
-            *(st1 + i) = *(comando + i);
+            st1[i] = comando[i];
         }
         else
         {
             break;
         }
     }
-    *(st1 + i) = '\0';
+    st1[i] = '\0';
 
     for (j = i + 1; j < comprimento; j++)
     {
-        if (*(comando + j) != ' ')
+        if (comando[j] != ' ')
         {
-            *(st2 + (j - i - 1)) = *(comando + j);
+            st2[j - i - 1] = comando[j];
         }
         else
         {
             break;
         }
     }
-    *(st2 + (j - i - 1)) = '\0';
-    *(st2 + (comprimentoSt(st2) - 1)) = '\0';
-    //st2[comprimentoSt(st2) - 1] = '\0';
+    st2[j - i - 1] = '\0';
+    st2[comprimentoSt(st2) - 1] = '\0';
 
     //printf("{%s}\n", st1);
     //printf("{%s}\n", st2);
     ckecarParametros(st2);
     pegarPalavrasAlterar(st2, oldString, newString);
-    return OK;
 }
 
 int fStrStr(char *str, char *strSub)
@@ -1313,7 +1270,7 @@ int fStrStr(char *str, char *strSub)
         for (j = 0; j < nStrSubLen; j++)
         {
 
-            if (*(str + nTemp) == *(strSub + j))
+            if (str[nTemp] == strSub[j])
             {
                 if (j == nStrSubLen - 1)
                     return 1;
@@ -1331,16 +1288,16 @@ int find(char *str, char *strSub)
 {
     int i = 0;
     int j = 0;
-    while (*(str + i) != '\0')
+    while (str[i] != '\0')
     {
-        if (*(str + i) == *(strSub + 0))
+        if (str[i] == strSub[0])
         {
             j = 1;
-            while (*(strSub + j) != '\0' && *(str + (j + 1)) != '\0' || *(strSub + j) == *(str + (j + 1)))
+            while (strSub[j] != '\0' && str[j + 1] != '\0' || strSub[j] == str[j + 1])
             {
                 j++;
             }
-            if (*(strSub + j) == '\0')
+            if (strSub[j] == '\0')
             {
                 //printf("Sub-string found. %d", i);
                 return i;
@@ -1351,7 +1308,7 @@ int find(char *str, char *strSub)
     return -1;
 }
 
-int alterarFrase1(Tlista *lista, char *oldString, char *newString)
+void alterarFrase1(Tlista *lista, char oldString[], char newString[])
 {
     int cmOld = comprimentoSt(oldString);
     int cmNew = comprimentoSt(newString);
@@ -1372,7 +1329,7 @@ int alterarFrase1(Tlista *lista, char *oldString, char *newString)
             //printf("Sub-string found.\n");
             while (comprimentoCorent >= findAt)
             {
-                *(paux->info.frase + (comprimentoCorent + 1)) = *(paux->info.frase + comprimentoCorent);
+                paux->info.frase[comprimentoCorent + 1] = paux->info.frase[comprimentoCorent];
                 comprimentoCorent--;
             }
 
@@ -1380,7 +1337,7 @@ int alterarFrase1(Tlista *lista, char *oldString, char *newString)
 
             for (int i = findAt; i <= findAt + cmNew - 1; i++, a++)
             {
-                *(paux->info.frase + i) = *(newString + a);
+                paux->info.frase[i] = newString[a];
             }
         }
         else
@@ -1389,18 +1346,15 @@ int alterarFrase1(Tlista *lista, char *oldString, char *newString)
     else
         printf("");
 
-    //printf("%c\n", *(paux->info.frase +i));
-    return OK;
+    //printf("%c\n", paux->info.frase);
 }
 
-int cmdPrninv(Tlista *editor, char *comando)
+void cmd_prninv(Tlista *editor, char comando[])
 {
-    //char *comando = (char *)malloc(sizeof(char) * TAM);
-
-    char *st1 = (char *)malloc(sizeof(char) * TAM);
-    char *st2 = (char *)malloc(sizeof(char) * TAM);
-    char *st3 = (char *)malloc(sizeof(char) * TAM);
-    char *st4 = (char *)malloc(sizeof(char) * TAM);
+    char st1[30];
+    char st2[30];
+    char st3[30];
+    char st4[30];
 
     separar4(st1, st2, st3, st4, comando);
     int startVirgula = encontrarVirgula(comando);
@@ -1446,7 +1400,6 @@ int cmdPrninv(Tlista *editor, char *comando)
     }
     else
         printf("ERRO: Editor vazio!\n");
-    return OK;
 }
 
 int iniciarPilha(TPilha *pilha)
@@ -1508,18 +1461,16 @@ int pegarString(char *comando, char *string)
 
     for (i = 1; i < comprimento; i++)
     {
-        if (*(comando + i) != '%')
+        if (comando[i] != '%')
         {
-
-            *(string + (i - 1)) = *(comando + i);
+            string[i - 1] = comando[i];
         }
         else
         {
             break;
         }
     }
-
-    *(string + i) = '\0';
+    string[i] = '\0';
     return OK;
 }
 
@@ -1528,43 +1479,41 @@ int separarDeletar(char *comando, char *string)
     int i = 0;
     int j = 0;
     int k = 0;
-    // char st1[TAM] = "";
-    //char st2[TAM] = "";
-    char *st1 = (char *)malloc(sizeof(char) * TAM);
-    char *st2 = (char *)malloc(sizeof(char) * TAM);
+    char st1[TAM] = "";
+    char st2[TAM] = "";
 
     int comprimento = comprimentoSt(comando);
     fflush(stdin);
     for (i = 0; i < comprimento; i++)
     {
-        if (*(comando + i) != ' ')
+        if (comando[i] != ' ')
         {
-            *(st1 + i) = *(comando + i);
+            st1[i] = comando[i];
         }
         else
         {
             break;
         }
     }
-    *(st1 + i) = '\0';
+    st1[i] = '\0';
 
-    while (*(comando + i) == ' ' || *(comando + i) == '%')
+    while (comando[i] == ' ' || comando[i] == '%')
         i++;
     i = i - 1;
     //printf("i:%d", i);
 
     for (j = i + 1; j < comprimento; j++)
     {
-        if (*(comando + j) != '%')
+        if (comando[j] != '%')
         {
-            *(string + (j - i - 1)) = *(comando + j);
+            string[j - i - 1] = comando[j];
         }
         else
         {
             break;
         }
     }
-    *(string + (j - i - 1)) = '\0';
+    string[j - i - 1] = '\0';
     //st2[comprimentoSt(st2) - 1] = '\0';
 
     //printf("{%s}\n", st1);
@@ -1579,10 +1528,10 @@ int deletar(Tlista *editor, TPilha *pilha, char *string)
     TInfo info;
     info.idLinha = editor->linhaCorrent->info.idLinha;
     copiar(string, info.frase);
-    //printf("1o:%d 2o:%d .. %s\n", stlen1, stlen2, info.frase);
+    printf("1o:%d 2o:%d .. %s\n", stlen1, stlen2, info.frase);
     if (stlen1 == stlen2)
     {
-        //printf("A eliminar frase\n");
+        printf("A eliminar frase\n");
         if (listaUnitaria(editor))
             empilhar(pilha, editor->linhaCorrent->info);
 
@@ -1595,7 +1544,7 @@ int deletar(Tlista *editor, TPilha *pilha, char *string)
     }
     else
     {
-        //printf("A eliminar palavra\n");
+        printf("A eliminar palavra\n");
         alterarString(editor, string, "");
         empilhar(pilha, info);
     }
@@ -1605,9 +1554,7 @@ int deletar(Tlista *editor, TPilha *pilha, char *string)
 
 int cmdDeletar(Tlista *editor, char *comando, TPilha *pilha)
 {
-    //char string[TAM] = "";
-    char *string = (char *)malloc(sizeof(char) * TAM);
-
+    char string[TAM] = "";
     int findAt;
     int stlen1 = comprimentoSt(string) + 1; // +1 do '\n'
     int stlen2 = comprimentoSt(editor->linhaCorrent->info.frase);

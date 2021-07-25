@@ -3,7 +3,6 @@
 #include <string.h>
 #include "editor.h"
 
-//→ ->
 int main()
 {
     Tlista *editor = (Tlista *)(malloc(sizeof(Tlista)));
@@ -21,11 +20,8 @@ int main()
         //char *comando = (char *)malloc(sizeof(char) * TAM);
         fgets(comando, sizeof(comando), stdin);
         //scanf("%[^\n]", comando);
-        printf("%s", comando);
-
         int ehComando = verificarComando(comando);
-        printf(" eh comando %d\n ", ehComando);
-        if (ehComando != NOT_CMD && insertMode == 1)
+        if (ehComando == NOT_CMD && insertMode == 1)
         {
             if (editor->linhaCorrent == NULL)
                 adicionarLinha(editor, comando);
@@ -48,33 +44,33 @@ int main()
             case CMD_REMOVER: // remover m, n
                 insertMode = 0;
                 //printf("REMOVENDO\n");
-                cmdRemover(editor, comando);
+                cmd_remover(editor, comando);
                 break;
 
             case CMD_LINHA: // linha m
                 insertMode = 0;
-                cmdLinha(editor, comando);
+                cmd_linha(editor, comando);
                 break;
 
             case CMD_LOCALIZAR: // localizar %x
                 insertMode = 0;
-                cmdLocalizar(editor, comando);
+                cmd_localizar(editor, comando);
                 break;
 
             case CMD_ALTERAR: // alterar %x %y %
                 insertMode = 0;
                 //printf("ALTERAR\n");
-                cmdAlterar(editor, comando);
+                cmd_alterar(editor, comando);
                 break;
 
             case CMD_ULTIMO: // ultimo (to test)
                 insertMode = 0;
-                cmdUltimo(editor);
+                cmd_ultimo(editor);
                 break;
 
             case CMD_IMPRIMIR: // imprimir m, n
                 insertMode = 0;
-                cmdImprimir(editor, comando);
+                cmd_imprimir(editor, comando);
                 break;
 
             case CMD_FIM: // fim
@@ -85,7 +81,7 @@ int main()
 
             case CMD_INV: // prninv m, n
                 insertMode = 0;
-                cmdPrninv(editor, comando);
+                cmd_prninv(editor, comando);
                 break;
 
             case CMD_DEL: // deletar %x%
@@ -95,7 +91,7 @@ int main()
                 break;
 
             case CMD_UNDO: //undo
-                // printf("UNDO\n");
+                printf("UNDO\n");
                 insertMode = 0;
                 /*empilhar(pilha, "ola");
                 empilhar(pilha, "elia");
