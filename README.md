@@ -13,9 +13,9 @@ Editor de texto, baseado em linha de comando. Por definição, um editor de text
 
 1. `$inserir`: Inserir uma porção de texto depois da linha corrente. A linha corrente é indicada pelo caracter “→”.
 2. `$remover m,n`: Cada linha no texto, entre as linhas m e n, inclusive, devem ser removidas. Se a linha corrente está nesse intervalo, a nova linha corrente deve ser a linha m-1
-3. `$linha m`:A linha m deve tornar-se a linha corrente.
-4. `$Localizar %x`:localizar no texto todas as ocorrências da cadeia de caracteres x
-5. `$alterar %x %y %`:na linha corrente, cada ocorrência da cadeia x deve ser substituída pela cadeia y
+3. `$linha m`: A linha m deve tornar-se a linha corrente.
+4. `$Localizar %x`: localizar no texto todas as ocorrências da cadeia de caracteres x
+5. `$alterar %x %y %`: (na linha corrente), cada ocorrência da cadeia x deve ser substituída pela cadeia y
 6. `$último`: deve imprimir o número da última linha do texto. Por exemplo, dado o texto
 7. `$imprimir m,n`: devem ser impressas todas as linhas do texto, e o número de linhas, das linhas m até n, inclusive n.
-8. `$fim`:termina a execução do editor de texto.
+8. `$fim`: termina a execução do editor de texto.
